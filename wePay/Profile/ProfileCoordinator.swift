@@ -18,7 +18,7 @@ final class ProfileCoordinator: Coordinator {
     
     internal func start() {
         let vc = ProfileViewController()
-        vc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemSymbol: .gearshape), selectedImage: UIImage(systemSymbol: .gearshapeFill
+        vc.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemSymbol: .gearshape), selectedImage: UIImage(systemSymbol: .gearshapeFill
         ))
         vc.tabBarItem.tag = 0
         vc.coordinator = self

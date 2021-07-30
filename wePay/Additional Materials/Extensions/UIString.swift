@@ -9,6 +9,28 @@ import UIKit
 import CommonCrypto
 
 extension String {
+    func display() -> String {
+        return self.applyPatternOnNumbers(pattern: "+### ## ### ## ##", replacmentCharacter: "#")
+    }
+    
+    func origin() -> String {
+        return self.applyPatternOnNumbers(pattern: "############", replacmentCharacter: "#")
+    }
+    
+    func applyPatternOnNumbers(pattern: String, replacmentCharacter: Character) -> String {
+        var pureNumber = self.replacingOccurrences( of: "[^0-9]", with: "", options: .regularExpression)
+        for index in 0 ..< pattern.count {
+            guard index < pureNumber.count else { return pureNumber }
+            let stringIndex = String.Index(utf16Offset: index, in: pattern)
+            let patternCharacter = pattern[stringIndex]
+            guard patternCharacter != replacmentCharacter else { continue }
+            pureNumber.insert(patternCharacter, at: stringIndex)
+        }
+        return pureNumber
+    }
+}
+
+extension String {
     func sha1() -> String {
         let data = Data(self.utf8)
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))

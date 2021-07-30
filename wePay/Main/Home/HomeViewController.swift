@@ -28,6 +28,7 @@ class HomeViewController: UIViewController, ViewSpecificController, AlertViewCon
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
+        //UIApplication.saveFirstLaunch()
     }
 }
 
@@ -42,6 +43,8 @@ extension HomeViewController : HomeViewModelProtocol {
 extension HomeViewController {
     private func appearanceSettings() {
         navigationController?.navigationBar.installBlurEffect()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = tabBarItem.title
         viewModel.delegate = self
     }
 }

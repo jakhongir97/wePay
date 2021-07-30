@@ -11,6 +11,7 @@ import SnapKit
 final class LaunchScreenView: CustomView {
     
     // MARK: - Outlets
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     weak var errorView: ErrorView! {

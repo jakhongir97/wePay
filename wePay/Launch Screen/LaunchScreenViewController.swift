@@ -30,9 +30,7 @@ class LaunchScreenViewController: UIViewController, ViewSpecificController, Aler
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            self.presentTabBarVC()
-        }
+        animate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +40,7 @@ class LaunchScreenViewController: UIViewController, ViewSpecificController, Aler
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }
 
@@ -74,6 +73,18 @@ extension LaunchScreenViewController : LaunchScreenViewModelProtocol {
 extension LaunchScreenViewController {
     private func appearanceSettings() {
         viewModel.delegate = self
+    }
+    
+    private func animate() {
+        UIView.transition(with: self.view().imageView,
+                          duration: 0.75,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            self.view().imageView.image = UIImage(systemSymbol: .lightbulbFill)
+                          },
+                          completion: { _ in
+                            UIApplication.isFirstLaunch() ?  self.coordinator?.pushPhoneVC() : self.presentTabBarVC()
+                          })
     }
     
     private func presentTabBarVC() {

@@ -14,6 +14,8 @@ extension UINavigationBar {
         titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         isTranslucent = true
         setBackgroundImage(UIImage(), for: .default)
+        backIndicatorImage = UIImage(systemSymbol: .arrowBackward)
+        backIndicatorTransitionMaskImage = UIImage(systemSymbol: .arrowBackward)
         let statusBarHeight: CGFloat = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         var blurFrame = bounds
         blurFrame.size.height += statusBarHeight
@@ -24,5 +26,14 @@ extension UINavigationBar {
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(blurView)
         blurView.layer.zPosition = -1
+    }
+    
+    func clearNavBar() {
+        shadowImage = UIImage()
+        barTintColor = UIColor.appColor(.mainBackground)
+        backgroundColor = .clear
+        isTranslucent = false
+        setBackgroundImage(UIImage(), for: .default)
+        tintColor = .white
     }
 }

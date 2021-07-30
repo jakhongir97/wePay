@@ -22,6 +22,16 @@
 		A71D64D226B2DBEE009C6EE4 /* ProfilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64D126B2DBEE009C6EE4 /* ProfilView.swift */; };
 		A71D64D426B2DBF7009C6EE4 /* ProfilView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71D64D326B2DBF7009C6EE4 /* ProfilView.xib */; };
 		A71D64D626B2DC0A009C6EE4 /* GroupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71D64D526B2DC0A009C6EE4 /* GroupView.xib */; };
+		A71D64D826B3D9F7009C6EE4 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64D726B3D9F7009C6EE4 /* UITabBar.swift */; };
+		A71D64DB26B3DE3F009C6EE4 /* PhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64DA26B3DE3F009C6EE4 /* PhoneViewController.swift */; };
+		A71D64DF26B3DE55009C6EE4 /* PhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64DE26B3DE55009C6EE4 /* PhoneView.swift */; };
+		A71D64E126B3DE61009C6EE4 /* PhoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71D64E026B3DE61009C6EE4 /* PhoneView.xib */; };
+		A71D64E326B3DE6B009C6EE4 /* PhoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64E226B3DE6B009C6EE4 /* PhoneViewModel.swift */; };
+		A71D64E726B4024F009C6EE4 /* CodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64E626B4024F009C6EE4 /* CodeViewController.swift */; };
+		A71D64EB26B40329009C6EE4 /* CodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64EA26B40329009C6EE4 /* CodeView.swift */; };
+		A71D64ED26B40335009C6EE4 /* CodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71D64EC26B40335009C6EE4 /* CodeView.xib */; };
+		A71D64EF26B40342009C6EE4 /* CodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64EE26B40342009C6EE4 /* CodeViewModel.swift */; };
+		A71D64F126B41390009C6EE4 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64F026B41390009C6EE4 /* UINavigationController.swift */; };
 		A7E43BCF26B29C42005DF810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E43BCE26B29C42005DF810 /* AppDelegate.swift */; };
 		A7E43BD126B29C42005DF810 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E43BD026B29C42005DF810 /* SceneDelegate.swift */; };
 		A7E43BD826B29C44005DF810 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7E43BD726B29C44005DF810 /* Assets.xcassets */; };
@@ -111,6 +121,16 @@
 		A71D64D126B2DBEE009C6EE4 /* ProfilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilView.swift; sourceTree = "<group>"; };
 		A71D64D326B2DBF7009C6EE4 /* ProfilView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfilView.xib; sourceTree = "<group>"; };
 		A71D64D526B2DC0A009C6EE4 /* GroupView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupView.xib; sourceTree = "<group>"; };
+		A71D64D726B3D9F7009C6EE4 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
+		A71D64DA26B3DE3F009C6EE4 /* PhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewController.swift; sourceTree = "<group>"; };
+		A71D64DE26B3DE55009C6EE4 /* PhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneView.swift; sourceTree = "<group>"; };
+		A71D64E026B3DE61009C6EE4 /* PhoneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhoneView.xib; sourceTree = "<group>"; };
+		A71D64E226B3DE6B009C6EE4 /* PhoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewModel.swift; sourceTree = "<group>"; };
+		A71D64E626B4024F009C6EE4 /* CodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewController.swift; sourceTree = "<group>"; };
+		A71D64EA26B40329009C6EE4 /* CodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeView.swift; sourceTree = "<group>"; };
+		A71D64EC26B40335009C6EE4 /* CodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeView.xib; sourceTree = "<group>"; };
+		A71D64EE26B40342009C6EE4 /* CodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewModel.swift; sourceTree = "<group>"; };
+		A71D64F026B41390009C6EE4 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		A7E43BCB26B29C42005DF810 /* wePay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wePay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E43BCE26B29C42005DF810 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7E43BD026B29C42005DF810 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -285,6 +305,69 @@
 			path = "View Model";
 			sourceTree = "<group>";
 		};
+		A71D64D926B3DDFD009C6EE4 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64E426B3E93D009C6EE4 /* Phone */,
+				A71D64E526B40230009C6EE4 /* Code */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A71D64DC26B3DE43009C6EE4 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64E226B3DE6B009C6EE4 /* PhoneViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		A71D64DD26B3DE4A009C6EE4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64DE26B3DE55009C6EE4 /* PhoneView.swift */,
+				A71D64E026B3DE61009C6EE4 /* PhoneView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A71D64E426B3E93D009C6EE4 /* Phone */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64DA26B3DE3F009C6EE4 /* PhoneViewController.swift */,
+				A71D64DD26B3DE4A009C6EE4 /* View */,
+				A71D64DC26B3DE43009C6EE4 /* View Model */,
+			);
+			path = Phone;
+			sourceTree = "<group>";
+		};
+		A71D64E526B40230009C6EE4 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64E626B4024F009C6EE4 /* CodeViewController.swift */,
+				A71D64E826B40307009C6EE4 /* View */,
+				A71D64E926B4030E009C6EE4 /* View Model */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		A71D64E826B40307009C6EE4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64EA26B40329009C6EE4 /* CodeView.swift */,
+				A71D64EC26B40335009C6EE4 /* CodeView.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A71D64E926B4030E009C6EE4 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				A71D64EE26B40342009C6EE4 /* CodeViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
 		A7E43BC226B29C42005DF810 = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +429,8 @@
 				A7E43BF426B29E38005DF810 /* UIApplication.swift */,
 				A7E43BF526B29E38005DF810 /* Bundle.swift */,
 				A7E43BF626B29E38005DF810 /* UIString.swift */,
+				A71D64D726B3D9F7009C6EE4 /* UITabBar.swift */,
+				A71D64F026B41390009C6EE4 /* UINavigationController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -441,6 +526,7 @@
 			children = (
 				A7E43C5226B2A0B5005DF810 /* MainCoordinator.swift */,
 				A7E43C5426B2A0D4005DF810 /* Home */,
+				A71D64D926B3DDFD009C6EE4 /* Login */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -544,10 +630,12 @@
 			files = (
 				A7E43C3526B29E38005DF810 /* ErrorView.xib in Resources */,
 				A71D64B926B2D84B009C6EE4 /* LaunchScreenView.xib in Resources */,
+				A71D64E126B3DE61009C6EE4 /* PhoneView.xib in Resources */,
 				A71D64D426B2DBF7009C6EE4 /* ProfilView.xib in Resources */,
 				A7E43C5826B2A155005DF810 /* HomeView.xib in Resources */,
 				A7E43BDB26B29C44005DF810 /* LaunchScreen.storyboard in Resources */,
 				A7E43BD826B29C44005DF810 /* Assets.xcassets in Resources */,
+				A71D64ED26B40335009C6EE4 /* CodeView.xib in Resources */,
 				A71D64D626B2DC0A009C6EE4 /* GroupView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,8 +650,10 @@
 				A7E43C3226B29E38005DF810 /* CustomTextField.swift in Sources */,
 				A7E43C2F26B29E38005DF810 /* CustomDecoder.swift in Sources */,
 				A71D64CE26B2DB76009C6EE4 /* GroupView.swift in Sources */,
+				A71D64EF26B40342009C6EE4 /* CodeViewModel.swift in Sources */,
 				A71D64BE26B2DAC9009C6EE4 /* GroupCoordinator.swift in Sources */,
 				A7E43C1C26B29E38005DF810 /* UIView.swift in Sources */,
+				A71D64E726B4024F009C6EE4 /* CodeViewController.swift in Sources */,
 				A7E43C2A26B29E38005DF810 /* Bundle.swift in Sources */,
 				A7E43C3026B29E38005DF810 /* DesignableUITextField.swift in Sources */,
 				A7E43C3926B29E38005DF810 /* VerticalButton.swift in Sources */,
@@ -589,14 +679,17 @@
 				A7E43C4026B29E38005DF810 /* JSONData.swift in Sources */,
 				A7E43C4426B29E38005DF810 /* Parameters.swift in Sources */,
 				A7E43C4626B29E38005DF810 /* Headers.swift in Sources */,
+				A71D64DF26B3DE55009C6EE4 /* PhoneView.swift in Sources */,
 				A7E43C2D26B29E38005DF810 /* Label.swift in Sources */,
 				A7E43C2C26B29E38005DF810 /* CustomView.swift in Sources */,
 				A7E43C2B26B29E38005DF810 /* UIString.swift in Sources */,
 				A7E43BCF26B29C42005DF810 /* AppDelegate.swift in Sources */,
+				A71D64E326B3DE6B009C6EE4 /* PhoneViewModel.swift in Sources */,
 				A7E43C2026B29E38005DF810 /* UITextField.swift in Sources */,
 				A7E43BD126B29C42005DF810 /* SceneDelegate.swift in Sources */,
 				A71D64B126B2D5FC009C6EE4 /* LaunchScreenViewModel.swift in Sources */,
 				A71D64B326B2D609009C6EE4 /* LaunchScreenView.swift in Sources */,
+				A71D64F126B41390009C6EE4 /* UINavigationController.swift in Sources */,
 				A7E43C4526B29E38005DF810 /* AssetsImage.swift in Sources */,
 				A7E43C3326B29E38005DF810 /* TextField.swift in Sources */,
 				A7E43C2226B29E38005DF810 /* UserDefaults.swift in Sources */,
@@ -610,6 +703,8 @@
 				A7E43C5E26B2A195005DF810 /* HomeViewController.swift in Sources */,
 				A7E43C2426B29E38005DF810 /* UIImage.swift in Sources */,
 				A71D64D226B2DBEE009C6EE4 /* ProfilView.swift in Sources */,
+				A71D64EB26B40329009C6EE4 /* CodeView.swift in Sources */,
+				A71D64D826B3D9F7009C6EE4 /* UITabBar.swift in Sources */,
 				A7E43C2826B29E38005DF810 /* UIFont.swift in Sources */,
 				A7E43C4126B29E38005DF810 /* JSONDownloader.swift in Sources */,
 				A7E43C2626B29E38005DF810 /* UINavigationBar.swift in Sources */,
@@ -621,6 +716,7 @@
 				A7E43C1F26B29E38005DF810 /* UIDevice.swift in Sources */,
 				A7E43C5326B2A0B5005DF810 /* MainCoordinator.swift in Sources */,
 				A7E43C4926B29E38005DF810 /* API.swift in Sources */,
+				A71D64DB26B3DE3F009C6EE4 /* PhoneViewController.swift in Sources */,
 				A7E43C3126B29E38005DF810 /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

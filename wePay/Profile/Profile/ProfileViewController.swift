@@ -42,6 +42,8 @@ extension ProfileViewController : HomeViewModelProtocol {
 extension ProfileViewController {
     private func appearanceSettings() {
         navigationController?.navigationBar.installBlurEffect()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = tabBarItem.title
         viewModel.delegate = self
     }
 }

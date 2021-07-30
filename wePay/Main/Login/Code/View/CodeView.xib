@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CodeViewController" customModule="wePay" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="r01-4G-nq0"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CodeView" customModule="wePay" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the recieved code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vwy-pV-l78">
+                    <rect key="frame" x="20" y="274" width="255.5" height="29"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RMZ-BD-Lsr">
+                    <rect key="frame" x="20" y="323" width="374" height="50"/>
+                    <color key="backgroundColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="xgx-uo-bfw"/>
+                    </constraints>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad" enablesReturnKeyAutomatically="YES" textContentType="one-time-code"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Td-Pq-OWQ">
+                    <rect key="frame" x="20" y="403" width="374" height="50"/>
+                    <color key="backgroundColor" name="AccentColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="QYt-LJ-Qs2"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                    <state key="normal" title="Continue">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continueButtonAction:" destination="-1" eventType="touchUpInside" id="1Nn-lk-aSK"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lmr-CF-Imq">
+                    <rect key="frame" x="20" y="0.5" width="40" height="39"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="9yq-40-Xe4"/>
+                        <constraint firstAttribute="height" constant="40" id="DRB-yq-dPN"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="arrow.backward.circle" catalog="system"/>
+                    <connections>
+                        <action selector="backButtonAction:" destination="-1" eventType="touchUpInside" id="sfl-GG-y4J"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vwy-pV-l78" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="8Ah-c4-P0g"/>
+                <constraint firstItem="RMZ-BD-Lsr" firstAttribute="top" secondItem="vwy-pV-l78" secondAttribute="bottom" constant="20" id="8ys-lR-ScX"/>
+                <constraint firstItem="4Td-Pq-OWQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="BAC-Iy-Jfc"/>
+                <constraint firstItem="RMZ-BD-Lsr" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="G2O-Gv-oEu"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="4Td-Pq-OWQ" secondAttribute="trailing" constant="20" id="OCd-mp-ih3"/>
+                <constraint firstItem="RMZ-BD-Lsr" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-100" id="SVu-Zt-g26"/>
+                <constraint firstItem="Lmr-CF-Imq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Suj-py-IBi"/>
+                <constraint firstItem="RMZ-BD-Lsr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="VPc-a1-qKt"/>
+                <constraint firstItem="Lmr-CF-Imq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="fs6-04-PfP"/>
+                <constraint firstItem="4Td-Pq-OWQ" firstAttribute="top" secondItem="RMZ-BD-Lsr" secondAttribute="bottom" constant="30" id="jdQ-HH-knD"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="RMZ-BD-Lsr" secondAttribute="trailing" constant="20" id="mTw-4U-vzH"/>
+            </constraints>
+            <connections>
+                <outlet property="codeTextField" destination="RMZ-BD-Lsr" id="qBu-i7-SJn"/>
+                <outlet property="continueButton" destination="4Td-Pq-OWQ" id="kJY-PH-lya"/>
+                <outlet property="titleLabel" destination="vwy-pV-l78" id="D6i-Xp-cWO"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="141"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow.backward.circle" catalog="system" width="128" height="121"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -43,22 +43,6 @@ extension TabBarController {
     }
     
     private func appearanceSettings() {
-        tabBar.tintColor = .white
-        tabBar.isTranslucent = true
-        tabBar.backgroundImage = UIImage()
-        tabBar.barTintColor = .clear
-        tabBar.backgroundColor = .clear
-        tabBar.layer.backgroundColor = UIColor.clear.cgColor
-        
-        let tabBarHeight: CGFloat = self.tabBarController?.tabBar.frame.height ?? 0
-        var blurFrame = tabBar.bounds
-        blurFrame.size.height += tabBarHeight
-        blurFrame.origin.y -= tabBarHeight
-        let blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        blurView.isUserInteractionEnabled = false
-        blurView.frame = blurFrame
-        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tabBar.addSubview(blurView)
-        blurView.layer.zPosition = -1
+        tabBar.installBlurEffect(tabBarHeight: self.tabBarController?.tabBar.frame.height ?? 0)
     }
 }

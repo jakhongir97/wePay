@@ -42,6 +42,8 @@ extension GroupViewController : HomeViewModelProtocol {
 extension GroupViewController {
     private func appearanceSettings() {
         navigationController?.navigationBar.installBlurEffect()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        title = tabBarItem.title
         viewModel.delegate = self
     }
 }

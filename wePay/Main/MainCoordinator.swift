@@ -25,4 +25,17 @@ final class MainCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: false)
     }
     
+    internal func pushPhoneVC() {
+        let vc = PhoneViewController()
+        vc.coordinator = self
+        navigationController.fadeTo(vc)
+    }
+    
+    internal func pushCodeVC(phone: String) {
+        let vc = CodeViewController()
+        vc.coordinator = self
+        vc.phone = phone
+        navigationController.fadeTo(vc)
+    }
+    
 }
