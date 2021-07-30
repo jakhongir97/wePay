@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class PhoneViewController: UIViewController, ViewSpecificController, AlertViewController {
     
@@ -64,7 +65,17 @@ extension PhoneViewController {
             showAlert(title: "Fill in the field", message: "")
             return
         }
-        coordinator?.pushCodeVC(phone: phone)
+        
+        PhoneAuthProvider.provider()
+            .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
+                if let error = error {
+                    self.showAlert(title: error.localizedDescription, message: "")
+                    return
+                }
+                
+                UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
+                self.coordinator?.pushCodeVC(phone: phone)
+            }
     }
 }
 

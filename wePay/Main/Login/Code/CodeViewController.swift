@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class CodeViewController: UIViewController, ViewSpecificController, AlertViewController {
     
@@ -23,7 +24,7 @@ class CodeViewController: UIViewController, ViewSpecificController, AlertViewCon
     
     // MARK: - Actions
     @IBAction func continueButtonAction(_ sender: UIButton) {
-        presentTabBarVC()
+        check()
     }
     
     @IBAction func backButtonAction(_ sender: UIButton) {
@@ -53,6 +54,28 @@ class CodeViewController: UIViewController, ViewSpecificController, AlertViewCon
 extension CodeViewController : CodeViewModelProtocol {
     func didFinishFetch() {
     }
+    
+    func check() {
+        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else { return }
+        guard let verificationCode = view().codeTextField.text, !(verificationCode.isEmpty) else {
+            showAlert(title: "Fill in the field", message: "")
+            return
+        }
+        
+        let credential = PhoneAuthProvider.provider().credential(
+          withVerificationID: verificationID,
+          verificationCode: verificationCode
+        )
+        
+        Auth.auth().signIn(with: credential) { authResult, error in
+            if let error = error {
+                self.showAlert(title: error.localizedDescription, message: "")
+                return
+            }
+            
+            self.presentTabBarVC()
+        }
+    }
 }
 
 // MARK: - Other funcs
@@ -77,7 +100,6 @@ extension CodeViewController : UITextFieldDelegate {
     
     func setupTextField() {
         view().codeTextField.delegate = self
-        view().codeTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -90,13 +112,8 @@ extension CodeViewController : UITextFieldDelegate {
         return false
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        textField.text = textField.text?.display()
-        
-    }
-    
     func afterKeyboardAction() {
-        
+        check()
     }
 }
 

@@ -14,7 +14,7 @@ extension String {
     }
     
     func origin() -> String {
-        return self.applyPatternOnNumbers(pattern: "############", replacmentCharacter: "#")
+        return self.applyPatternOnNumbers(pattern: "+############", replacmentCharacter: "#")
     }
     
     func applyPatternOnNumbers(pattern: String, replacmentCharacter: Character) -> String {
