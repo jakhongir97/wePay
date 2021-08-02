@@ -17,7 +17,7 @@ class LaunchScreenViewController: UIViewController, ViewSpecificController, Aler
     internal var isLoading: Bool = false
     internal var coordinator: MainCoordinator?
     private let viewModel = LaunchScreenViewModel()
-
+    
     // MARK: - Attributes
     override var prefersStatusBarHidden: Bool { return true }
     
@@ -31,6 +31,7 @@ class LaunchScreenViewController: UIViewController, ViewSpecificController, Aler
         super.viewDidLoad()
         appearanceSettings()
         animate()
+        //UserDefaults.standard.resetDefaults()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +84,7 @@ extension LaunchScreenViewController {
                             self.view().imageView.image = UIImage(systemSymbol: .lightbulbFill)
                           },
                           completion: { _ in
-                            UIApplication.isFirstLaunch() ?  self.coordinator?.pushPhoneVC() : self.presentTabBarVC()
+                            UserDefaults.standard.isRegistered() ?  self.presentTabBarVC() : self.coordinator?.pushPhoneVC()
                           })
     }
     

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol ViewModelProtocol: AnyObject {
     
@@ -25,11 +26,11 @@ extension ViewModelProtocol where Self: UIViewController {
             self.view.isUserInteractionEnabled = false
             self.customSpinnerView.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(self.customSpinnerView)
-            self.customSpinnerView.tintColor = .white
-            NSLayoutConstraint.activate([
-                self.customSpinnerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-                self.customSpinnerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-            ])
+            self.customSpinnerView.tintColor = UIColor.appColor(.blue)
+            self.customSpinnerView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.centerY.equalToSuperview().offset(100)
+            }
             self.customSpinnerView.startAnimating()
         }
     }

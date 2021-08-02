@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 class CodeViewController: UIViewController, ViewSpecificController, AlertViewController {
     
@@ -53,28 +52,10 @@ class CodeViewController: UIViewController, ViewSpecificController, AlertViewCon
 // MARK: - Networking
 extension CodeViewController : CodeViewModelProtocol {
     func didFinishFetch() {
-    }
-    
-    func check() {
-        guard let verificationID = UserDefaults.standard.string(forKey: "authVerificationID") else { return }
-        guard let verificationCode = view().codeTextField.text, !(verificationCode.isEmpty) else {
-            showAlert(title: "Fill in the field", message: "")
-            return
-        }
-        
-        let credential = PhoneAuthProvider.provider().credential(
-          withVerificationID: verificationID,
-          verificationCode: verificationCode
-        )
-        
-        Auth.auth().signIn(with: credential) { authResult, error in
-            if let error = error {
-                self.showAlert(title: error.localizedDescription, message: "")
-                return
-            }
-            
-            self.presentTabBarVC()
-        }
+        guard let phone = phone else { return }
+        UserDefaults.standard.savePhone(verificationPhone: phone)
+        UIApplication.saveFirstLaunch()
+        self.presentTabBarVC()
     }
 }
 
@@ -92,6 +73,15 @@ extension CodeViewController {
         tabBarVC.modalPresentationStyle = .fullScreen
         tabBarVC.modalTransitionStyle = .crossDissolve
         navigationController?.present(tabBarVC, animated: true)
+    }
+    
+    private func check() {
+        guard let verificationID = UserDefaults.standard.getID() else { return }
+        guard let verificationCode = view().codeTextField.text, !(verificationCode.isEmpty) else {
+            showAlert(title: "Fill in the field", message: "")
+            return
+        }
+        viewModel.confirm(verificationID: verificationID, verificationCode: verificationCode)
     }
 }
 

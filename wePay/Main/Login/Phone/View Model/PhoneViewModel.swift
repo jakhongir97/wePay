@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 protocol PhoneViewModelProtocol: ViewModelProtocol {
-    func didFinishFetch()
+    func didFinishFetch(verificationID: String)
 }
 
 final class PhoneViewModel {
@@ -22,5 +23,21 @@ final class PhoneViewModel {
     }()
     
     // MARK: - Network call
+    internal func auth(phone: String) {
+        delegate?.showActivityIndicator()
+        
+        PhoneAuthProvider.provider()
+            .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
+                
+                self.delegate?.hideActivityIndicator()
+                
+                if let error = error {
+                    self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+                    return
+                }
+                guard let verificationID = verificationID else { return }
+                self.delegate?.didFinishFetch(verificationID: verificationID)
+            }
+    }
 }
 

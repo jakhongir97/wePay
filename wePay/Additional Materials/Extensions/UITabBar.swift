@@ -9,7 +9,7 @@ import UIKit
 
 extension UITabBar {
     func installBlurEffect(tabBarHeight: CGFloat) {
-        tintColor = .white
+        tintColor = UIColor.appColor(.blue)
         isTranslucent = true
         backgroundImage = UIImage()
         barTintColor = .clear

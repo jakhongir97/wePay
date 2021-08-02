@@ -16,13 +16,16 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
     internal var customSpinnerView = CustomSpinnerView()
     internal var isLoading: Bool = false
     internal var coordinator: ProfileCoordinator?
-    private let viewModel = HomeViewModel()
+    private let viewModel = ProfileViewModel()
     
     // MARK: - Data Providers
 
     // MARK: - Attributes
     
     // MARK: - Actions
+    @objc func signOut() {
+        viewModel.signOut()
+    }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -32,9 +35,9 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
 }
 
 // MARK: - Networking
-extension ProfileViewController : HomeViewModelProtocol {
+extension ProfileViewController : ProfileViewModelProtocol {
     func didFinishFetch() {
-        
+        UserDefaults.standard.removePhone()
     }
 }
 
@@ -44,6 +47,8 @@ extension ProfileViewController {
         navigationController?.navigationBar.installBlurEffect()
         navigationController?.navigationBar.prefersLargeTitles = true
         title = tabBarItem.title
+        let rightBarButton = UIBarButtonItem(title: "Sign Out", style: .plain, target: self, action: #selector(signOut))
+        navigationItem.rightBarButtonItem = rightBarButton
         viewModel.delegate = self
     }
 }

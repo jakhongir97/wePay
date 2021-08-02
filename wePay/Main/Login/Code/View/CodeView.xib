@@ -41,7 +41,7 @@
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Td-Pq-OWQ">
                     <rect key="frame" x="20" y="403" width="374" height="50"/>
-                    <color key="backgroundColor" name="AccentColor"/>
+                    <color key="backgroundColor" name="blue"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="QYt-LJ-Qs2"/>
                     </constraints>
@@ -64,6 +64,7 @@
                         <constraint firstAttribute="width" constant="40" id="9yq-40-Xe4"/>
                         <constraint firstAttribute="height" constant="40" id="DRB-yq-dPN"/>
                     </constraints>
+                    <color key="tintColor" name="blue"/>
                     <state key="normal" backgroundImage="arrow.backward.circle" catalog="system"/>
                     <connections>
                         <action selector="backButtonAction:" destination="-1" eventType="touchUpInside" id="sfl-GG-y4J"/>
@@ -95,8 +96,8 @@
     </objects>
     <resources>
         <image name="arrow.backward.circle" catalog="system" width="128" height="121"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="blue">
+            <color red="0.0" green="0.45882352941176469" blue="0.8901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

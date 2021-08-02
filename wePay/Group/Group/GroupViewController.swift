@@ -16,7 +16,7 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     internal var customSpinnerView = CustomSpinnerView()
     internal var isLoading: Bool = false
     internal var coordinator: GroupCoordinator?
-    private let viewModel = HomeViewModel()
+    private let viewModel = GroupViewModel()
     
     // MARK: - Data Providers
 
@@ -32,7 +32,7 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
 }
 
 // MARK: - Networking
-extension GroupViewController : HomeViewModelProtocol {
+extension GroupViewController : GroupViewModelProtocol {
     func didFinishFetch() {
         
     }

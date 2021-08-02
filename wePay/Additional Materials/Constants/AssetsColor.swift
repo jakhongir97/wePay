@@ -10,4 +10,5 @@ import Foundation
 enum AssetsColor: String {
     case mainBackground
     case secondaryBackground
+    case blue
 }

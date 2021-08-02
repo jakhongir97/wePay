@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FirebaseAuth
 
 class PhoneViewController: UIViewController, ViewSpecificController, AlertViewController {
     
@@ -18,7 +17,7 @@ class PhoneViewController: UIViewController, ViewSpecificController, AlertViewCo
     internal var isLoading: Bool = false
     internal var coordinator: MainCoordinator?
     private let viewModel = PhoneViewModel()
-
+    
     // MARK: - Attributes
     
     // MARK: - Actions
@@ -48,7 +47,10 @@ class PhoneViewController: UIViewController, ViewSpecificController, AlertViewCo
 
 // MARK: - Networking
 extension PhoneViewController : PhoneViewModelProtocol {
-    func didFinishFetch() {
+    func didFinishFetch(verificationID: String) {
+        UserDefaults.standard.saveID(verificationID: verificationID)
+        guard let phone = view().phoneTextField.text?.origin() else { return }
+        self.coordinator?.pushCodeVC(phone: phone)
     }
 }
 
@@ -65,17 +67,7 @@ extension PhoneViewController {
             showAlert(title: "Fill in the field", message: "")
             return
         }
-        
-        PhoneAuthProvider.provider()
-            .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
-                if let error = error {
-                    self.showAlert(title: error.localizedDescription, message: "")
-                    return
-                }
-                
-                UserDefaults.standard.set(verificationID, forKey: "authVerificationID")
-                self.coordinator?.pushCodeVC(phone: phone)
-            }
+        viewModel.auth(phone: phone)
     }
 }
 
