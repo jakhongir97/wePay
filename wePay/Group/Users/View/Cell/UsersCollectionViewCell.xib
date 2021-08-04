@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="UsersCollectionViewCell" id="gTV-IL-0wX" customClass="UsersCollectionViewCell" customModule="wePay" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="FE6-iZ-A89">
+                        <rect key="frame" x="10" y="10.5" width="30" height="29"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="FE6-iZ-A89" secondAttribute="height" multiplier="1:1" id="QVM-u8-Zya"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jakhongir Nematov" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7A-Or-keZ">
+                        <rect key="frame" x="50" y="1" width="340" height="48"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="FE6-iZ-A89" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="0ey-Pr-4AV"/>
+                <constraint firstAttribute="trailing" secondItem="x7A-Or-keZ" secondAttribute="trailing" constant="10" id="2Fi-gG-nSI"/>
+                <constraint firstAttribute="bottom" secondItem="FE6-iZ-A89" secondAttribute="bottom" constant="10" id="Gtv-Pf-Ohg"/>
+                <constraint firstItem="x7A-Or-keZ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="1" id="KvQ-v9-GUV"/>
+                <constraint firstItem="FE6-iZ-A89" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Mir-aj-aHr"/>
+                <constraint firstItem="x7A-Or-keZ" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="iAp-4x-db7"/>
+                <constraint firstItem="x7A-Or-keZ" firstAttribute="leading" secondItem="FE6-iZ-A89" secondAttribute="trailing" constant="10" id="x0S-ME-CE1"/>
+                <constraint firstItem="FE6-iZ-A89" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="ypZ-si-tfM"/>
+            </constraints>
+            <size key="customSize" width="400" height="50"/>
+            <connections>
+                <outlet property="imageView" destination="FE6-iZ-A89" id="jj7-Tj-rlu"/>
+                <outlet property="label" destination="x7A-Or-keZ" id="wCR-wa-Luj"/>
+            </connections>
+            <point key="canvasLocation" x="391.304347826087" y="152.67857142857142"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="circle" catalog="system" width="128" height="121"/>
+    </resources>
+</document>

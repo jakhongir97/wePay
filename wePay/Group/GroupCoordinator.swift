@@ -24,4 +24,17 @@ final class GroupCoordinator: Coordinator {
         navigationController.pushViewController(vc, animated: false)
     }
     
+    internal func pushGroupChatVC(group: Group) {
+        let vc = GroupChatViewController()
+        vc.group = group
+        vc.coordinator = self
+        navigationController.pushViewController(vc, animated: false)
+    }
+    
+    internal func pushUsersVC(group: Group) {
+        let vc = UsersViewController()
+        vc.group = group
+        vc.coordinator = self
+        navigationController.pushViewController(vc, animated: false)
+    }
 }

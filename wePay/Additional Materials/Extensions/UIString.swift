@@ -9,6 +9,13 @@ import UIKit
 import CommonCrypto
 
 extension String {
+    var digits: String {
+        return components(separatedBy: CharacterSet.decimalDigits.inverted)
+            .joined()
+    }
+}
+
+extension String {
     func display() -> String {
         return self.applyPatternOnNumbers(pattern: "+### ## ### ## ##", replacmentCharacter: "#")
     }

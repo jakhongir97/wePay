@@ -54,6 +54,7 @@ extension CodeViewController : CodeViewModelProtocol {
     func didFinishFetch() {
         guard let phone = phone else { return }
         UserDefaults.standard.savePhone(verificationPhone: phone)
+        viewModel.createUser(phone: phone)
         UIApplication.saveFirstLaunch()
         self.presentTabBarVC()
     }

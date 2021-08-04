@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CloudKit
 
 class HomeViewController: UIViewController, ViewSpecificController, AlertViewController {
     
@@ -28,14 +29,23 @@ class HomeViewController: UIViewController, ViewSpecificController, AlertViewCon
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
-        //UIApplication.saveFirstLaunch()
+        viewModel.fetchContacts()
     }
 }
 
 // MARK: - Networking
 extension HomeViewController : HomeViewModelProtocol {
-    func didFinishFetch() {
-        
+    func didFinishFetch(contacts: [User]) {
+        for contact in contacts {
+            if let telephone = contact.telephone, telephone.origin() == UserDefaults.standard.getPhone() {
+                if let firstName = contact.firstName {
+                    viewModel.updateUser(firstName: firstName)
+                }
+                if let lastName = contact.lastName {
+                    viewModel.updateUser(lastName: lastName)
+                }
+            }
+        }
     }
 }
 

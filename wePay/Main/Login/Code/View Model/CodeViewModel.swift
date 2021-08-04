@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 protocol CodeViewModelProtocol: ViewModelProtocol {
     func didFinishFetch()
@@ -16,6 +17,8 @@ final class CodeViewModel {
     
     // MARK: - Attributes
     weak var delegate: CodeViewModelProtocol?
+    
+    let ref = Database.database().reference()
     
     lazy var applicationVersion: String = {
         guard let releaseVersionNumber = Bundle.main.releaseVersionNumber else { return "0" }
@@ -42,5 +45,10 @@ final class CodeViewModel {
             
             self.delegate?.didFinishFetch()
         }
+    }
+    
+    internal func createUser(phone: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        self.ref.child("users").child(user.uid).setValue(["phone": phone])
     }
 }

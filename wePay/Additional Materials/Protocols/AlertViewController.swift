@@ -58,16 +58,16 @@ extension AlertViewController where Self: UIViewController {
     func showAlertWithTextField(title: String, message: String, buttonAction: ((_ text: String?) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addTextField { (textField) in
-            textField.keyboardType = .numberPad
+            textField.keyboardType = .alphabet
         }
-        alert.addAction(UIAlertAction(title: "Продолжить", style: UIAlertAction.Style.default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler: { (action) in
             guard let textField =  alert.textFields?.first else {
                 buttonAction?(nil)
                 return
             }
             buttonAction?(textField.text)
         }))
-        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
         }

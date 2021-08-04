@@ -10,7 +10,7 @@ import UIKit
 class ProfileViewController: UIViewController, ViewSpecificController, AlertViewController {
     
     // MARK: - Root View
-    typealias RootView = HomeView
+    typealias RootView = ProfileView
     
     // MARK: - Services
     internal var customSpinnerView = CustomSpinnerView()
@@ -31,6 +31,7 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
+        viewModel.getUserInfo()
     }
 }
 
@@ -38,6 +39,11 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
 extension ProfileViewController : ProfileViewModelProtocol {
     func didFinishFetch() {
         UserDefaults.standard.removePhone()
+    }
+    
+    func didFinishFetch(user: User) {
+//        guard let firstName = user.firstName , let lastName = user.lastName else { return }
+//        title = "\(firstName) \(lastName)"
     }
 }
 
