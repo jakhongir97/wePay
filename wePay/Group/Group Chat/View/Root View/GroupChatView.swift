@@ -15,5 +15,16 @@ final class GroupChatView: CustomView {
             collectionView.register(UINib(nibName: GroupChatCollectionViewCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: GroupChatCollectionViewCell.defaultReuseIdentifier)
         }
     }
+    @IBOutlet weak var bottomView: UIView!{
+        didSet {
+            
+        }
+    }
+    @IBOutlet weak var textField: UITextField!{
+        didSet {
+            textField.setLeftPaddingPoints(16)
+        }
+    }
+    @IBOutlet weak var payButton: UIButton!
     
 }

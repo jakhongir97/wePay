@@ -58,6 +58,7 @@ extension AlertViewController where Self: UIViewController {
     func showAlertWithTextField(title: String, message: String, buttonAction: ((_ text: String?) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addTextField { (textField) in
+            textField.autocapitalizationType = .sentences
             textField.keyboardType = .alphabet
         }
         alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler: { (action) in

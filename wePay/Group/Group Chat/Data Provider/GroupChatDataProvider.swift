@@ -20,7 +20,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
     // MARK: - Attributes
     weak var viewController: UIViewController?
     
-    internal var items = [Group]() {
+    internal var items = [Message]() {
         didSet {
             self.collectionView.reloadData()
         }
@@ -38,12 +38,16 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupChatCollectionViewCell.defaultReuseIdentifier, for: indexPath) as? GroupChatCollectionViewCell else { return UICollectionViewCell() }
+        cell.messageLabel.text = items[indexPath.row].message
+        if let timestamp = items[indexPath.row].timeStamp {
+            cell.dateLabel.text = DateFormatter.string(timestamp: timestamp)
+        }
         return cell
     }
     
     // MARK: - Delegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 32.0, height: 50)
+        return CGSize(width: collectionView.frame.width - 20.0, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

@@ -52,6 +52,9 @@ extension UsersViewController : UsersViewModelProtocol {
     func didFinishFetch(groupUsers: [User]) {
         viewModel.fetchUsers(groupUsers: groupUsers)
     }
+    
+    func didFinishFetchRemoveUsers() {
+    }
 }
 
 // MARK: - Other funcs

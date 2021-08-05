@@ -29,6 +29,15 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
         guard let group = group else { return }
         coordinator?.pushUsersVC(group: group)
     }
+    @IBAction func payButtonAction(_ sender: UIButton) {
+        sender.showAnimation{}
+        guard let groupID = group?.id else { return }
+        guard let message = view().textField.text, !(message.isEmpty) else {
+            showAlert(title: "Enter the amount", message: "")
+            return
+        }
+        viewModel.createMessage(message: message, groupID: groupID)
+    }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -36,12 +45,30 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
         appearanceSettings()
         guard let group = group else { return }
         title = group.name
+        guard let groupID = group.id else { return }
+        viewModel.getMessages(groupID: groupID)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
 }
 
 // MARK: - Networking
 extension GroupChatViewController : GroupChatViewModelProtocol {
+    func didFinishFetch(messages: [Message]) {
+        groupChatDataProvider?.items = messages
+    }
+    
     func didFinishFetch() {
+        guard let groupID = group?.id else { return }
+        viewModel.getMessages(groupID: groupID)
     }
 }
 
@@ -54,8 +81,15 @@ extension GroupChatViewController {
         navigationItem.rightBarButtonItem = rightBarButton
         viewModel.delegate = self
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view().collectionView.addGestureRecognizer(tap)
+        
         let groupChatDataProvider = GroupChatDataProvider(viewController: self)
         groupChatDataProvider.collectionView = view().collectionView
         self.groupChatDataProvider = groupChatDataProvider
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

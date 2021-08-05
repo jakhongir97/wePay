@@ -12,6 +12,7 @@ import FirebaseAuth
 protocol UsersViewModelProtocol: ViewModelProtocol {
     func didFinishFetch(users: [User])
     func didFinishFetch(groupUsers: [User])
+    func didFinishFetchRemoveUsers()
 }
 
 final class UsersViewModel {
@@ -24,7 +25,7 @@ final class UsersViewModel {
     // MARK: - Network call
     internal func fetchUsers(groupUsers: [User]) {
         delegate?.showActivityIndicator()
-        guard let ownerUserID = Auth.auth().currentUser?.uid else { return }
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersRef = self.ref.child("users")
         usersRef.observeSingleEvent(of: .value, with: { snapshot in
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
@@ -38,7 +39,7 @@ final class UsersViewModel {
                                 user.isMember = true
                             }
                         }
-                        if ownerUserID != child.key {
+                        if currentUserID != child.key {
                             users.append(user)
                         }
                     }
@@ -84,12 +85,61 @@ final class UsersViewModel {
     }
     
     internal func addUsers(group: Group, users: [User]) {
+        print(users)
         guard let groupID = group.id else { return }
-        
-        for user in users {
-            if let userID = user.userID {
-                ref.child("users_groups").childByAutoId().setValue(["userID": userID, "groupID": groupID])
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        let usersGroupsRef = self.ref.child("users_groups")
+        usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
+            let myGroup = DispatchGroup()
+            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for child in dataSnapshot {
+                    myGroup.enter()
+                    if let userID = child.childSnapshot(forPath: "userID").value as? String {
+                        if userID != currentUserID {
+                            usersGroupsRef.child(child.key).removeValue() { error, ref in
+                                myGroup.leave()
+                            }
+                        } else {
+                            myGroup.leave()
+                        }
+                    }
+                }
             }
-        }
+            
+            myGroup.notify(queue: .main) {
+                for user in users {
+                    if let userID = user.userID {
+                        usersGroupsRef.childByAutoId().setValue(["userID": userID, "groupID": groupID])
+                    }
+                }
+            }
+        })
+    }
+    
+    internal func removeAllUsers(group: Group) {
+        guard let groupID = group.id else { return }
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        let usersGroupsRef = self.ref.child("users_groups")
+        usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
+            let myGroup = DispatchGroup()
+            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for child in dataSnapshot {
+                    myGroup.enter()
+                    if let userID = child.childSnapshot(forPath: "userID").value as? String {
+                        if userID != currentUserID {
+                            usersGroupsRef.child(child.key).removeValue() { error, ref in
+                                myGroup.leave()
+                            }
+                        } else {
+                            myGroup.leave()
+                        }
+                    }
+                }
+            }
+            
+            myGroup.notify(queue: .main) {
+                self.delegate?.didFinishFetchRemoveUsers()
+            }
+        })
     }
 }
