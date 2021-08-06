@@ -55,13 +55,24 @@ extension AlertViewController where Self: UIViewController {
         }
     }
     
+    func showAlertDestructive(title: String, message: String, buttonAction: (()->())? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { (action) in
+            buttonAction?()
+        }))
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     func showAlertWithTextField(title: String, message: String, buttonAction: ((_ text: String?) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         alert.addTextField { (textField) in
             textField.autocapitalizationType = .sentences
             textField.keyboardType = .alphabet
         }
-        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "Continue", style: .default, handler: { (action) in
             guard let textField =  alert.textFields?.first else {
                 buttonAction?(nil)
                 return

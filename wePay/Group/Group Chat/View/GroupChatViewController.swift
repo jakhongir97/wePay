@@ -16,7 +16,7 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
     internal var customSpinnerView = CustomSpinnerView()
     internal var isLoading: Bool = false
     internal var coordinator: GroupCoordinator?
-    private let viewModel = GroupChatViewModel()
+    internal let viewModel = GroupChatViewModel()
     
     // MARK: - Data Providers
     private var groupChatDataProvider: GroupChatDataProvider?
@@ -37,12 +37,15 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
             return
         }
         viewModel.createMessage(message: message, groupID: groupID)
+        view().textField.text = ""
     }
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
+        setupTextField()
+        
         guard let group = group else { return }
         title = group.name
         guard let groupID = group.id else { return }
@@ -92,4 +95,19 @@ extension GroupChatViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+}
+
+
+// MARK: - UITextFieldDelegate
+extension GroupChatViewController : UITextFieldDelegate {
+    
+    func setupTextField() {
+        view().textField.delegate = self
+        view().textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        textField.text = textField.text?.formattedWithSeparator
+    }
+    
 }

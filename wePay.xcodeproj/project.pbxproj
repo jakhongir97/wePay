@@ -36,6 +36,7 @@
 		A764D10D26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D10C26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift */; };
 		A764D10F26BBFCE900DF9796 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */; };
 		A764D11126BC0D4300DF9796 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11026BC0D4300DF9796 /* DateFormatter.swift */; };
+		A764D11326BD119800DF9796 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11226BD119800DF9796 /* Formatter.swift */; };
 		A776B1D626B91F2C00692302 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A776B1D526B91F2C00692302 /* FirebaseStorage */; };
 		A776B1D826B91F2C00692302 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A776B1D726B91F2C00692302 /* FirebaseAnalytics */; };
 		A776B1DA26B91F2C00692302 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A776B1D926B91F2C00692302 /* FirebaseMessaging */; };
@@ -164,6 +165,7 @@
 		A764D10C26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
 		A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
 		A764D11026BC0D4300DF9796 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
+		A764D11226BD119800DF9796 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		A776B1E226B929A400692302 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A776B1E526B96EBA00692302 /* GroupsDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsDataProvider.swift; sourceTree = "<group>"; };
 		A776B1EA26B96F4700692302 /* GroupCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -637,6 +639,7 @@
 				A71D64D726B3D9F7009C6EE4 /* UITabBar.swift */,
 				A71D64F026B41390009C6EE4 /* UINavigationController.swift */,
 				A764D11026BC0D4300DF9796 /* DateFormatter.swift */,
+				A764D11226BD119800DF9796 /* Formatter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -938,6 +941,7 @@
 				A71D64D226B2DBEE009C6EE4 /* ProfilView.swift in Sources */,
 				A71D64EB26B40329009C6EE4 /* CodeView.swift in Sources */,
 				A71D64D826B3D9F7009C6EE4 /* UITabBar.swift in Sources */,
+				A764D11326BD119800DF9796 /* Formatter.swift in Sources */,
 				A7E43C2826B29E38005DF810 /* UIFont.swift in Sources */,
 				A7E43C4126B29E38005DF810 /* JSONDownloader.swift in Sources */,
 				A776B1F826BA899800692302 /* GroupChatViewModel.swift in Sources */,

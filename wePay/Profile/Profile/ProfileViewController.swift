@@ -24,7 +24,9 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
     
     // MARK: - Actions
     @objc func signOut() {
-        viewModel.signOut()
+        showAlertDestructive(title: "Are you sure?", message: "Are you sure you want to log out?") {
+            self.viewModel.signOut()
+        }
     }
     
     // MARK: - Life cycle
@@ -39,6 +41,13 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
 extension ProfileViewController : ProfileViewModelProtocol {
     func didFinishFetch() {
         UserDefaults.standard.removePhone()
+        let window = UIApplication.shared.windows[0] as UIWindow
+        let launchScreenVC = LaunchScreenViewController()
+        let navController = UINavigationController(rootViewController: launchScreenVC)
+        let mainCoordinator = MainCoordinator(navigationController: navController)
+        launchScreenVC.coordinator = mainCoordinator
+    
+        window.rootViewController = navController
     }
     
     func didFinishFetch(user: User) {

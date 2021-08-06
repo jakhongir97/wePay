@@ -16,7 +16,7 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     internal var customSpinnerView = CustomSpinnerView()
     internal var isLoading: Bool = false
     internal var coordinator: GroupCoordinator?
-    private let viewModel = GroupViewModel()
+    internal let viewModel = GroupViewModel()
     
     // MARK: - Data Providers
     private var groupsDataProvider: GroupsDataProvider?
@@ -27,7 +27,6 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     @objc func create() {
         showAlertWithTextField(title: "Creating Group", message: "Enter name for your new group") { name in
             self.viewModel.createGroup(name: name ?? "")
-            self.viewModel.fetchGroups()
         }
     }
     
@@ -41,6 +40,10 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
 
 // MARK: - Networking
 extension GroupViewController : GroupViewModelProtocol {
+    func didFinishFetch() {
+        viewModel.fetchGroups()
+    }
+    
     func didFinishFetch(groups: [Group]) {
         groupsDataProvider?.items = groups
     }

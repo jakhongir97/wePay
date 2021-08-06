@@ -16,6 +16,7 @@ struct Group : Decodable {
 
 protocol GroupViewModelProtocol: ViewModelProtocol {
     func didFinishFetch(groups: [Group])
+    func didFinishFetch()
 }
 
 final class GroupViewModel {
@@ -31,7 +32,22 @@ final class GroupViewModel {
         let groupIDRef = ref.child("groups").childByAutoId()
         groupIDRef.setValue(["name": name, "owner": userID ])
         let groupID = groupIDRef.key
-        ref.child("users_groups").childByAutoId().setValue(["userID": userID, "groupID": groupID])
+        ref.child("users_groups").childByAutoId().setValue(["userID": userID, "groupID": groupID]) { error, ref in
+            if let error = error {
+                self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+            }
+            self.delegate?.didFinishFetch()
+        }
+    }
+    
+    internal func deleteGroup(groupID: String) {
+        let groupsIDRef = ref.child("groups")
+        groupsIDRef.child(groupID).removeValue() { error, ref in
+            if let error = error {
+                self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+            }
+            self.delegate?.didFinishFetch()
+        }
     }
     
     internal func fetchGroups() {

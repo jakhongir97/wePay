@@ -9,6 +9,22 @@ import UIKit
 import CommonCrypto
 
 extension String {
+    func withCurreny(currency: String) -> String {
+        let formattedString = self.formattedWithSeparator
+        switch currency {
+        case Curreny.usa.rawValue:
+            return "$" + formattedString
+        case Curreny.uz.rawValue:
+            return formattedString + " " + Curreny.uz.rawValue
+        default:
+            return formattedString
+        }
+    }
+    
+    var formattedWithSeparator: String { Formatter.withSeparator.string(for: Int(self.digits)) ?? self }
+}
+
+extension String {
     var digits: String {
         return components(separatedBy: CharacterSet.decimalDigits.inverted)
             .joined()

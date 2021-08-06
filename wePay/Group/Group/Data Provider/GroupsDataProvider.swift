@@ -52,5 +52,47 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
         vc.coordinator?.pushGroupChatVC(group: items[indexPath.row])
     }
     
+    // MARK: - Context Menu
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { suggestedActions in
+            return self.makeContextMenu(indexPath: indexPath)
+        }
+    }
+    
+    func makeContextMenu(indexPath: IndexPath) -> UIMenu {
+        let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { action in
+//            guard let vc = self.viewController as? GroupChatViewController else { return }
+//            guard let messageID = self.items[indexPath.row].id else { return }
+//            vc.viewModel.deleteMessage(messageID: messageID)
+            
+        }
+        
+        let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill)) { action in
+            guard let vc = self.viewController as? GroupViewController else { return }
+            guard let groupID = self.items[indexPath.row].id else { return }
+            vc.viewModel.deleteGroup(groupID: groupID)
+            
+        }
+        
+        return UIMenu(title: "", children: [edit, delete])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        return makeTargetedPreview(for: configuration)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        return makeTargetedPreview(for: configuration)
+    }
+    
+    private func makeTargetedPreview(for configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? GroupCollectionViewCell else { return nil }
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        //parameters.visiblePath = UIBezierPath(ovalIn: cell.messageLabel.bounds)
+        return UITargetedPreview(view: cell, parameters: parameters)
+    }
+    
 }
 

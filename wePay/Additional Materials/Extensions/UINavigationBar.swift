@@ -16,6 +16,7 @@ extension UINavigationBar {
         setBackgroundImage(UIImage(), for: .default)
         backIndicatorImage = UIImage(systemSymbol: .arrowBackward)
         backIndicatorTransitionMaskImage = UIImage(systemSymbol: .arrowBackward)
+        tintColor = UIColor.appColor(.blue)
         let statusBarHeight: CGFloat = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         var blurFrame = bounds
         blurFrame.size.height += statusBarHeight
