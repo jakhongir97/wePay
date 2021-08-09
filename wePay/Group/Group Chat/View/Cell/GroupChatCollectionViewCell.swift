@@ -9,7 +9,6 @@ import UIKit
 
 class GroupChatCollectionViewCell: UICollectionViewCell {
     // MARK: - Attributes
-    
     @IBOutlet weak var messageLabel: LabelWithPadding! {
         didSet {
             messageLabel.backgroundColor = UIColor.appColor(.blueOpacity)
@@ -20,11 +19,22 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
     }
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var usersCollectionView: UICollectionView!{
+        didSet {
+            usersCollectionView.register(UINib(nibName: UserTagCollectionViewCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: UserTagCollectionViewCell.defaultReuseIdentifier)
+        }
+    }
+    
+    internal var userTagsDataProvider: UserTagsDataProvider?
+    internal var viewController: GroupChatViewController?
     
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        let userTagsDataProvider = UserTagsDataProvider(viewController: viewController)
+        userTagsDataProvider.collectionView = usersCollectionView
+        self.userTagsDataProvider = userTagsDataProvider
     }
 
 }

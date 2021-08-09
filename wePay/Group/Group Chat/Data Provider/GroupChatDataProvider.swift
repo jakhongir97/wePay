@@ -43,6 +43,9 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupChatCollectionViewCell.defaultReuseIdentifier, for: indexPath) as? GroupChatCollectionViewCell else { return UICollectionViewCell() }
+        if let vc = self.viewController as? GroupChatViewController {
+            cell.viewController = vc
+        }
         
         if let message = items[indexPath.row].message, let currency = items[indexPath.row].currency {
             cell.messageLabel.text = message.withCurreny(currency: currency)
@@ -50,15 +53,17 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
         if let timestamp = items[indexPath.row].timeStamp {
             cell.dateLabel.text = DateFormatter.string(timestamp: timestamp)
         }
+        
+        if let users = items[indexPath.row].taggedUsers {
+            cell.userTagsDataProvider?.items = users
+        }
 
-        
-        
         return cell
     }
     
     // MARK: - Delegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 20.0, height: 60)
+        return CGSize(width: collectionView.frame.width - 20.0, height: 70)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -72,28 +77,30 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
     }
     
     func makeContextMenu(indexPath: IndexPath) -> UIMenu {
+        
+        guard let vc = self.viewController as? GroupChatViewController else { return UIMenu()}
+        guard let messageID = self.items[indexPath.row].id else { return UIMenu() }
+        guard let groupID = vc.group?.id else { return UIMenu() }
+        
         let format = UIAction(title: "Format", image: UIImage(systemSymbol: .dollarsignCircle)) { action in
-            guard let vc = self.viewController as? GroupChatViewController else { return }
-            guard let messageID = self.items[indexPath.row].id else { return }
             vc.viewModel.changeCurrencyMessage(messageID: messageID)
+        }
+        
+        let tag = UIAction(title: "Tag", image: UIImage(systemSymbol: .tag)) { action in
+            guard let groupUsers = vc.users else { return }
+            vc.coordinator?.pushTaggedUsersVC(groupID: groupID, messageID: messageID, groupUsers: groupUsers)
             
         }
         
         let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { action in
-//            guard let vc = self.viewController as? GroupChatViewController else { return }
-//            guard let messageID = self.items[indexPath.row].id else { return }
-//            vc.viewModel.deleteMessage(messageID: messageID)
             
         }
         
         let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill)) { action in
-            guard let vc = self.viewController as? GroupChatViewController else { return }
-            guard let messageID = self.items[indexPath.row].id else { return }
-            vc.viewModel.deleteMessage(messageID: messageID)
-            
+            vc.viewModel.deleteMessage(messageID: messageID, groupID: groupID)
         }
         
-        return UIMenu(title: "", children: [format, edit, delete])
+        return UIMenu(title: "", children: [format, tag, edit, delete])
     }
     
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {

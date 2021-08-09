@@ -23,6 +23,7 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
 
     // MARK: - Attributes
     internal var group: Group?
+    internal var users: [User]?
     
     // MARK: - Actions
     @objc func add() {
@@ -36,7 +37,8 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
             showAlert(title: "Enter the amount", message: "")
             return
         }
-        viewModel.createMessage(message: message, groupID: groupID)
+        guard let users = users else { return }
+        viewModel.createMessage(message: message, groupID: groupID, tags: users)
         view().textField.text = ""
     }
     
@@ -48,13 +50,13 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
         
         guard let group = group else { return }
         title = group.name
-        guard let groupID = group.id else { return }
-        viewModel.getMessages(groupID: groupID)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        guard let groupID = group?.id else { return }
+        viewModel.fetchGroupUsers(groupID: groupID)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,8 +67,21 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
 
 // MARK: - Networking
 extension GroupChatViewController : GroupChatViewModelProtocol {
-    func didFinishFetch(messages: [Message]) {
+    func didFinishFetchWithTaggedUsers(messages: [Message]) {
         groupChatDataProvider?.items = messages
+    }
+    
+    func didFinishFetch(groupUsers: [User]) {
+        self.users = groupUsers
+        guard let groupID = group?.id else { return }
+        viewModel.getMessages(groupID: groupID)
+    }
+    
+    func didFinishFetch(messages: [Message]) {
+        //groupChatDataProvider?.items = messages
+        guard let users = users else { return }
+        guard let groupID = group?.id else { return }
+        viewModel.fetchWithTaggedUsers(groupID: groupID, groupUsers: users, messages: messages)
     }
     
     func didFinishFetch() {

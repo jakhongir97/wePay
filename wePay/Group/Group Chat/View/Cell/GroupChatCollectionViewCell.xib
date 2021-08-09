@@ -11,10 +11,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GroupChatCollectionViewCell" id="gTV-IL-0wX" customClass="GroupChatCollectionViewCell" customModule="wePay" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="400" height="66"/>
+            <rect key="frame" x="0.0" y="0.0" width="400" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="400" height="66"/>
+                <rect key="frame" x="0.0" y="0.0" width="400" height="76"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 000 sum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2n-Tp-sw7" customClass="LabelWithPadding" customModule="wePay" customModuleProvider="target">
@@ -31,30 +31,44 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 June" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFO-Op-fXO">
-                        <rect key="frame" x="346.5" y="43" width="48.5" height="18"/>
+                        <rect key="frame" x="351.5" y="58" width="48.5" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <color key="textColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" name="gray"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aSd-kf-g4r">
+                        <rect key="frame" x="175" y="10.5" width="225" height="45"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="JFX-sA-WS3">
+                            <size key="itemSize" width="128" height="128"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="aSd-kf-g4r" secondAttribute="trailing" id="9Sg-yJ-fvJ"/>
                 <constraint firstItem="Jc4-za-9Vs" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="FOa-BM-7s9"/>
-                <constraint firstAttribute="trailing" secondItem="OFO-Op-fXO" secondAttribute="trailing" constant="5" id="ICg-Ed-sPE"/>
-                <constraint firstAttribute="bottom" secondItem="Jc4-za-9Vs" secondAttribute="bottom" constant="10" id="bLG-38-LBJ"/>
+                <constraint firstAttribute="trailing" secondItem="OFO-Op-fXO" secondAttribute="trailing" id="ICg-Ed-sPE"/>
+                <constraint firstAttribute="bottom" secondItem="Jc4-za-9Vs" secondAttribute="bottom" constant="20" id="bLG-38-LBJ"/>
                 <constraint firstItem="z2n-Tp-sw7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="dhb-y3-Lhf"/>
+                <constraint firstItem="aSd-kf-g4r" firstAttribute="leading" secondItem="z2n-Tp-sw7" secondAttribute="trailing" constant="10" id="iTE-uP-SEW"/>
+                <constraint firstItem="aSd-kf-g4r" firstAttribute="height" secondItem="Jc4-za-9Vs" secondAttribute="height" multiplier="0.978261" id="m4R-qk-pgH"/>
                 <constraint firstItem="Jc4-za-9Vs" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="n05-A9-0rx"/>
                 <constraint firstItem="z2n-Tp-sw7" firstAttribute="leading" secondItem="Jc4-za-9Vs" secondAttribute="trailing" constant="10" id="nHb-OD-teX"/>
-                <constraint firstAttribute="bottom" secondItem="z2n-Tp-sw7" secondAttribute="bottom" constant="5" id="rff-Gq-wyZ"/>
-                <constraint firstAttribute="bottom" secondItem="OFO-Op-fXO" secondAttribute="bottom" constant="5" id="vEN-4N-6uD"/>
-                <constraint firstItem="z2n-Tp-sw7" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="xz5-Im-8wi"/>
+                <constraint firstAttribute="bottom" secondItem="z2n-Tp-sw7" secondAttribute="bottom" constant="15" id="rff-Gq-wyZ"/>
+                <constraint firstItem="aSd-kf-g4r" firstAttribute="centerY" secondItem="z2n-Tp-sw7" secondAttribute="centerY" id="v5a-md-joJ"/>
+                <constraint firstAttribute="bottom" secondItem="OFO-Op-fXO" secondAttribute="bottom" id="vEN-4N-6uD"/>
             </constraints>
             <size key="customSize" width="400" height="50"/>
             <connections>
                 <outlet property="dateLabel" destination="OFO-Op-fXO" id="wmK-jg-LZT"/>
                 <outlet property="messageLabel" destination="z2n-Tp-sw7" id="Q7e-qm-jHc"/>
                 <outlet property="profileImageView" destination="Jc4-za-9Vs" id="Mgr-vW-rfc"/>
+                <outlet property="usersCollectionView" destination="aSd-kf-g4r" id="pav-oE-Mbs"/>
             </connections>
             <point key="canvasLocation" x="391.304347826087" y="152.67857142857142"/>
         </collectionViewCell>
@@ -63,6 +77,9 @@
         <image name="person.crop.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="blueOpacity">
             <color red="0.0" green="0.45899999141693115" blue="0.88999998569488525" alpha="0.40000000596046448" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="gray">
+            <color red="0.38823529411764707" green="0.43137254901960786" blue="0.44705882352941173" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

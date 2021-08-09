@@ -85,7 +85,6 @@ final class UsersViewModel {
     }
     
     internal func addUsers(group: Group, users: [User]) {
-        print(users)
         guard let groupID = group.id else { return }
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersGroupsRef = self.ref.child("users_groups")

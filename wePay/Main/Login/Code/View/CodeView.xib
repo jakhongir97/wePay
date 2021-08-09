@@ -97,7 +97,7 @@
     <resources>
         <image name="arrow.backward.circle" catalog="system" width="128" height="121"/>
         <namedColor name="blue">
-            <color red="0.0" green="0.45899999141693115" blue="0.88999998569488525" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.45899999141693115" blue="0.88999998569488525" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

@@ -37,6 +37,16 @@
 		A764D10F26BBFCE900DF9796 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */; };
 		A764D11126BC0D4300DF9796 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11026BC0D4300DF9796 /* DateFormatter.swift */; };
 		A764D11326BD119800DF9796 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11226BD119800DF9796 /* Formatter.swift */; };
+		A764D12126C1122300DF9796 /* TaggedUsersDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11626C1122300DF9796 /* TaggedUsersDataProvider.swift */; };
+		A764D12226C1122300DF9796 /* TaggedUsersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11826C1122300DF9796 /* TaggedUsersViewModel.swift */; };
+		A764D12326C1122300DF9796 /* TaggedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11A26C1122300DF9796 /* TaggedUsersViewController.swift */; };
+		A764D12426C1122300DF9796 /* TaggedUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11C26C1122300DF9796 /* TaggedUsersView.swift */; };
+		A764D12526C1122300DF9796 /* TaggedUsersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A764D11D26C1122300DF9796 /* TaggedUsersView.xib */; };
+		A764D12626C1122300DF9796 /* TaggedUsersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11F26C1122300DF9796 /* TaggedUsersCollectionViewCell.swift */; };
+		A764D12726C1122300DF9796 /* TaggedUsersCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A764D12026C1122300DF9796 /* TaggedUsersCollectionViewCell.xib */; };
+		A764D12B26C14BC100DF9796 /* UserTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D12926C14BC100DF9796 /* UserTagCollectionViewCell.swift */; };
+		A764D12C26C14BC100DF9796 /* UserTagCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A764D12A26C14BC100DF9796 /* UserTagCollectionViewCell.xib */; };
+		A764D12E26C14EB000DF9796 /* UserTagsDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D12D26C14EB000DF9796 /* UserTagsDataProvider.swift */; };
 		A776B1D626B91F2C00692302 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A776B1D526B91F2C00692302 /* FirebaseStorage */; };
 		A776B1D826B91F2C00692302 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A776B1D726B91F2C00692302 /* FirebaseAnalytics */; };
 		A776B1DA26B91F2C00692302 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = A776B1D926B91F2C00692302 /* FirebaseMessaging */; };
@@ -58,7 +68,7 @@
 		A776B21026BA8F8400692302 /* UsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776B20626BA8F8400692302 /* UsersView.swift */; };
 		A776B21126BA8F8400692302 /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776B20726BA8F8400692302 /* UsersViewController.swift */; };
 		A776B21226BA8F8400692302 /* UsersCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A776B20926BA8F8400692302 /* UsersCollectionViewCell.xib */; };
-		A776B21326BA8F8400692302 /* UsersChatCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776B20A26BA8F8400692302 /* UsersChatCollectionViewCell.swift */; };
+		A776B21326BA8F8400692302 /* UsersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776B20A26BA8F8400692302 /* UsersCollectionViewCell.swift */; };
 		A776B21426BA8F8400692302 /* UsersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776B20C26BA8F8400692302 /* UsersViewModel.swift */; };
 		A776B21526BA8F8400692302 /* UsersDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A776B20E26BA8F8400692302 /* UsersDataProvider.swift */; };
 		A7E43BCF26B29C42005DF810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E43BCE26B29C42005DF810 /* AppDelegate.swift */; };
@@ -166,6 +176,16 @@
 		A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
 		A764D11026BC0D4300DF9796 /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		A764D11226BD119800DF9796 /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
+		A764D11626C1122300DF9796 /* TaggedUsersDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedUsersDataProvider.swift; sourceTree = "<group>"; };
+		A764D11826C1122300DF9796 /* TaggedUsersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedUsersViewModel.swift; sourceTree = "<group>"; };
+		A764D11A26C1122300DF9796 /* TaggedUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedUsersViewController.swift; sourceTree = "<group>"; };
+		A764D11C26C1122300DF9796 /* TaggedUsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedUsersView.swift; sourceTree = "<group>"; };
+		A764D11D26C1122300DF9796 /* TaggedUsersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaggedUsersView.xib; sourceTree = "<group>"; };
+		A764D11F26C1122300DF9796 /* TaggedUsersCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggedUsersCollectionViewCell.swift; sourceTree = "<group>"; };
+		A764D12026C1122300DF9796 /* TaggedUsersCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaggedUsersCollectionViewCell.xib; sourceTree = "<group>"; };
+		A764D12926C14BC100DF9796 /* UserTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTagCollectionViewCell.swift; sourceTree = "<group>"; };
+		A764D12A26C14BC100DF9796 /* UserTagCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserTagCollectionViewCell.xib; sourceTree = "<group>"; };
+		A764D12D26C14EB000DF9796 /* UserTagsDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTagsDataProvider.swift; sourceTree = "<group>"; };
 		A776B1E226B929A400692302 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A776B1E526B96EBA00692302 /* GroupsDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsDataProvider.swift; sourceTree = "<group>"; };
 		A776B1EA26B96F4700692302 /* GroupCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -181,7 +201,7 @@
 		A776B20626BA8F8400692302 /* UsersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersView.swift; sourceTree = "<group>"; };
 		A776B20726BA8F8400692302 /* UsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		A776B20926BA8F8400692302 /* UsersCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UsersCollectionViewCell.xib; sourceTree = "<group>"; };
-		A776B20A26BA8F8400692302 /* UsersChatCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersChatCollectionViewCell.swift; sourceTree = "<group>"; };
+		A776B20A26BA8F8400692302 /* UsersCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCollectionViewCell.swift; sourceTree = "<group>"; };
 		A776B20C26BA8F8400692302 /* UsersViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersViewModel.swift; sourceTree = "<group>"; };
 		A776B20E26BA8F8400692302 /* UsersDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersDataProvider.swift; sourceTree = "<group>"; };
 		A7E43BCB26B29C42005DF810 /* wePay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wePay.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -300,6 +320,7 @@
 				A71D64C326B2DAFF009C6EE4 /* Group */,
 				A776B1EE26BA891A00692302 /* Group Chat */,
 				A776B20226BA8F2500692302 /* Users */,
+				A764D11426C111C900DF9796 /* Tagged Users */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -431,6 +452,69 @@
 			path = "View Model";
 			sourceTree = "<group>";
 		};
+		A764D11426C111C900DF9796 /* Tagged Users */ = {
+			isa = PBXGroup;
+			children = (
+				A764D11526C1122300DF9796 /* Data Provider */,
+				A764D11926C1122300DF9796 /* View */,
+				A764D11726C1122300DF9796 /* View Model */,
+			);
+			path = "Tagged Users";
+			sourceTree = "<group>";
+		};
+		A764D11526C1122300DF9796 /* Data Provider */ = {
+			isa = PBXGroup;
+			children = (
+				A764D11626C1122300DF9796 /* TaggedUsersDataProvider.swift */,
+			);
+			path = "Data Provider";
+			sourceTree = "<group>";
+		};
+		A764D11726C1122300DF9796 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				A764D11826C1122300DF9796 /* TaggedUsersViewModel.swift */,
+			);
+			path = "View Model";
+			sourceTree = "<group>";
+		};
+		A764D11926C1122300DF9796 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A764D11A26C1122300DF9796 /* TaggedUsersViewController.swift */,
+				A764D11B26C1122300DF9796 /* Root View */,
+				A764D11E26C1122300DF9796 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A764D11B26C1122300DF9796 /* Root View */ = {
+			isa = PBXGroup;
+			children = (
+				A764D11C26C1122300DF9796 /* TaggedUsersView.swift */,
+				A764D11D26C1122300DF9796 /* TaggedUsersView.xib */,
+			);
+			path = "Root View";
+			sourceTree = "<group>";
+		};
+		A764D11E26C1122300DF9796 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				A764D11F26C1122300DF9796 /* TaggedUsersCollectionViewCell.swift */,
+				A764D12026C1122300DF9796 /* TaggedUsersCollectionViewCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		A764D12826C14B9E00DF9796 /* User Tag */ = {
+			isa = PBXGroup;
+			children = (
+				A764D12926C14BC100DF9796 /* UserTagCollectionViewCell.swift */,
+				A764D12A26C14BC100DF9796 /* UserTagCollectionViewCell.xib */,
+			);
+			path = "User Tag";
+			sourceTree = "<group>";
+		};
 		A776B1E126B929A400692302 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -481,6 +565,7 @@
 				A776B1EF26BA894500692302 /* GroupChatViewController.swift */,
 				A776B1F226BA895800692302 /* Root View */,
 				A776B1FD26BA8B5200692302 /* Cell */,
+				A764D12826C14B9E00DF9796 /* User Tag */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -506,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				A776B1F526BA898C00692302 /* GroupChatDataProvider.swift */,
+				A764D12D26C14EB000DF9796 /* UserTagsDataProvider.swift */,
 			);
 			path = "Data Provider";
 			sourceTree = "<group>";
@@ -552,7 +638,7 @@
 			isa = PBXGroup;
 			children = (
 				A776B20926BA8F8400692302 /* UsersCollectionViewCell.xib */,
-				A776B20A26BA8F8400692302 /* UsersChatCollectionViewCell.swift */,
+				A776B20A26BA8F8400692302 /* UsersCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -853,11 +939,14 @@
 				A776B21226BA8F8400692302 /* UsersCollectionViewCell.xib in Resources */,
 				A71D64E126B3DE61009C6EE4 /* PhoneView.xib in Resources */,
 				A776B20F26BA8F8400692302 /* UsersView.xib in Resources */,
+				A764D12726C1122300DF9796 /* TaggedUsersCollectionViewCell.xib in Resources */,
 				A71D64D426B2DBF7009C6EE4 /* ProfilView.xib in Resources */,
 				A7E43C5826B2A155005DF810 /* HomeView.xib in Resources */,
 				A776B20126BA8B6600692302 /* GroupChatCollectionViewCell.xib in Resources */,
+				A764D12C26C14BC100DF9796 /* UserTagCollectionViewCell.xib in Resources */,
 				A7E43BDB26B29C44005DF810 /* LaunchScreen.storyboard in Resources */,
 				A7E43BD826B29C44005DF810 /* Assets.xcassets in Resources */,
+				A764D12526C1122300DF9796 /* TaggedUsersView.xib in Resources */,
 				A71D64F326B42DA4009C6EE4 /* GoogleService-Info.plist in Resources */,
 				A71D64ED26B40335009C6EE4 /* CodeView.xib in Resources */,
 				A776B1FC26BA89AB00692302 /* GroupChatView.xib in Resources */,
@@ -879,6 +968,7 @@
 				A71D64BE26B2DAC9009C6EE4 /* GroupCoordinator.swift in Sources */,
 				A7E43C1C26B29E38005DF810 /* UIView.swift in Sources */,
 				A71D64E726B4024F009C6EE4 /* CodeViewController.swift in Sources */,
+				A764D12326C1122300DF9796 /* TaggedUsersViewController.swift in Sources */,
 				A7E43C2A26B29E38005DF810 /* Bundle.swift in Sources */,
 				A7E43C3026B29E38005DF810 /* DesignableUITextField.swift in Sources */,
 				A7E43C3926B29E38005DF810 /* VerticalButton.swift in Sources */,
@@ -914,6 +1004,8 @@
 				A71D64DF26B3DE55009C6EE4 /* PhoneView.swift in Sources */,
 				A7E43C2D26B29E38005DF810 /* Label.swift in Sources */,
 				A7E43C2C26B29E38005DF810 /* CustomView.swift in Sources */,
+				A764D12626C1122300DF9796 /* TaggedUsersCollectionViewCell.swift in Sources */,
+				A764D12E26C14EB000DF9796 /* UserTagsDataProvider.swift in Sources */,
 				A7E43C2B26B29E38005DF810 /* UIString.swift in Sources */,
 				A7E43BCF26B29C42005DF810 /* AppDelegate.swift in Sources */,
 				A71D64E326B3DE6B009C6EE4 /* PhoneViewModel.swift in Sources */,
@@ -924,6 +1016,7 @@
 				A776B1EC26B96F4700692302 /* GroupCollectionViewCell.swift in Sources */,
 				A71D64B326B2D609009C6EE4 /* LaunchScreenView.swift in Sources */,
 				A71D64F126B41390009C6EE4 /* UINavigationController.swift in Sources */,
+				A764D12B26C14BC100DF9796 /* UserTagCollectionViewCell.swift in Sources */,
 				A7E43C4526B29E38005DF810 /* AssetsImage.swift in Sources */,
 				A7E43C3326B29E38005DF810 /* TextField.swift in Sources */,
 				A764D10D26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift in Sources */,
@@ -932,6 +1025,7 @@
 				A71D64AF26B2D5EB009C6EE4 /* LaunchScreenViewController.swift in Sources */,
 				A776B1E626B96EBA00692302 /* GroupsDataProvider.swift in Sources */,
 				A7E43C1D26B29E38005DF810 /* UIColor.swift in Sources */,
+				A764D12426C1122300DF9796 /* TaggedUsersView.swift in Sources */,
 				A7E43C4226B29E38005DF810 /* KeychainKeys.swift in Sources */,
 				A7E43C5C26B2A188005DF810 /* HomeViewModel.swift in Sources */,
 				A7E43C2326B29E38005DF810 /* UIButton.swift in Sources */,
@@ -947,18 +1041,20 @@
 				A776B1F826BA899800692302 /* GroupChatViewModel.swift in Sources */,
 				A7E43C2626B29E38005DF810 /* UINavigationBar.swift in Sources */,
 				A7E43C3D26B29E38005DF810 /* AlertViewController.swift in Sources */,
+				A764D12226C1122300DF9796 /* TaggedUsersViewModel.swift in Sources */,
 				A7E43C3B26B29E38005DF810 /* LocalizationManager.swift in Sources */,
 				A7E43C1E26B29E38005DF810 /* UISearchBar.swift in Sources */,
 				A7E43C4B26B29E38005DF810 /* AlertViewTexts.swift in Sources */,
 				A7E43C5A26B2A160005DF810 /* HomeView.swift in Sources */,
 				A7E43C1F26B29E38005DF810 /* UIDevice.swift in Sources */,
 				A7E43C5326B2A0B5005DF810 /* MainCoordinator.swift in Sources */,
+				A764D12126C1122300DF9796 /* TaggedUsersDataProvider.swift in Sources */,
 				A764D11126BC0D4300DF9796 /* DateFormatter.swift in Sources */,
 				A776B20026BA8B6600692302 /* GroupChatCollectionViewCell.swift in Sources */,
 				A7E43C4926B29E38005DF810 /* API.swift in Sources */,
 				A71D64DB26B3DE3F009C6EE4 /* PhoneViewController.swift in Sources */,
 				A7E43C3126B29E38005DF810 /* Image.swift in Sources */,
-				A776B21326BA8F8400692302 /* UsersChatCollectionViewCell.swift in Sources */,
+				A776B21326BA8F8400692302 /* UsersCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

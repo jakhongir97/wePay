@@ -37,4 +37,13 @@ final class GroupCoordinator: Coordinator {
         vc.coordinator = self
         navigationController.pushViewController(vc, animated: false)
     }
+    
+    internal func pushTaggedUsersVC(groupID: String, messageID: String, groupUsers: [User]) {
+        let vc = TaggedUsersViewController()
+        vc.groupID = groupID
+        vc.messageID = messageID
+        vc.groupUsers = groupUsers
+        vc.coordinator = self
+        navigationController.pushViewController(vc, animated: false)
+    }
 }

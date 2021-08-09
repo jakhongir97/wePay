@@ -15,11 +15,14 @@ struct Message: Decodable {
     let owner: String?
     let timeStamp: Double?
     let currency: String?
+    var taggedUsers: [User]?
 }
 
 protocol GroupChatViewModelProtocol: ViewModelProtocol {
     func didFinishFetch()
     func didFinishFetch(messages: [Message])
+    func didFinishFetch(groupUsers: [User])
+    func didFinishFetchWithTaggedUsers(messages: [Message])
 }
 
 final class GroupChatViewModel {
@@ -30,16 +33,25 @@ final class GroupChatViewModel {
     let ref = Database.database().reference()
     
     // MARK: - Network call
-    internal func createMessage(message: String, groupID: String) {
+    internal func createMessage(message: String, groupID: String, tags: [User]) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let timeStamp = Date().timeIntervalSince1970
         let currency = Curreny.uz.rawValue
-        let messagesRef = ref.child("messages")
-        messagesRef.childByAutoId().setValue(["message": message, "owner": userID, "groupID": groupID, "timeStamp": timeStamp, "currency": currency]) { error, ref in
+        let messageRef = ref.child("messages").childByAutoId()
+        messageRef.setValue(["message": message, "owner": userID, "groupID": groupID, "timeStamp": timeStamp, "currency": currency]) { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
-            self.delegate?.didFinishFetch()
+            let myGroup = DispatchGroup()
+            for tag in tags {
+                myGroup.enter()
+                self.ref.child("users_messages").child(groupID).childByAutoId().setValue(["userID": tag.userID, "messageID": messageRef.key]) { error, _ in
+                    myGroup.leave()
+                }
+            }
+            myGroup.notify(queue: .main) {
+                self.delegate?.didFinishFetch()
+            }
         }
     }
     
@@ -65,11 +77,19 @@ final class GroupChatViewModel {
         }
     }
     
-    internal func deleteMessage(messageID: String) {
+    internal func deleteMessage(messageID: String, groupID: String) {
         let messagesRef = ref.child("messages")
-        messagesRef.child(messageID).removeValue() { error, ref in
+        let usersMessagesRef = ref.child("users_messages")
+        messagesRef.child(messageID).removeValue() { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+            }
+            usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value) { snapshot in
+                if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                    for child in dataSnapshot {
+                        usersMessagesRef.child(groupID).child(child.key).removeValue()
+                    }
+                }
             }
             self.delegate?.didFinishFetch()
         }
@@ -89,6 +109,68 @@ final class GroupChatViewModel {
                 }
             }
             self.delegate?.didFinishFetch()
+        }
+    }
+    
+    internal func fetchGroupUsers(groupID: String) {
+        delegate?.showActivityIndicator()
+        //guard let userID = Auth.auth().currentUser?.uid else { return }
+        let usersGroupsRef = self.ref.child("users_groups")
+        usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
+            var users = [User]()
+            let myGroup = DispatchGroup()
+            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for child in dataSnapshot {
+                    myGroup.enter()
+                    if let userID = child.childSnapshot(forPath: "userID").value as? String {
+                        self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
+                            let value = snapshot.value as? NSDictionary
+                            if let firstName = value?["firstName"] as? String, let lastName = value?["lastName"] as? String, let phone = value?["phone"] as? String {
+                                users.append(User(userID: userID, firstName: firstName, lastName: lastName, telephone: phone))
+                                myGroup.leave()
+                            }
+                        })
+                    }
+                }
+            }
+            myGroup.notify(queue: .main) {
+                self.delegate?.hideActivityIndicator()
+                self.delegate?.didFinishFetch(groupUsers: users)
+            }
+        }) { error in
+            self.delegate?.hideActivityIndicator()
+            self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+        }
+    }
+    
+    internal func fetchWithTaggedUsers(groupID: String, groupUsers: [User], messages: [Message]) {
+        delegate?.showActivityIndicator()
+        let usersMessagesRef = ref.child("users_messages")
+        var messagesWithTags = messages
+        let myGroup = DispatchGroup()
+        for (index,message) in messages.enumerated() {
+            myGroup.enter()
+            usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: message.id).observeSingleEvent(of: .value, with : { snapshot in
+                var users = groupUsers
+                users.indices.forEach { users[$0].isMember = false }
+                if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                    for child in dataSnapshot {
+                        if let userID = child.childSnapshot(forPath: "userID").value as? String {
+                            for (index,user) in users.enumerated() {
+                                if userID == user.userID {
+                                    users[index].isMember = true
+                                }
+                            }
+                        }
+                    }
+                }
+                messagesWithTags[index].taggedUsers = users.filter({$0.isMember ?? true })
+                myGroup.leave()
+            })
+        }
+        myGroup.notify(queue: .main) {
+            self.delegate?.hideActivityIndicator()
+            self.delegate?.didFinishFetchWithTaggedUsers(messages: messagesWithTags)
         }
     }
 }
