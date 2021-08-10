@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A703C2DC26C2C85100BBAAD6 /* KeyboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703C2DB26C2C85100BBAAD6 /* KeyboardHelper.swift */; };
+		A703C2DE26C2C97900BBAAD6 /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703C2DD26C2C97900BBAAD6 /* UICollectionView.swift */; };
 		A71D64AC26B2C2E1009C6EE4 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = A71D64AB26B2C2E1009C6EE4 /* SFSafeSymbols */; };
 		A71D64AF26B2D5EB009C6EE4 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64AE26B2D5EB009C6EE4 /* LaunchScreenViewController.swift */; };
 		A71D64B126B2D5FC009C6EE4 /* LaunchScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64B026B2D5FC009C6EE4 /* LaunchScreenViewModel.swift */; };
@@ -146,6 +148,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A703C2DB26C2C85100BBAAD6 /* KeyboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHelper.swift; sourceTree = "<group>"; };
+		A703C2DD26C2C97900BBAAD6 /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		A71D64AE26B2D5EB009C6EE4 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		A71D64B026B2D5FC009C6EE4 /* LaunchScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewModel.swift; sourceTree = "<group>"; };
 		A71D64B226B2D609009C6EE4 /* LaunchScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenView.swift; sourceTree = "<group>"; };
@@ -734,6 +738,7 @@
 				A71D64F026B41390009C6EE4 /* UINavigationController.swift */,
 				A764D11026BC0D4300DF9796 /* DateFormatter.swift */,
 				A764D11226BD119800DF9796 /* Formatter.swift */,
+				A703C2DD26C2C97900BBAAD6 /* UICollectionView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -754,6 +759,7 @@
 				A7E43C0626B29E38005DF810 /* VerticalButton.swift */,
 				A764D10C26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift */,
 				A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */,
+				A703C2DB26C2C85100BBAAD6 /* KeyboardHelper.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1023,6 +1029,7 @@
 				A71D64B126B2D5FC009C6EE4 /* LaunchScreenViewModel.swift in Sources */,
 				A776B1EC26B96F4700692302 /* GroupCollectionViewCell.swift in Sources */,
 				A71D64B326B2D609009C6EE4 /* LaunchScreenView.swift in Sources */,
+				A703C2DE26C2C97900BBAAD6 /* UICollectionView.swift in Sources */,
 				A71D64F126B41390009C6EE4 /* UINavigationController.swift in Sources */,
 				A764D12B26C14BC100DF9796 /* UserTagCollectionViewCell.swift in Sources */,
 				A7E43C4526B29E38005DF810 /* AssetsImage.swift in Sources */,
@@ -1038,6 +1045,7 @@
 				A7E43C5C26B2A188005DF810 /* HomeViewModel.swift in Sources */,
 				A7E43C2326B29E38005DF810 /* UIButton.swift in Sources */,
 				A7E43C2926B29E38005DF810 /* UIApplication.swift in Sources */,
+				A703C2DC26C2C85100BBAAD6 /* KeyboardHelper.swift in Sources */,
 				A7E43C5E26B2A195005DF810 /* HomeViewController.swift in Sources */,
 				A7E43C2426B29E38005DF810 /* UIImage.swift in Sources */,
 				A71D64D226B2DBEE009C6EE4 /* ProfilView.swift in Sources */,

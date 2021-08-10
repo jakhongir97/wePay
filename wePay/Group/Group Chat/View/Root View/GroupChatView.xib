@@ -25,7 +25,7 @@
                         <size key="itemSize" width="128" height="128"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="20"/>
                     </collectionViewFlowLayout>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BPb-NU-AQP">
@@ -95,7 +95,7 @@
             <constraints>
                 <constraint firstItem="BPb-NU-AQP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="7mt-ag-eAt"/>
                 <constraint firstAttribute="trailing" secondItem="vZe-Do-jdv" secondAttribute="trailing" id="GAj-Pq-hk0"/>
-                <constraint firstItem="BPb-NU-AQP" firstAttribute="top" secondItem="vZe-Do-jdv" secondAttribute="bottom" id="HAh-Hi-lOj"/>
+                <constraint firstAttribute="bottom" secondItem="vZe-Do-jdv" secondAttribute="bottom" constant="90" id="HAh-Hi-lOj" customClass="KeyboardLayoutConstraint" customModule="wePay" customModuleProvider="target"/>
                 <constraint firstAttribute="bottom" secondItem="BPb-NU-AQP" secondAttribute="bottom" id="K4V-qZ-azX" customClass="KeyboardLayoutConstraint" customModule="wePay" customModuleProvider="target"/>
                 <constraint firstItem="vZe-Do-jdv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="MkT-j9-cjy"/>
                 <constraint firstItem="vZe-Do-jdv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fI0-ka-PJn"/>

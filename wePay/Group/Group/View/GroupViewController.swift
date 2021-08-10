@@ -45,7 +45,12 @@ extension GroupViewController : GroupViewModelProtocol {
     }
     
     func didFinishFetch(groups: [Group]) {
-        groupsDataProvider?.items = groups
+        //groupsDataProvider?.items = groups
+        viewModel.fetchWithSummary(groups: groups)
+    }
+    
+    func didFinishFetch(groupsWithSummary: [Group]) {
+        groupsDataProvider?.items = groupsWithSummary
     }
 }
 

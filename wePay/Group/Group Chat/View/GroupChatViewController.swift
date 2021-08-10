@@ -17,6 +17,7 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
     internal var isLoading: Bool = false
     internal var coordinator: GroupCoordinator?
     internal let viewModel = GroupChatViewModel()
+    private var keyboardHelper: KeyboardHelper?
     
     // MARK: - Data Providers
     private var groupChatDataProvider: GroupChatDataProvider?
@@ -47,7 +48,7 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
         super.viewDidLoad()
         appearanceSettings()
         setupTextField()
-        
+        setupKeyboard()
         guard let group = group else { return }
         title = group.name
     }
@@ -99,12 +100,23 @@ extension GroupChatViewController {
         navigationItem.rightBarButtonItem = rightBarButton
         viewModel.delegate = self
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        view().collectionView.addGestureRecognizer(tap)
-        
         let groupChatDataProvider = GroupChatDataProvider(viewController: self)
         groupChatDataProvider.collectionView = view().collectionView
         self.groupChatDataProvider = groupChatDataProvider
+    }
+    
+    func setupKeyboard() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view().collectionView.addGestureRecognizer(tap)
+        
+        keyboardHelper = KeyboardHelper { [unowned self] animation, keyboardFrame, duration in
+            switch animation {
+            case .keyboardWillShow:
+                view().collectionView.scrollToLast()
+            case .keyboardWillHide:
+                view().collectionView.scrollToLast()
+            }
+        }
     }
     
     @objc func dismissKeyboard() {

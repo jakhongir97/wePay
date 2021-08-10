@@ -60,7 +60,7 @@ final class GroupChatViewModel {
     }
     
     internal func getMessages(groupID: String) {
-        self.delegate?.showActivityIndicator()
+        //self.delegate?.showActivityIndicator()
         let messagesRef = ref.child("messages")
         messagesRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
             var messages = [Message]()
@@ -117,7 +117,7 @@ final class GroupChatViewModel {
     }
     
     internal func fetchGroupUsers(groupID: String) {
-        delegate?.showActivityIndicator()
+        //delegate?.showActivityIndicator()
         //guard let userID = Auth.auth().currentUser?.uid else { return }
         let usersGroupsRef = self.ref.child("users_groups")
         usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
@@ -148,7 +148,7 @@ final class GroupChatViewModel {
     }
     
     internal func fetchWithTaggedUsers(groupID: String, groupUsers: [User], messages: [Message]) {
-        delegate?.showActivityIndicator()
+        //delegate?.showActivityIndicator()
         let usersMessagesRef = ref.child("users_messages")
         var messagesWithTags = messages
         let myGroup = DispatchGroup()

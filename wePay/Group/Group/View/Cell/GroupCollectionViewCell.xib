@@ -18,9 +18,15 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efu-K2-eTk">
-                        <rect key="frame" x="20" y="25.5" width="360" height="29"/>
+                        <rect key="frame" x="20" y="25.5" width="64" height="29"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100 000 sum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViZ-mu-oWy">
+                        <rect key="frame" x="269" y="29" width="111" height="22"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                        <color key="textColor" name="red"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -29,19 +35,24 @@
             <color key="backgroundColor" name="blueOpacity"/>
             <constraints>
                 <constraint firstItem="efu-K2-eTk" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="6lj-Sh-djU"/>
-                <constraint firstAttribute="trailing" secondItem="efu-K2-eTk" secondAttribute="trailing" constant="20" id="G6R-KR-ybW"/>
+                <constraint firstAttribute="trailing" secondItem="ViZ-mu-oWy" secondAttribute="trailing" constant="20" id="EHp-EX-NL5"/>
+                <constraint firstItem="ViZ-mu-oWy" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="ZPM-Yf-3B1"/>
                 <constraint firstItem="efu-K2-eTk" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="xnM-ik-VhR"/>
             </constraints>
             <size key="customSize" width="404" height="80"/>
             <connections>
                 <outlet property="label" destination="efu-K2-eTk" id="DUI-cc-eOW"/>
+                <outlet property="summaryLabel" destination="ViZ-mu-oWy" id="TJj-C4-AKr"/>
             </connections>
             <point key="canvasLocation" x="128.98550724637681" y="154.6875"/>
         </collectionViewCell>
     </objects>
     <resources>
         <namedColor name="blueOpacity">
-            <color red="0.0" green="0.45882352941176469" blue="0.8901960784313725" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.45899999141693115" blue="0.88999998569488525" alpha="0.40000000596046448" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="red">
+            <color red="0.75294117647058822" green="0.22352941176470587" blue="0.16862745098039217" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

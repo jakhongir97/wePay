@@ -12,11 +12,13 @@ import FirebaseAuth
 struct Group : Decodable {
     let id: String?
     let name: String?
+    var summary: String?
 }
 
 protocol GroupViewModelProtocol: ViewModelProtocol {
     func didFinishFetch(groups: [Group])
     func didFinishFetch()
+    func didFinishFetch(groupsWithSummary: [Group])
 }
 
 final class GroupViewModel {
@@ -77,6 +79,49 @@ final class GroupViewModel {
         }) { error in
             self.delegate?.hideActivityIndicator()
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+        }
+    }
+    
+    internal func fetchWithSummary(groups: [Group]) {
+        self.delegate?.showActivityIndicator()
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        let usersMessagesRef = ref.child("users_messages")
+        let messagesRef = ref.child("messages")
+        var groupsWithSummary = groups
+        let myGroup = DispatchGroup()
+        for (index,group) in groups.enumerated() {
+            if let groupID = group.id {
+                myGroup.enter()
+                usersMessagesRef.child(groupID).queryOrdered(byChild: "userID").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value, with : { snapshot in
+                    var summary = 0
+                    let myLitteGroup = DispatchGroup()
+                    if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                        for child in dataSnapshot {
+                            if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool, !isPaid {
+                                if let messageID = child.childSnapshot(forPath: "messageID").value as? String {
+                                    myLitteGroup.enter()
+                                    messagesRef.child(messageID).observeSingleEvent(of: .value) { snapshot in
+                                        let value = snapshot.value as? NSDictionary
+                                        if let message = value?["message"] as? String, let messageInt = Int(message.digits) {
+                                            summary += messageInt
+                                            myLitteGroup.leave()
+                                        }
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                    myLitteGroup.notify(queue: .main) {
+                        groupsWithSummary[index].summary = String(summary)
+                        myGroup.leave()
+                    }
+                })
+            }
+        }
+        myGroup.notify(queue: .main) {
+            self.delegate?.hideActivityIndicator()
+            self.delegate?.didFinishFetch(groupsWithSummary: groupsWithSummary)
         }
     }
 }

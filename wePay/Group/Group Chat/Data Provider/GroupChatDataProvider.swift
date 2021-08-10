@@ -28,6 +28,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
     internal var items = [Message]() {
         didSet {
             self.collectionView.reloadData()
+            self.collectionView.scrollToLast()
         }
     }
     

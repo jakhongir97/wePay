@@ -39,6 +39,7 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupCollectionViewCell.defaultReuseIdentifier, for: indexPath) as? GroupCollectionViewCell else { return UICollectionViewCell() }
         cell.label.text = items[indexPath.row].name
+        cell.summaryLabel.text = items[indexPath.row].summary
         return cell
     }
     

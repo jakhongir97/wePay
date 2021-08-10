@@ -10,6 +10,7 @@ import UIKit
 class GroupCollectionViewCell: UICollectionViewCell {
     // MARK: - Attributes
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var summaryLabel: UILabel!
     
     
     // MARK: - Life cycle
