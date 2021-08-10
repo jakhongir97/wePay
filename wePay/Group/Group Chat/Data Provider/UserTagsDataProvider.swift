@@ -38,12 +38,15 @@ final class UserTagsDataProvider: NSObject, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserTagCollectionViewCell.defaultReuseIdentifier, for: indexPath) as? UserTagCollectionViewCell else { return UICollectionViewCell() }
-        cell.imageView.image = UIImage(systemSymbol: .personCropCircleFill)
+        cell.prepareForReuse()
+        if let isPaid = items[indexPath.row].isPaid {
+            cell.checkImageView.isHidden = !isPaid
+        }
         return cell
     }
     
     // MARK: - Delegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.height*3/4, height: collectionView.frame.height*3/4)
+        return CGSize(width: collectionView.frame.height, height: collectionView.frame.height)
     }
 }

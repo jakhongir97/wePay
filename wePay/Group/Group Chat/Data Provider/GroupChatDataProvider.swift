@@ -63,7 +63,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
     
     // MARK: - Delegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 20.0, height: 70)
+        return CGSize(width: collectionView.frame.width - 20.0, height: 90)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -81,6 +81,10 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
         guard let vc = self.viewController as? GroupChatViewController else { return UIMenu()}
         guard let messageID = self.items[indexPath.row].id else { return UIMenu() }
         guard let groupID = vc.group?.id else { return UIMenu() }
+        
+        let pay = UIAction(title: "Pay", image: UIImage(systemSymbol: .creditcardFill)) { action in
+            vc.viewModel.payMessage(messageID: messageID, groupID: groupID, isPaid: true)
+        }
         
         let format = UIAction(title: "Format", image: UIImage(systemSymbol: .dollarsignCircle)) { action in
             vc.viewModel.changeCurrencyMessage(messageID: messageID)
@@ -100,7 +104,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
             vc.viewModel.deleteMessage(messageID: messageID, groupID: groupID)
         }
         
-        return UIMenu(title: "", children: [format, tag, edit, delete])
+        return UIMenu(title: "", children: [pay, format, tag, edit, delete])
     }
     
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {

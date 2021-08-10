@@ -286,6 +286,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A703C2DA26C2B34B00BBAAD6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A776B1FD26BA8B5200692302 /* Group Chat */,
+				A764D12826C14B9E00DF9796 /* User Tag */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		A71D64AD26B2D5CF009C6EE4 /* Launch Screen */ = {
 			isa = PBXGroup;
 			children = (
@@ -564,8 +573,7 @@
 			children = (
 				A776B1EF26BA894500692302 /* GroupChatViewController.swift */,
 				A776B1F226BA895800692302 /* Root View */,
-				A776B1FD26BA8B5200692302 /* Cell */,
-				A764D12826C14B9E00DF9796 /* User Tag */,
+				A703C2DA26C2B34B00BBAAD6 /* Cells */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -596,13 +604,13 @@
 			path = "Data Provider";
 			sourceTree = "<group>";
 		};
-		A776B1FD26BA8B5200692302 /* Cell */ = {
+		A776B1FD26BA8B5200692302 /* Group Chat */ = {
 			isa = PBXGroup;
 			children = (
 				A776B1FE26BA8B6600692302 /* GroupChatCollectionViewCell.swift */,
 				A776B1FF26BA8B6600692302 /* GroupChatCollectionViewCell.xib */,
 			);
-			path = Cell;
+			path = "Group Chat";
 			sourceTree = "<group>";
 		};
 		A776B20226BA8F2500692302 /* Users */ = {

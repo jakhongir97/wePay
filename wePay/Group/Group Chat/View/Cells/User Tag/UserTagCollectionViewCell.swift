@@ -11,7 +11,13 @@ class UserTagCollectionViewCell: UICollectionViewCell {
     // MARK: - Attributes
     @IBOutlet weak var imageView: UIImageView!{
         didSet {
+            imageView.image = UIImage(systemSymbol: .personCropCircleFill)
             imageView.tintColor = UIColor.appColor(.gray)
+        }
+    }
+    @IBOutlet weak var checkImageView: UIImageView!{
+        didSet {
+            checkImageView.tintColor = UIColor.appColor(.green)
         }
     }
     
@@ -21,5 +27,9 @@ class UserTagCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = UIImage(systemSymbol: .personCropCircleFill)
+    }
 }

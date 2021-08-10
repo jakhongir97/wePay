@@ -45,7 +45,11 @@ final class GroupChatViewModel {
             let myGroup = DispatchGroup()
             for tag in tags {
                 myGroup.enter()
-                self.ref.child("users_messages").child(groupID).childByAutoId().setValue(["userID": tag.userID, "messageID": messageRef.key]) { error, _ in
+                let childRef = self.ref.child("users_messages").child(groupID).childByAutoId()
+                childRef.setValue(["userID": tag.userID, "messageID": messageRef.key]) { error, _ in
+                    if let childKey = childRef.key {
+                        self.ref.child("users_messages").child(groupID).child("\(childKey)/isPaid").setValue(false)
+                    }
                     myGroup.leave()
                 }
             }
@@ -159,6 +163,9 @@ final class GroupChatViewModel {
                             for (index,user) in users.enumerated() {
                                 if userID == user.userID {
                                     users[index].isMember = true
+                                    if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool {
+                                        users[index].isPaid = isPaid
+                                    }
                                 }
                             }
                         }
@@ -171,6 +178,28 @@ final class GroupChatViewModel {
         myGroup.notify(queue: .main) {
             self.delegate?.hideActivityIndicator()
             self.delegate?.didFinishFetchWithTaggedUsers(messages: messagesWithTags)
+        }
+    }
+    
+    internal func payMessage(messageID: String, groupID: String, isPaid: Bool) {
+        delegate?.showActivityIndicator()
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        let usersMessagesRef = ref.child("users_messages")
+        usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value, with : { snapshot in
+            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for child in dataSnapshot {
+                    if let userID = child.childSnapshot(forPath: "userID").value as? String {
+                        if userID == currentUserID {
+                            usersMessagesRef.child(groupID).child("\(child.key)/isPaid").setValue(isPaid)
+                        }
+                    }
+                }
+            }
+            self.delegate?.didFinishFetch()
+            self.delegate?.hideActivityIndicator()
+        }) { error in
+            self.delegate?.hideActivityIndicator()
+            self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
 }

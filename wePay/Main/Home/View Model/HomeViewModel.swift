@@ -16,6 +16,7 @@ struct User: Decodable {
     var lastName: String?
     var telephone: String?
     var isMember: Bool?
+    var isPaid: Bool? = false
 }
 
 protocol HomeViewModelProtocol: ViewModelProtocol {
