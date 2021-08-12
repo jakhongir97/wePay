@@ -24,6 +24,11 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
             usersCollectionView.register(UINib(nibName: UserTagCollectionViewCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: UserTagCollectionViewCell.defaultReuseIdentifier)
         }
     }
+    @IBOutlet weak var checkImageView: UIImageView! {
+        didSet {
+            checkImageView.tintColor = UIColor.appColor(.blueOpacity)
+        }
+    }
     
     internal var userTagsDataProvider: UserTagsDataProvider?
     internal var viewController: GroupChatViewController?

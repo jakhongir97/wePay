@@ -58,6 +58,10 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
         if let users = items[indexPath.row].taggedUsers {
             cell.userTagsDataProvider?.items = users
         }
+        
+        if let isCompleted = items[indexPath.row].isCompleted {
+            cell.checkImageView.isHidden = !isCompleted
+        }
 
         return cell
     }
@@ -98,6 +102,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
         }
         
         let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { action in
+            vc.editMessage(messageID: messageID)
             
         }
         

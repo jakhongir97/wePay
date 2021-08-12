@@ -52,8 +52,13 @@ final class GroupViewModel {
         }
     }
     
+    internal func editGroup(groupID: String,newName: String) {
+        let groupsIDRef = ref.child("groups")
+        groupsIDRef.child("\(groupID)/name").setValue(newName)
+    }
+    
     internal func fetchGroups() {
-        delegate?.showActivityIndicator()
+        //delegate?.showActivityIndicator()
         guard let userID = Auth.auth().currentUser?.uid else { return }
         ref.child("users_groups").queryOrdered(byChild: "userID").queryEqual(toValue: userID).observeSingleEvent(of: .value, with: { snapshot in
             var groups = [Group]()
@@ -83,7 +88,7 @@ final class GroupViewModel {
     }
     
     internal func fetchWithSummary(groups: [Group]) {
-        self.delegate?.showActivityIndicator()
+        //self.delegate?.showActivityIndicator()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersMessagesRef = ref.child("users_messages")
         let messagesRef = ref.child("messages")
@@ -93,7 +98,8 @@ final class GroupViewModel {
             if let groupID = group.id {
                 myGroup.enter()
                 usersMessagesRef.child(groupID).queryOrdered(byChild: "userID").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value, with : { snapshot in
-                    var summary = 0
+                    var summary: Double = 0
+                    var ownerSummary: Double = 0
                     let myLitteGroup = DispatchGroup()
                     if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                         for child in dataSnapshot {
@@ -102,8 +108,8 @@ final class GroupViewModel {
                                     myLitteGroup.enter()
                                     messagesRef.child(messageID).observeSingleEvent(of: .value) { snapshot in
                                         let value = snapshot.value as? NSDictionary
-                                        if let message = value?["message"] as? String, let messageInt = Int(message.digits) {
-                                            summary += messageInt
+                                        if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let count = value?["tagCount"] as? Int, let messageInt = Int(message.digits), !isCompleted {
+                                            summary += Double(messageInt)/Double(count)
                                             myLitteGroup.leave()
                                         }
                                     }
@@ -113,8 +119,20 @@ final class GroupViewModel {
                         }
                     }
                     myLitteGroup.notify(queue: .main) {
-                        groupsWithSummary[index].summary = String(summary)
-                        myGroup.leave()
+                        messagesRef.queryOrdered(byChild: "owner").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value) { snapshot in
+                            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                                for child in dataSnapshot {
+                                    let value = child.value as? NSDictionary
+                                    if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let messageDouble = Double(message.digits) {
+                                        if !isCompleted {
+                                            ownerSummary += messageDouble
+                                        }
+                                    }
+                                }
+                            }
+                            groupsWithSummary[index].summary = String(Int(ownerSummary - summary))
+                            myGroup.leave()
+                        }
                     }
                 })
             }

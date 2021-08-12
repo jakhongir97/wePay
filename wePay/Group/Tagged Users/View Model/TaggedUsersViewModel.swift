@@ -48,12 +48,18 @@ final class TaggedUsersViewModel {
     }
     
     internal func tagUsers(messageID: String, groupID: String, users: [User]) {
+        var paidUserIDs = [String]()
         let usersMessagesRef = ref.child("users_messages").child(groupID)
         usersMessagesRef.queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value) { snapshot in
             let myGroup = DispatchGroup()
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for child in dataSnapshot {
                     myGroup.enter()
+                    if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool, let userID = child.childSnapshot(forPath: "userID").value as? String {
+                        if isPaid {
+                            paidUserIDs.append(userID)
+                        }
+                    }
                     usersMessagesRef.child(child.key).removeValue() { error, ref in
                         myGroup.leave()
                     }
@@ -63,11 +69,15 @@ final class TaggedUsersViewModel {
             myGroup.notify(queue: .main) {
                 for user in users {
                     if let userID = user.userID , user.isMember == true {
-                        usersMessagesRef.childByAutoId().setValue(["messageID": messageID, "userID": userID])
+                        usersMessagesRef.childByAutoId().setValue(["messageID": messageID, "userID": userID, "isPaid": paidUserIDs.contains(userID)])
                     }
                 }
+                let messageRef = self.ref.child("messages")
+                messageRef.child("\(messageID)/tagCount").setValue(users.filter{ $0.isMember == true }.count)
             }
         }
+        
+        
     }
     
 }

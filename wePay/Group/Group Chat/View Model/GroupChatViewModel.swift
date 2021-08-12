@@ -16,6 +16,7 @@ struct Message: Decodable {
     let timeStamp: Double?
     let currency: String?
     var taggedUsers: [User]?
+    let isCompleted: Bool?
 }
 
 protocol GroupChatViewModelProtocol: ViewModelProtocol {
@@ -38,7 +39,7 @@ final class GroupChatViewModel {
         let timeStamp = Date().timeIntervalSince1970
         let currency = Curreny.uz.rawValue
         let messageRef = ref.child("messages").childByAutoId()
-        messageRef.setValue(["message": message, "owner": userID, "groupID": groupID, "timeStamp": timeStamp, "currency": currency]) { error, _ in
+        messageRef.setValue(["message": message, "owner": userID, "groupID": groupID, "timeStamp": timeStamp, "currency": currency, "tagCount": tags.count, "isCompleted": false]) { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
@@ -67,8 +68,8 @@ final class GroupChatViewModel {
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for child in dataSnapshot {
                     let value = child.value as? NSDictionary
-                    if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let timeStamp = value?["timeStamp"] as? Double, let currency = value?["currency"] as? String {
-                        let message = Message(id: child.key, message: message, owner: owner, timeStamp: timeStamp, currency: currency)
+                    if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let timeStamp = value?["timeStamp"] as? Double, let currency = value?["currency"] as? String, let isCompleted = value?["isCompleted"] as? Bool {
+                        let message = Message(id: child.key, message: message, owner: owner, timeStamp: timeStamp, currency: currency, isCompleted: isCompleted)
                         messages.append(message)
                     }
                 }
@@ -112,6 +113,12 @@ final class GroupChatViewModel {
                     break
                 }
             }
+            self.delegate?.didFinishFetch()
+        }
+    }
+    
+    internal func changeValueMessage(messageID: String, newMessage: String) {
+        ref.child("messages").child("\(messageID)/message").setValue(newMessage) { error, ref in
             self.delegate?.didFinishFetch()
         }
     }
@@ -191,6 +198,7 @@ final class GroupChatViewModel {
                     if let userID = child.childSnapshot(forPath: "userID").value as? String {
                         if userID == currentUserID {
                             usersMessagesRef.child(groupID).child("\(child.key)/isPaid").setValue(isPaid)
+                            self.checkMessageComplete(messageID: messageID, groupID: groupID)
                         }
                     }
                 }
@@ -201,5 +209,27 @@ final class GroupChatViewModel {
             self.delegate?.hideActivityIndicator()
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
+    }
+    
+    internal func checkMessageComplete(messageID: String, groupID: String) {
+        let messagesRef = ref.child("messages")
+        let usersMessagesRef = ref.child("users_messages")
+        messagesRef.child(messageID).observeSingleEvent(of: .value) { snapshot in
+            let value = snapshot.value as? NSDictionary
+            if let tagCount = value?["tagCount"] as? Int {
+                usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value) { snapshot in
+                    if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                        var count = 0
+                        for child in dataSnapshot {
+                            if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool, isPaid {
+                                count += 1
+                            }
+                        }
+                        messagesRef.child("\(messageID)/isCompleted").setValue(tagCount == count)
+                    }
+                }
+            }
+        }
+        
     }
 }

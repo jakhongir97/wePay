@@ -43,6 +43,14 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
         view().textField.text = ""
     }
     
+    func editMessage(messageID: String) {
+        showAlertWithTextField(title: "Edit mesage", message: "amount") { name in
+            if let message = name , !(message.isEmpty) {
+                self.viewModel.changeValueMessage(messageID: messageID, newMessage: message)
+            }
+        }
+    }
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()

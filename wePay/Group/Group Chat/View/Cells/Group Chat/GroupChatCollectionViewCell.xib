@@ -18,13 +18,13 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 000 sum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z2n-Tp-sw7" customClass="LabelWithPadding" customModule="wePay" customModuleProvider="target">
-                        <rect key="frame" x="45" y="0.0" width="109" height="55"/>
+                        <rect key="frame" x="50" y="5" width="109" height="50"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Jc4-za-9Vs">
-                        <rect key="frame" x="0.0" y="10.5" width="35" height="34"/>
+                        <rect key="frame" x="0.0" y="10.5" width="40" height="39"/>
                         <color key="tintColor" name="blueOpacity"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Jc4-za-9Vs" secondAttribute="height" multiplier="1:1" id="aT7-aP-Tyd"/>
@@ -43,6 +43,13 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                     </collectionView>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="6iq-Rh-KEi">
+                        <rect key="frame" x="169" y="20.5" width="20" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="AdE-Ib-55f"/>
+                            <constraint firstAttribute="width" constant="20" id="Xfn-38-hHu"/>
+                        </constraints>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 June" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OFO-Op-fXO">
                         <rect key="frame" x="381.5" y="37" width="48.5" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
@@ -55,10 +62,12 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="aSd-kf-g4r" secondAttribute="trailing" id="2NL-oO-h4g"/>
                 <constraint firstItem="aSd-kf-g4r" firstAttribute="top" secondItem="OFO-Op-fXO" secondAttribute="bottom" constant="5" id="EVA-Zf-Z6p"/>
-                <constraint firstItem="aSd-kf-g4r" firstAttribute="top" secondItem="Jc4-za-9Vs" secondAttribute="bottom" constant="15" id="Gqf-k0-oKp"/>
+                <constraint firstItem="6iq-Rh-KEi" firstAttribute="leading" secondItem="z2n-Tp-sw7" secondAttribute="trailing" constant="10" id="EgO-Or-PUB"/>
+                <constraint firstItem="aSd-kf-g4r" firstAttribute="top" secondItem="Jc4-za-9Vs" secondAttribute="bottom" constant="10" id="Gqf-k0-oKp"/>
                 <constraint firstItem="Jc4-za-9Vs" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="LFh-xI-z6J"/>
                 <constraint firstItem="Jc4-za-9Vs" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="MBT-KR-Y64"/>
-                <constraint firstItem="z2n-Tp-sw7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Nla-wz-YQz"/>
+                <constraint firstItem="z2n-Tp-sw7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="Nla-wz-YQz"/>
+                <constraint firstItem="6iq-Rh-KEi" firstAttribute="centerY" secondItem="z2n-Tp-sw7" secondAttribute="centerY" id="fGy-KI-541"/>
                 <constraint firstItem="z2n-Tp-sw7" firstAttribute="leading" secondItem="Jc4-za-9Vs" secondAttribute="trailing" constant="10" id="hFG-eo-0fq"/>
                 <constraint firstItem="aSd-kf-g4r" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="kfV-AA-aMm"/>
                 <constraint firstAttribute="bottom" secondItem="aSd-kf-g4r" secondAttribute="bottom" id="lTi-nQ-1gD"/>
@@ -67,6 +76,7 @@
             </constraints>
             <size key="customSize" width="430" height="58"/>
             <connections>
+                <outlet property="checkImageView" destination="6iq-Rh-KEi" id="hMR-WM-HeB"/>
                 <outlet property="dateLabel" destination="OFO-Op-fXO" id="wmK-jg-LZT"/>
                 <outlet property="messageLabel" destination="z2n-Tp-sw7" id="Q7e-qm-jHc"/>
                 <outlet property="profileImageView" destination="Jc4-za-9Vs" id="Mgr-vW-rfc"/>
@@ -76,6 +86,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
         <image name="person.crop.circle.fill" catalog="system" width="128" height="121"/>
         <namedColor name="blueOpacity">
             <color red="0.0" green="0.45899999141693115" blue="0.88999998569488525" alpha="0.40000000596046448" colorSpace="custom" customColorSpace="sRGB"/>

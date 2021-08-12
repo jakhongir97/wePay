@@ -26,7 +26,17 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     // MARK: - Actions
     @objc func create() {
         showAlertWithTextField(title: "Creating Group", message: "Enter name for your new group") { name in
-            self.viewModel.createGroup(name: name ?? "")
+            if let name = name , !(name.isEmpty) {
+                self.viewModel.createGroup(name: name)
+            }
+        }
+    }
+    
+    func editName(groupID: String) {
+        showAlertWithTextField(title: "Edit Name", message: "Enter new name for your group") { name in
+            if let name = name , !(name.isEmpty) {
+                self.viewModel.editGroup(groupID: groupID, newName: name)
+            }
         }
     }
     
@@ -34,7 +44,15 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.fetchGroups()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 }
 

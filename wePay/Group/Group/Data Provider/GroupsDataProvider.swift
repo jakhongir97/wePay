@@ -39,7 +39,22 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupCollectionViewCell.defaultReuseIdentifier, for: indexPath) as? GroupCollectionViewCell else { return UICollectionViewCell() }
         cell.label.text = items[indexPath.row].name
-        cell.summaryLabel.text = items[indexPath.row].summary
+        
+        if let summary = items[indexPath.row].summary, let intSummary = Int(summary) {
+            switch intSummary {
+            case 1 ... Int.max:
+                print("working")
+                cell.summaryLabel.textColor = UIColor.appColor(.green)
+            case Int.min ..< 0:
+                cell.summaryLabel.textColor = UIColor.appColor(.red)
+            case 0:
+                cell.summaryLabel.textColor = .clear
+            default:
+                break
+            }
+            cell.summaryLabel.text = intSummary.formattedWithSeparator
+        }
+        
         return cell
     }
     
@@ -61,16 +76,16 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
     }
     
     func makeContextMenu(indexPath: IndexPath) -> UIMenu {
+        
+        guard let vc = self.viewController as? GroupViewController else { return UIMenu()}
+        guard let groupID = self.items[indexPath.row].id else { return  UIMenu()}
+        
         let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { action in
-//            guard let vc = self.viewController as? GroupChatViewController else { return }
-//            guard let messageID = self.items[indexPath.row].id else { return }
-//            vc.viewModel.deleteMessage(messageID: messageID)
+            vc.editName(groupID: groupID)
             
         }
         
         let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill)) { action in
-            guard let vc = self.viewController as? GroupViewController else { return }
-            guard let groupID = self.items[indexPath.row].id else { return }
             vc.viewModel.deleteGroup(groupID: groupID)
             
         }
