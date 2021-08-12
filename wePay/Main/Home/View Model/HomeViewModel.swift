@@ -17,6 +17,17 @@ struct User: Decodable {
     var telephone: String?
     var isMember: Bool?
     var isPaid: Bool? = false
+    var imageURL: String?
+    
+    var fullName: String? {
+        guard let firstName = firstName, let lastName = lastName else { return String() }
+        return firstName + " " + lastName
+    }
+    
+    var imageName: String? {
+        guard let firstName = firstName, let lastName = lastName else { return String() }
+        return "\(firstName)_\(lastName)_user_image.png"
+    }
 }
 
 protocol HomeViewModelProtocol: ViewModelProtocol {

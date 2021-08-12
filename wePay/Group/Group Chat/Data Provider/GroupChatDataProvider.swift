@@ -106,7 +106,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
             
         }
         
-        let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill)) { action in
+        let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill), attributes: [.destructive]) { action in
             vc.viewModel.deleteMessage(messageID: messageID, groupID: groupID)
         }
         

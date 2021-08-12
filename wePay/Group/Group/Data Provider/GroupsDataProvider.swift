@@ -85,7 +85,7 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
             
         }
         
-        let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill)) { action in
+        let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill), attributes: [.destructive]) { action in
             vc.viewModel.deleteGroup(groupID: groupID)
             
         }
