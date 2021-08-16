@@ -54,7 +54,12 @@ final class GroupViewModel {
     
     internal func editGroup(groupID: String,newName: String) {
         let groupsIDRef = ref.child("groups")
-        groupsIDRef.child("\(groupID)/name").setValue(newName)
+        groupsIDRef.child("\(groupID)/name").setValue(newName) { error, ref in
+            if let error = error {
+                self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+            }
+            self.delegate?.didFinishFetch()
+        }
     }
     
     internal func fetchGroups() {
@@ -123,8 +128,8 @@ final class GroupViewModel {
                             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                                 for child in dataSnapshot {
                                     let value = child.value as? NSDictionary
-                                    if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let messageDouble = Double(message.digits) {
-                                        if !isCompleted {
+                                    if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let messageGroupID = value?["groupID"] as? String, let messageDouble = Double(message.digits) {
+                                        if !isCompleted && messageGroupID == groupID {
                                             ownerSummary += messageDouble
                                         }
                                     }

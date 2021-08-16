@@ -17,6 +17,7 @@ class GroupCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        backgroundColor = UIColor.appColor(.darkGray)
         layer.cornerRadius = 20
         layer.cornerCurve = .continuous
     }
