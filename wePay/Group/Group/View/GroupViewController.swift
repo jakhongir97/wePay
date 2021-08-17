@@ -40,6 +40,11 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
         }
     }
     
+    func share(groupID: String) {
+        let shareURL = "\(groupID)"
+        self.share(text: shareURL)
+    }
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()

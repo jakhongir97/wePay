@@ -43,7 +43,6 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
         if let summary = items[indexPath.row].summary, let intSummary = Int(summary) {
             switch intSummary {
             case 1 ... Int.max:
-                print("working")
                 cell.summaryLabel.textColor = UIColor.appColor(.green)
             case Int.min ..< 0:
                 cell.summaryLabel.textColor = UIColor.appColor(.red)
@@ -80,6 +79,10 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
         guard let vc = self.viewController as? GroupViewController else { return UIMenu()}
         guard let groupID = self.items[indexPath.row].id else { return  UIMenu()}
         
+        let share = UIAction(title: "Share", image: UIImage(systemSymbol: .squareAndArrowUp)) { action in
+            vc.share(groupID: groupID)
+        }
+        
         let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { action in
             vc.editName(groupID: groupID)
             
@@ -90,7 +93,7 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
             
         }
         
-        return UIMenu(title: "", children: [edit, delete])
+        return UIMenu(title: "", children: [share, edit, delete])
     }
     
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {

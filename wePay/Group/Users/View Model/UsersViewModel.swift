@@ -8,8 +8,10 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import Contacts
 
 protocol UsersViewModelProtocol: ViewModelProtocol {
+    func didFinishFetch(contacts: [User])
     func didFinishFetch(users: [User])
     func didFinishFetch(groupUsers: [User])
     func didFinishFetchRemoveUsers()
@@ -23,7 +25,7 @@ final class UsersViewModel {
     let ref = Database.database().reference()
     
     // MARK: - Network call
-    internal func fetchUsers(groupUsers: [User]) {
+    internal func fetchUsers(groupUsers: [User], contacts: [User]) {
         delegate?.showActivityIndicator()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersRef = self.ref.child("users")
@@ -33,14 +35,16 @@ final class UsersViewModel {
                 for child in dataSnapshot {
                     let value = child.value as? NSDictionary
                     if let firstName = value?["firstName"] as? String, let lastName = value?["lastName"] as? String, let phone = value?["phone"] as? String {
-                        var user = User(userID: child.key, firstName: firstName, lastName: lastName, telephone: phone, isMember: false)
-                        for groupUser in groupUsers {
-                            if child.key == groupUser.userID {
-                                user.isMember = true
+                        if contacts.contains(where: { $0.telephone?.digits == phone.digits }) {
+                            var user = User(userID: child.key, firstName: firstName, lastName: lastName, telephone: phone, isMember: false)
+                            for groupUser in groupUsers {
+                                if child.key == groupUser.userID {
+                                    user.isMember = true
+                                }
                             }
-                        }
-                        if currentUserID != child.key {
-                            users.append(user)
+                            if currentUserID != child.key {
+                                users.append(user)
+                            }
                         }
                     }
                 }
@@ -140,5 +144,36 @@ final class UsersViewModel {
                 self.delegate?.didFinishFetchRemoveUsers()
             }
         })
+    }
+    
+    internal func fetchContacts() {
+        
+        var contacts = [User]()
+        // 1.
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts) { (granted, error) in
+            if let error = error {
+                self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+                return
+            }
+            if granted {
+                // 2.
+                let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
+                let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+                do {
+                    // 3.
+                    try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
+                        contacts.append(User(userID: nil, firstName: contact.givenName,
+                                             lastName: contact.familyName,
+                                             telephone: contact.phoneNumbers.first?.value.stringValue))
+                    })
+                    self.delegate?.didFinishFetch(contacts: contacts)
+                } catch let error {
+                    self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+                }
+            } else {
+                self.delegate?.showAlertClosure(error: (APIError.fromMessage, "access denied"))
+            }
+        }
     }
 }

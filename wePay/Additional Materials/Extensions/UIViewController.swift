@@ -8,6 +8,30 @@
 import UIKit
 
 extension UIViewController {
+    func share(imageURL: URL? = nil, text: String) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            DispatchQueue.main.async {
+                var items = [Any]()
+                if let imageURL = imageURL, imageURL != URL(fileURLWithPath: ""), UIApplication.shared.canOpenURL(imageURL) {
+                    let imageData: NSData = NSData(contentsOf: imageURL)!
+                    let image = UIImage(data: imageData as Data)
+                    items.append(image!)
+                }
+                items.append(text)
+                let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
+                //UIApplication.shared.endIgnoringInteractionEvents()
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    vc.popoverPresentationController?.sourceView = self.view
+                    vc.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                    vc.popoverPresentationController?.permittedArrowDirections = []
+                }
+                self.present(vc, animated: true)
+            }
+        }
+    }
+}
+
+extension UIViewController {
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }

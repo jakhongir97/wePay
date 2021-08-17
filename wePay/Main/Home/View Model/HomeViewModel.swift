@@ -11,7 +11,7 @@ import FirebaseDatabase
 import FirebaseAuth
 
 struct User: Decodable {
-    let userID: String?
+    var userID: String?
     var firstName: String?
     var lastName: String?
     var telephone: String?

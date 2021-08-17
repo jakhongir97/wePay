@@ -25,6 +25,7 @@ class UsersViewController: UIViewController, ViewSpecificController, AlertViewCo
     internal var group: Group?
     internal var updatedUsers = [User]()
     internal var allUsers: [User]?
+    internal var contacts: [User]?
     
     // MARK: - Actions
     @objc func done() {
@@ -37,6 +38,7 @@ class UsersViewController: UIViewController, ViewSpecificController, AlertViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
+        viewModel.fetchContacts()
         guard let groupID = group?.id else { return }
         viewModel.fetchGroupUsers(groupID: groupID)
     }
@@ -44,13 +46,18 @@ class UsersViewController: UIViewController, ViewSpecificController, AlertViewCo
 
 // MARK: - Networking
 extension UsersViewController : UsersViewModelProtocol {
+    func didFinishFetch(contacts: [User]) {
+        self.contacts = contacts
+    }
+    
     func didFinishFetch(users: [User]) {
         self.allUsers = users
         usersDataProvider?.items = users
     }
     
     func didFinishFetch(groupUsers: [User]) {
-        viewModel.fetchUsers(groupUsers: groupUsers)
+        guard let contacts = contacts else { return }
+        viewModel.fetchUsers(groupUsers: groupUsers,contacts: contacts)
     }
     
     func didFinishFetchRemoveUsers() {
