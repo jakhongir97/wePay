@@ -26,11 +26,23 @@
 				<string>com.googleusercontent.apps.130237181216-rslcab13c8atik0i1seubu32c43jjltd</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>jakhongir.page.link</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.jakhongir.wePay</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts to find your friends</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -67,11 +79,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSContactsUsageDescription</key>
-	<string>We need access to your contacts to find your friends</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We need access to take pictures</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photos</string>
 </dict>
 </plist>

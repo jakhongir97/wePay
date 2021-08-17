@@ -80,7 +80,7 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
         guard let groupID = self.items[indexPath.row].id else { return  UIMenu()}
         
         let share = UIAction(title: "Share", image: UIImage(systemSymbol: .squareAndArrowUp)) { action in
-            vc.share(groupID: groupID)
+            vc.viewModel.generateContentLink(groupID: groupID)
         }
         
         let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { action in
@@ -93,7 +93,11 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
             
         }
         
-        return UIMenu(title: "", children: [share, edit, delete])
+        if let owner = items[indexPath.row].owner, owner == vc.viewModel.returnUserID() {
+            return UIMenu(title: "", children: [share, edit, delete])
+        } else {
+            return UIMenu(title: "", children: [share])
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {

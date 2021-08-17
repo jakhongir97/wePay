@@ -8,10 +8,12 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseDynamicLinks
 
 struct Group : Decodable {
     let id: String?
     let name: String?
+    let owner: String?
     var summary: String?
 }
 
@@ -19,6 +21,7 @@ protocol GroupViewModelProtocol: ViewModelProtocol {
     func didFinishFetch(groups: [Group])
     func didFinishFetch()
     func didFinishFetch(groupsWithSummary: [Group])
+    func didFinishFetch(url: URL)
 }
 
 final class GroupViewModel {
@@ -44,9 +47,17 @@ final class GroupViewModel {
     
     internal func deleteGroup(groupID: String) {
         let groupsIDRef = ref.child("groups")
+        let usersGroupsRef = self.ref.child("users_groups")
         groupsIDRef.child(groupID).removeValue() { error, ref in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+            }
+            usersGroupsRef.child(groupID).queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value) { snapshot in
+                if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                    for child in dataSnapshot {
+                        usersGroupsRef.child(child.key).removeValue()
+                    }
+                }
             }
             self.delegate?.didFinishFetch()
         }
@@ -74,8 +85,8 @@ final class GroupViewModel {
                     if let groupID = child.childSnapshot(forPath: "groupID").value as? String {
                         self.ref.child("groups").child(groupID).observeSingleEvent(of: .value, with: { snapshot in
                             let value = snapshot.value as? NSDictionary
-                            if let name = value?["name"] as? String {
-                                groups.append(Group(id: groupID, name: name))
+                            if let name = value?["name"] as? String, let owner = value?["owner"] as? String {
+                                groups.append(Group(id: groupID, name: name, owner: owner))
                                 myGroup.leave()
                             }
                         })
@@ -146,5 +157,48 @@ final class GroupViewModel {
             self.delegate?.hideActivityIndicator()
             self.delegate?.didFinishFetch(groupsWithSummary: groupsWithSummary)
         }
+    }
+    
+    internal func addUser(groupID: String) {
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        let usersGroupsRef = self.ref.child("users_groups")
+        usersGroupsRef.childByAutoId().setValue(["userID": currentUserID, "groupID": groupID]) { error, ref in
+            if let error = error {
+                self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+            }
+            self.delegate?.didFinishFetch()
+        }
+    }
+    
+    func generateContentLink(groupID: String) {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "www.example.com"
+        components.path = "/join"
+        let queryItem = URLQueryItem(name: "groupID", value: groupID)
+        components.queryItems = [queryItem]
+        
+        guard let componentURL = components.url else { return }
+        let domain = "https://jakhongir.page.link"
+        
+        let shareLink = DynamicLinkComponents(link: componentURL, domainURIPrefix: domain)
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            shareLink?.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleIdentifier)
+        }
+        shareLink?.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
+        shareLink?.socialMetaTagParameters?.title = "Join"
+        
+        shareLink?.shorten(completion: { url, warnings, error in
+            if let error = error {
+                print(error.localizedDescription )
+                return
+            }
+            guard let url = url else { return }
+            self.delegate?.didFinishFetch(url: url)
+        })
+    }
+    
+    func returnUserID() -> String? {
+        Auth.auth().currentUser?.uid
     }
 }

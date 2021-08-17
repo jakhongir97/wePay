@@ -232,4 +232,8 @@ final class GroupChatViewModel {
         }
         
     }
+    
+    func returnUserID() -> String? {
+        Auth.auth().currentUser?.uid
+    }
 }

@@ -17,6 +17,7 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     internal var isLoading: Bool = false
     internal var coordinator: GroupCoordinator?
     internal let viewModel = GroupViewModel()
+    internal var groupID: String?
     
     // MARK: - Data Providers
     private var groupsDataProvider: GroupsDataProvider?
@@ -40,11 +41,6 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
         }
     }
     
-    func share(groupID: String) {
-        let shareURL = "\(groupID)"
-        self.share(text: shareURL)
-    }
-    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +59,10 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
 
 // MARK: - Networking
 extension GroupViewController : GroupViewModelProtocol {
+    func didFinishFetch(url: URL) {
+        share(text: "I'm sharing", url: url)
+    }
+    
     func didFinishFetch() {
         viewModel.fetchGroups()
     }
@@ -70,6 +70,10 @@ extension GroupViewController : GroupViewModelProtocol {
     func didFinishFetch(groups: [Group]) {
         //groupsDataProvider?.items = groups
         viewModel.fetchWithSummary(groups: groups)
+        guard let groupID = groupID else { return }
+        if !groups.contains(where: { $0.id == groupID }) {
+            viewModel.addUser(groupID: groupID)
+        }
     }
     
     func didFinishFetch(groupsWithSummary: [Group]) {

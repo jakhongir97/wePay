@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -29,6 +30,48 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = UIColor.appColor(.mainBackground)
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
+    }
+    
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        if let incomingURL = userActivity.webpageURL {
+            print("Incoming url is \(incomingURL)")
+            let _ = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLink, error in
+                guard error == nil else {
+                    print("Found an error! \(error!.localizedDescription)")
+                    return
+                }
+                if let dynamicLink = dynamicLink {
+                    self.handleIncomingDynamicLink(dynamicLink)
+                }
+            }
+        }
+    }
+    
+    func handleIncomingDynamicLink(_ dynamicLink: DynamicLink) {
+        guard let url = dynamicLink.url else {
+            print("My dynamic link has no url")
+            return
+        }
+        print("Incoming link parametr is \(url.absoluteString)")
+        
+        guard (dynamicLink.matchType == .unique || dynamicLink.matchType == .default ) else { return }
+        
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let queryItems = components.queryItems else { return }
+        
+        if components.path == "/join" {
+            if let queryItem = queryItems.first(where: { $0.name == "groupID" }) {
+                guard let groupID = queryItem.value else { return }
+                
+                let window = UIApplication.shared.windows[0] as UIWindow
+                let launchScreenVC = LaunchScreenViewController()
+                launchScreenVC.groupID = groupID
+                let navController = UINavigationController(rootViewController: launchScreenVC)
+                let mainCoordinator = MainCoordinator(navigationController: navController)
+                launchScreenVC.coordinator = mainCoordinator
+                
+                window.rootViewController = navController
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -110,7 +110,11 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
             vc.viewModel.deleteMessage(messageID: messageID, groupID: groupID)
         }
         
-        return UIMenu(title: "", children: [pay, format, tag, edit, delete])
+        if let owner = items[indexPath.row].owner, owner == vc.viewModel.returnUserID() {
+            return UIMenu(title: "", children: [pay, format, tag, edit, delete])
+        } else {
+            return UIMenu(title: "", children: [pay])
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {

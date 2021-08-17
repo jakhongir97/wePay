@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func share(imageURL: URL? = nil, text: String) {
+    func share(imageURL: URL? = nil, text: String , url: URL) {
         DispatchQueue.global(qos: .userInitiated).async {
             DispatchQueue.main.async {
                 var items = [Any]()
@@ -18,6 +18,7 @@ extension UIViewController {
                     items.append(image!)
                 }
                 items.append(text)
+                items.append(url)
                 let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
                 //UIApplication.shared.endIgnoringInteractionEvents()
                 if UIDevice.current.userInterfaceIdiom == .pad {

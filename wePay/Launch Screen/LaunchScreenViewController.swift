@@ -17,6 +17,7 @@ class LaunchScreenViewController: UIViewController, ViewSpecificController, Aler
     internal var isLoading: Bool = false
     internal var coordinator: MainCoordinator?
     private let viewModel = LaunchScreenViewModel()
+    internal var groupID: String?
     
     // MARK: - Attributes
     override var prefersStatusBarHidden: Bool { return true }
@@ -92,6 +93,14 @@ extension LaunchScreenViewController {
         let tabBarVC = TabBarController()
         tabBarVC.modalPresentationStyle = .fullScreen
         tabBarVC.modalTransitionStyle = .crossDissolve
+        if let groupID = groupID {
+            if let navController = tabBarVC.viewControllers?[1] as? UINavigationController {
+                if let vc = navController.topViewController as? GroupViewController {
+                    tabBarVC.selectedIndex = 1
+                    vc.groupID = groupID
+                }
+            }
+        }
         navigationController?.present(tabBarVC, animated: true)
     }
 }
