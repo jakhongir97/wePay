@@ -34,7 +34,7 @@ final class GroupChatViewModel {
     let ref = Database.database().reference()
     
     // MARK: - Network call
-    internal func createMessage(message: String, groupID: String, tags: [User]) {
+    internal func createMessage(message: String, groupID: String, groupName: String, tags: [User]) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let timeStamp = Date().timeIntervalSince1970
         let currency = Curreny.uz.rawValue
@@ -55,7 +55,32 @@ final class GroupChatViewModel {
                 }
             }
             myGroup.notify(queue: .main) {
+                self.sendPushNotifications(groupID: groupID, groupName: groupName, message: message.withCurreny(currency: currency), users: tags)
                 self.delegate?.didFinishFetch()
+            }
+        }
+    }
+    
+    internal func sendPushNotifications(groupID: String, groupName: String, message: String, users: [User]) {
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        ref.child("users").child(currentUserID).observeSingleEvent(of: .value) { snapshot in
+            let value = snapshot.value as? NSDictionary
+            if let firstName = value?["firstName"] as? String, let lastName = value?["lastName"] as? String {
+                if let  fullName = User(firstName: firstName, lastName: lastName).fullName {
+                    for user in users {
+                        if let userID = user.userID {
+                            self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
+                                let value = snapshot.value as? NSDictionary
+                                if let fcmToken = value?["fcmToken"] as? String {
+                                    if userID != currentUserID {
+                                        PushNotificationSender.sendPushNotification(to: fcmToken, userID: currentUserID, title: groupName, body: "\(fullName) \n\(message)")
+                                    }
+                                }
+                            })
+                        }
+                        
+                    }
+                }
             }
         }
     }

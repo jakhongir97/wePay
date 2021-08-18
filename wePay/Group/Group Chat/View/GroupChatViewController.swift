@@ -39,7 +39,8 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
             return
         }
         guard let users = users else { return }
-        viewModel.createMessage(message: message, groupID: groupID, tags: users)
+        guard let groupName = group?.name else { return }
+        viewModel.createMessage(message: message, groupID: groupID, groupName: groupName, tags: users)
         view().textField.text = ""
     }
     
