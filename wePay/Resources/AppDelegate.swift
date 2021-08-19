@@ -69,7 +69,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // 2
         UIApplication.shared.applicationIconBadgeNumber = 0
         if let groupID = userInfo["groupID"] as? String {
-            print(groupID)
+            let window = UIApplication.shared.windows[0] as UIWindow
+            let launchScreenVC = LaunchScreenViewController()
+            launchScreenVC.link = .show
+            launchScreenVC.groupID = groupID
+            let navController = UINavigationController(rootViewController: launchScreenVC)
+            let mainCoordinator = MainCoordinator(navigationController: navController)
+            launchScreenVC.coordinator = mainCoordinator
+            
+            window.rootViewController = navController
         }
     }
 }

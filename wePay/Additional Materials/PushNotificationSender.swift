@@ -9,12 +9,12 @@ import UIKit
 
 class PushNotificationSender {
     
-    static func sendPushNotification(to token: String, userID: String, title: String, body: String) {
+    static func sendPushNotification(to token: String, groupID: String, title: String, body: String) {
         let urlString = "https://fcm.googleapis.com/fcm/send"
         let url = NSURL(string: urlString)!
         let paramString: [String : Any] = ["to" : token,
                                            "notification" : ["title" : title, "body" : body],
-                                           "data" : ["user" : userID]
+                                           "data" : ["groupID" : groupID]
         ]
         let request = NSMutableURLRequest(url: url as URL)
         request.httpMethod = "POST"

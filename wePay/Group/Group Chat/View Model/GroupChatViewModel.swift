@@ -72,9 +72,9 @@ final class GroupChatViewModel {
                             self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
                                 let value = snapshot.value as? NSDictionary
                                 if let fcmToken = value?["fcmToken"] as? String {
-                                    if userID != currentUserID {
-                                        PushNotificationSender.sendPushNotification(to: fcmToken, userID: currentUserID, title: groupName, body: "\(fullName) \n\(message)")
-                                    }
+                                    //if userID != currentUserID {
+                                        PushNotificationSender.sendPushNotification(to: fcmToken, groupID: groupID, title: groupName, body: "\(fullName) \n\(message)")
+                                    //}
                                 }
                             })
                         }

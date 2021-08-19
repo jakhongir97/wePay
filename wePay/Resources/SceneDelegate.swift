@@ -64,6 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
                 let window = UIApplication.shared.windows[0] as UIWindow
                 let launchScreenVC = LaunchScreenViewController()
+                launchScreenVC.link = .join
                 launchScreenVC.groupID = groupID
                 let navController = UINavigationController(rootViewController: launchScreenVC)
                 let mainCoordinator = MainCoordinator(navigationController: navController)

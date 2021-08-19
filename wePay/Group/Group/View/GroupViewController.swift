@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum Link : String {
+    case join
+    case show
+}
+
 class GroupViewController: UIViewController, ViewSpecificController, AlertViewController {
     
     // MARK: - Root View
@@ -17,6 +22,7 @@ class GroupViewController: UIViewController, ViewSpecificController, AlertViewCo
     internal var isLoading: Bool = false
     internal var coordinator: GroupCoordinator?
     internal let viewModel = GroupViewModel()
+    internal var link: Link?
     internal var groupID: String?
     
     // MARK: - Data Providers
@@ -70,14 +76,25 @@ extension GroupViewController : GroupViewModelProtocol {
     func didFinishFetch(groups: [Group]) {
         //groupsDataProvider?.items = groups
         viewModel.fetchWithSummary(groups: groups)
-        guard let groupID = groupID else { return }
-        if !groups.contains(where: { $0.id == groupID }) {
-            viewModel.addUser(groupID: groupID)
-        }
     }
     
     func didFinishFetch(groupsWithSummary: [Group]) {
         groupsDataProvider?.items = groupsWithSummary
+        guard let groupID = groupID , let link = link else { return }
+        switch link {
+        case .show:
+            for (index,group) in groupsWithSummary.enumerated() {
+                if group.id == groupID {
+                    let indexPath = IndexPath(item: index, section: 0)
+                    groupsDataProvider?.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
+                    coordinator?.pushGroupChatVC(group: group)
+                }
+            }
+        case .join:
+            if !groupsWithSummary.contains(where: { $0.id == groupID }) {
+                viewModel.addUser(groupID: groupID)
+            }
+        }
     }
 }
 
