@@ -30,7 +30,8 @@ class UsersViewController: UIViewController, ViewSpecificController, AlertViewCo
     // MARK: - Actions
     @objc func done() {
         guard let group = group else { return }
-        viewModel.addUsers(group: group, users: updatedUsers)
+        guard let allUsers = allUsers else { return }
+        viewModel.updateUsers(group: group, oldUsers: allUsers.filter({$0.isMember ?? true }), newUsers: updatedUsers.filter({$0.isMember ?? true }))
         navigationController?.popViewController(animated: true)
     }
     
@@ -52,6 +53,7 @@ extension UsersViewController : UsersViewModelProtocol {
     
     func didFinishFetch(users: [User]) {
         self.allUsers = users
+        updatedUsers = users
         usersDataProvider?.items = users
     }
     

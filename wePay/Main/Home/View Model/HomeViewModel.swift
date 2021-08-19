@@ -10,7 +10,7 @@ import Contacts
 import FirebaseDatabase
 import FirebaseAuth
 
-struct User: Decodable {
+struct User: Decodable, Hashable {
     var userID: String?
     var firstName: String?
     var lastName: String?
@@ -27,6 +27,10 @@ struct User: Decodable {
     var imageName: String? {
         guard let firstName = firstName, let lastName = lastName else { return String() }
         return "\(firstName)_\(lastName)_user_image.png"
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(userID)
     }
 }
 

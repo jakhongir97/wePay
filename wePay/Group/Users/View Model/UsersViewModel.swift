@@ -88,33 +88,44 @@ final class UsersViewModel {
         }
     }
     
+    internal func updateUsers(group: Group, oldUsers: [User], newUsers: [User]) {
+        addUsers(group: group, users: Array(Set(newUsers).subtracting(oldUsers)))
+        removeUsers(group: group, users: Array(Set(oldUsers).subtracting(newUsers)))
+    }
+    
     internal func addUsers(group: Group, users: [User]) {
         guard let groupID = group.id else { return }
-        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        guard let groupName = group.name else { return }
+        let usersGroupsRef = self.ref.child("users_groups")
+        for user in users {
+            if let userID = user.userID {
+                usersGroupsRef.childByAutoId().setValue(["userID": userID, "groupID": groupID])
+                sendPushNotifications(groupID: groupID, groupName: groupName, userID: userID)
+            }
+        }
+    }
+    
+    internal func removeUsers(group: Group, users: [User]) {
+        guard let groupID = group.id else { return }
         let usersGroupsRef = self.ref.child("users_groups")
         usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
-            let myGroup = DispatchGroup()
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for child in dataSnapshot {
-                    myGroup.enter()
                     if let userID = child.childSnapshot(forPath: "userID").value as? String {
-                        if userID != currentUserID {
-                            usersGroupsRef.child(child.key).removeValue() { error, ref in
-                                myGroup.leave()
-                            }
-                        } else {
-                            myGroup.leave()
+                        if users.contains(where: { $0.userID == userID }) {
+                            usersGroupsRef.child(child.key).removeValue()
                         }
                     }
                 }
             }
-            
-            myGroup.notify(queue: .main) {
-                for user in users {
-                    if let userID = user.userID {
-                        usersGroupsRef.childByAutoId().setValue(["userID": userID, "groupID": groupID])
-                    }
-                }
+        })
+    }
+    
+    internal func sendPushNotifications(groupID: String, groupName: String, userID: String) {
+        self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
+            let value = snapshot.value as? NSDictionary
+            if let fcmToken = value?["fcmToken"] as? String {
+                PushNotificationSender.sendPushNotification(to: fcmToken, groupID: groupID, title: groupName, body: "You invited to the group!")
             }
         })
     }
