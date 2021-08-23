@@ -137,14 +137,10 @@ extension ProfileViewController : UITextFieldDelegate {
         if let nextField = view().viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
         } else {
-            dismissKeyboard()
+            view().endEditing(true)
             afterKeyboardAction()
         }
         return false
-    }
-    
-    @objc func dismissKeyboard() {
-        view().endEditing(true)
     }
     
     func afterKeyboardAction() {

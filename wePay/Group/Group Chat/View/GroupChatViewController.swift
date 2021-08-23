@@ -127,10 +127,6 @@ extension GroupChatViewController {
             }
         }
     }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
 }
 
 
