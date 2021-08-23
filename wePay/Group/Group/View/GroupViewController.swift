@@ -95,6 +95,7 @@ extension GroupViewController : GroupViewModelProtocol {
                 viewModel.addUser(groupID: groupID)
             }
         }
+        resetAttributes()
     }
 }
 
@@ -111,5 +112,10 @@ extension GroupViewController {
         let groupsDataProvider = GroupsDataProvider(viewController: self)
         groupsDataProvider.collectionView = view().collectionView
         self.groupsDataProvider = groupsDataProvider
+    }
+    
+    func resetAttributes(){
+        groupID = nil
+        link = nil
     }
 }

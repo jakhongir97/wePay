@@ -18,6 +18,9 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
     internal var coordinator: ProfileCoordinator?
     private let viewModel = ProfileViewModel()
     internal var imagePicker: ImagePicker!
+    private var interactionImageView: UIContextMenuInteraction?
+    private var interactionFullNameView: UIContextMenuInteraction?
+    private var keyboardHelper: KeyboardHelper?
     
     // MARK: - Data Providers
     
@@ -35,6 +38,8 @@ class ProfileViewController: UIViewController, ViewSpecificController, AlertView
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
+        //closeKeyboardOnOutsideTap()
+        setupKeyboard()
         viewModel.getUserInfo()
     }
 }
@@ -58,7 +63,8 @@ extension ProfileViewController : ProfileViewModelProtocol {
     
     func didFinishFetch(user: User) {
         self.user = user
-        view().nameLabel.text = user.fullName
+        view().firstNameTextField.text = user.firstName
+        view().lastNameTextField.text = user.lastName
         if let imageURL = user.imageURL {
             view().profileImageView.sd_setImage(with: URL(string: imageURL), completed: nil)
         }
@@ -76,8 +82,15 @@ extension ProfileViewController {
         viewModel.delegate = self
         imagePicker = ImagePicker(presentationController: self, delegate: self)
         
-        let interaction = UIContextMenuInteraction(delegate: self)
-        view().profileImageView.addInteraction(interaction)
+        interactionImageView = UIContextMenuInteraction(delegate: self)
+        if let interactionImageView = interactionImageView {
+            view().profileImageView.addInteraction(interactionImageView)
+        }
+        
+        interactionFullNameView = UIContextMenuInteraction(delegate: self)
+        if let interactionFullNameView = interactionFullNameView {
+            view().fullNameView.addInteraction(interactionFullNameView)
+        }
     }
 }
 
@@ -92,19 +105,79 @@ extension ProfileViewController: ImagePickerDelegate {
     }
 }
 
+// MARK: - UITextFieldDelegate
+extension ProfileViewController : UITextFieldDelegate {
+    
+    func editMode() {
+        view().firstNameTextField.isUserInteractionEnabled = true
+        view().lastNameTextField.isUserInteractionEnabled = true
+        self.view().firstNameTextField.becomeFirstResponder()
+    }
+    
+    func setupKeyboard() {
+        view().firstNameTextField.delegate = self
+        view().lastNameTextField.delegate = self
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view().addGestureRecognizer(tap)
+        
+        keyboardHelper = KeyboardHelper { [unowned self] animation, keyboardFrame, duration in
+            switch animation {
+            case .keyboardWillShow:
+                break
+            case .keyboardWillHide:
+                view().firstNameTextField.isUserInteractionEnabled = false
+                view().lastNameTextField.isUserInteractionEnabled = false
+                afterKeyboardAction()
+            }
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let nextField = view().viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            dismissKeyboard()
+            afterKeyboardAction()
+        }
+        return false
+    }
+    
+    @objc func dismissKeyboard() {
+        view().endEditing(true)
+    }
+    
+    func afterKeyboardAction() {
+        if let firstName = view().firstNameTextField.text, !(firstName.isEmpty) {
+            viewModel.updateUser(firstName: firstName)
+        }
+        if let lastName = view().lastNameTextField.text, !(lastName.isEmpty) {
+            viewModel.updateUser(lastName: lastName)
+        }
+        
+    }
+}
+
 // MARK: - Context Menu Delegate
 extension ProfileViewController: UIContextMenuInteractionDelegate {
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: { suggestedActions in
-            return self.makeContextMenu()
+            return self.makeContextMenu(interaction: interaction)
         })
     }
     
-    func makeContextMenu() -> UIMenu {
+    func makeContextMenu(interaction: UIContextMenuInteraction) -> UIMenu {
         
         let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { _ in
-            self.imagePicker.present()
+            switch interaction {
+            case self.interactionImageView:
+                self.imagePicker.present()
+            case self.interactionFullNameView:
+                self.editMode()
+            default:
+                break
+            }
         }
         
         let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill), attributes: [.destructive]) { _ in
@@ -112,21 +185,29 @@ extension ProfileViewController: UIContextMenuInteractionDelegate {
             self.viewModel.updateUser(imageURL: nil)
         }
         
-        return UIMenu(title: "", children: [edit, delete])
+        switch interaction {
+        case interactionImageView:
+            return UIMenu(title: "", children: [edit, delete])
+        case interactionFullNameView:
+            return UIMenu(title: "", children: [edit])
+        default:
+            return UIMenu()
+        }
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        return makeTargetedPreview(for: configuration)
+        return makeTargetedPreview(for: configuration, interaction: interaction)
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        return makeTargetedPreview(for: configuration)
+        return makeTargetedPreview(for: configuration, interaction: interaction)
     }
     
-    private func makeTargetedPreview(for configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+    private func makeTargetedPreview(for configuration: UIContextMenuConfiguration, interaction: UIContextMenuInteraction) -> UITargetedPreview? {
         let parameters = UIPreviewParameters()
         parameters.backgroundColor = .clear
         //parameters.visiblePath = UIBezierPath(ovalIn: view().profileImageView.bounds)
-        return UITargetedPreview(view: view().profileImageView, parameters: parameters)
+        guard let view = interaction.view else { return nil }
+        return UITargetedPreview(view: view, parameters: parameters)
     }
 }

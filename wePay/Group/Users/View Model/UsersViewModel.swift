@@ -70,8 +70,8 @@ final class UsersViewModel {
                     if let userID = child.childSnapshot(forPath: "userID").value as? String {
                         self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
                             let value = snapshot.value as? NSDictionary
-                            if let firstName = value?["firstName"] as? String, let lastName = value?["lastName"] as? String, let phone = value?["phone"] as? String {
-                                users.append(User(userID: userID, firstName: firstName, lastName: lastName, telephone: phone))
+                            if let phone = value?["phone"] as? String {
+                                users.append(User(userID: userID, firstName: value?["firstName"] as? String, lastName: value?["lastName"] as? String, telephone: phone))
                                 myGroup.leave()
                             }
                         })
@@ -174,7 +174,7 @@ final class UsersViewModel {
                 do {
                     // 3.
                     try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
-                        contacts.append(User(userID: nil, firstName: contact.givenName,
+                        contacts.append(User(firstName: contact.givenName,
                                              lastName: contact.familyName,
                                              telephone: contact.phoneNumbers.first?.value.stringValue))
                     })

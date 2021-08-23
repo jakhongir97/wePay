@@ -52,7 +52,7 @@ final class GroupViewModel {
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
-            usersGroupsRef.child(groupID).queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value) { snapshot in
+            usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value) { snapshot in
                 if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                     for child in dataSnapshot {
                         usersGroupsRef.child(child.key).removeValue()

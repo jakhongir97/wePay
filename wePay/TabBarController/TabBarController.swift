@@ -35,11 +35,12 @@ final class TabBarController: UITabBarController {
 // MARK: - Other funcs
 extension TabBarController {
     private func createControllers() {
-        mainCoordinator.start()
+        //mainCoordinator.start()
         groupCoordinator.start()
         profileCoordinator.start()
         
-        viewControllers = [mainCoordinator.navigationController, groupCoordinator.navigationController, profileCoordinator.navigationController]
+        //viewControllers = [mainCoordinator.navigationController, groupCoordinator.navigationController, profileCoordinator.navigationController]
+        viewControllers = [groupCoordinator.navigationController, profileCoordinator.navigationController]
     }
     
     private func appearanceSettings() {

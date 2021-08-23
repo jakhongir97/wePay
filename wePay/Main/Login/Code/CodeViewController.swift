@@ -56,7 +56,23 @@ extension CodeViewController : CodeViewModelProtocol {
         UserDefaults.standard.savePhone(verificationPhone: phone)
         viewModel.createUser(phone: phone)
         UIApplication.saveFirstLaunch()
-        self.presentTabBarVC()
+        viewModel.fetchContacts()
+    }
+    
+    func didFinishFetch(contacts: [User]) {
+        showActivityIndicator()
+        for contact in contacts {
+            if let telephone = contact.telephone, telephone.origin() == UserDefaults.standard.getPhone() {
+                if let firstName = contact.firstName {
+                    viewModel.updateUser(firstName: firstName)
+                }
+                if let lastName = contact.lastName {
+                    viewModel.updateUser(lastName: lastName)
+                }
+            }
+        }
+        hideActivityIndicator()
+        presentTabBarVC()
     }
 }
 

@@ -56,11 +56,13 @@ final class ProfileViewModel {
     internal func updateUser(firstName: String) {
         guard let user = Auth.auth().currentUser else { return }
         self.ref.child("users/\(user.uid)/firstName").setValue(firstName)
+        self.ref.child("users/\(user.uid)/isModified").setValue(true)
     }
     
     internal func updateUser(lastName: String) {
         guard let user = Auth.auth().currentUser else { return }
         self.ref.child("users/\(user.uid)/lastName").setValue(lastName)
+        self.ref.child("users/\(user.uid)/isModified").setValue(true)
     }
     
     internal func updateUser(imageURL: String?) {

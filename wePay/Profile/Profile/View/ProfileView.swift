@@ -16,6 +16,22 @@ final class ProfileView: CustomView {
             profileImageView.layer.cornerRadius = 50
         }
     }
-    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var fullNameView: UIView! {
+        didSet {
+            fullNameView.isUserInteractionEnabled = true
+            fullNameView.layer.cornerRadius = 25
+            fullNameView.layer.cornerCurve = .continuous
+        }
+    }
+    @IBOutlet weak var firstNameTextField: UITextField!{
+        didSet {
+            firstNameTextField.isUserInteractionEnabled = false
+        }
+    }
+    @IBOutlet weak var lastNameTextField: UITextField!{
+        didSet {
+            lastNameTextField.isUserInteractionEnabled = false
+        }
+    }
     
 }
