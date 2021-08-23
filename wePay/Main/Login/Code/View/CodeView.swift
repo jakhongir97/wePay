@@ -8,14 +8,12 @@
 import UIKit
 
 final class CodeView: CustomView {
-    
     // MARK: - Outlets
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var codeTextField: UITextField!{
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var codeTextField: UITextField! {
         didSet {
             codeTextField.setLeftPaddingPoints(16)
         }
     }
-    @IBOutlet weak var continueButton: UIButton!
-    
+    @IBOutlet var continueButton: UIButton!
 }

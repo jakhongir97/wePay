@@ -12,10 +12,9 @@ protocol LaunchScreenViewModelProtocol: ViewModelProtocol {
 }
 
 final class LaunchScreenViewModel {
-    
     // MARK: - Attributes
     weak var delegate: LaunchScreenViewModelProtocol?
-    
+
     // MARK: - Network call
-    
+
 }

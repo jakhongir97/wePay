@@ -9,7 +9,6 @@ import UIKit
 
 @IBDesignable
 class VerticalButton: UIButton {
-
     @IBInspectable public var padding: CGFloat = 20.0 {
         didSet {
             setNeedsLayout()
@@ -40,5 +39,4 @@ class VerticalButton: UIButton {
 
         super.layoutSubviews()
     }
-
 }

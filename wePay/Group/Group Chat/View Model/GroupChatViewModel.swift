@@ -5,9 +5,9 @@
 //  Created by Admin NBU on 04/08/21.
 //
 
-import UIKit
-import FirebaseDatabase
 import FirebaseAuth
+import FirebaseDatabase
+import UIKit
 
 struct Message: Decodable {
     let id: String?
@@ -27,12 +27,11 @@ protocol GroupChatViewModelProtocol: ViewModelProtocol {
 }
 
 final class GroupChatViewModel {
-    
     // MARK: - Attributes
     weak var delegate: GroupChatViewModelProtocol?
-    
+
     let ref = Database.database().reference()
-    
+
     // MARK: - Network call
     internal func createMessage(message: String, groupID: String, groupName: String, tags: [User]) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
@@ -47,7 +46,7 @@ final class GroupChatViewModel {
             for tag in tags {
                 myGroup.enter()
                 let childRef = self.ref.child("users_messages").child(groupID).childByAutoId()
-                childRef.setValue(["userID": tag.userID, "messageID": messageRef.key]) { error, _ in
+                childRef.setValue(["userID": tag.userID, "messageID": messageRef.key]) { _, _ in
                     if let childKey = childRef.key {
                         self.ref.child("users_messages").child(groupID).child("\(childKey)/isPaid").setValue(false)
                     }
@@ -60,7 +59,7 @@ final class GroupChatViewModel {
             }
         }
     }
-    
+
     internal func sendPushNotifications(groupID: String, groupName: String, message: String, users: [User]) {
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         ref.child("users").child(currentUserID).observeSingleEvent(of: .value) { snapshot in
@@ -72,21 +71,20 @@ final class GroupChatViewModel {
                             self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
                                 let value = snapshot.value as? NSDictionary
                                 if let fcmToken = value?["fcmToken"] as? String {
-                                    //if userID != currentUserID {
+                                    // if userID != currentUserID {
                                         PushNotificationSender.sendPushNotification(to: fcmToken, groupID: groupID, title: groupName, body: "\(fullName) \n\(message)")
-                                    //}
+                                    // }
                                 }
                             })
                         }
-                        
                     }
                 }
             }
         }
     }
-    
+
     internal func getMessages(groupID: String) {
-        //self.delegate?.showActivityIndicator()
+        // self.delegate?.showActivityIndicator()
         let messagesRef = ref.child("messages")
         messagesRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
             var messages = [Message]()
@@ -106,11 +104,11 @@ final class GroupChatViewModel {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
-    
+
     internal func deleteMessage(messageID: String, groupID: String) {
         let messagesRef = ref.child("messages")
         let usersMessagesRef = ref.child("users_messages")
-        messagesRef.child(messageID).removeValue() { error, _ in
+        messagesRef.child(messageID).removeValue { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
@@ -124,7 +122,7 @@ final class GroupChatViewModel {
             self.delegate?.didFinishFetch()
         }
     }
-    
+
     internal func changeCurrencyMessage(messageID: String) {
         let currencyRef = ref.child("messages").child("\(messageID)/currency")
         currencyRef.observeSingleEvent(of: .value) { snapshot in
@@ -141,16 +139,16 @@ final class GroupChatViewModel {
             self.delegate?.didFinishFetch()
         }
     }
-    
+
     internal func changeValueMessage(messageID: String, newMessage: String) {
-        ref.child("messages").child("\(messageID)/message").setValue(newMessage) { error, ref in
+        ref.child("messages").child("\(messageID)/message").setValue(newMessage) { _, _ in
             self.delegate?.didFinishFetch()
         }
     }
-    
+
     internal func fetchGroupUsers(groupID: String) {
-        //delegate?.showActivityIndicator()
-        //guard let userID = Auth.auth().currentUser?.uid else { return }
+        // delegate?.showActivityIndicator()
+        // guard let userID = Auth.auth().currentUser?.uid else { return }
         let usersGroupsRef = self.ref.child("users_groups")
         usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
             var users = [User]()
@@ -178,32 +176,30 @@ final class GroupChatViewModel {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
-    
+
     internal func fetchWithTaggedUsers(groupID: String, groupUsers: [User], messages: [Message]) {
-        //delegate?.showActivityIndicator()
+        // delegate?.showActivityIndicator()
         let usersMessagesRef = ref.child("users_messages")
         var messagesWithTags = messages
         let myGroup = DispatchGroup()
-        for (index,message) in messages.enumerated() {
+        for (index, message) in messages.enumerated() {
             myGroup.enter()
-            usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: message.id).observeSingleEvent(of: .value, with : { snapshot in
+            usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: message.id).observeSingleEvent(of: .value, with: { snapshot in
                 var users = groupUsers
                 users.indices.forEach { users[$0].isMember = false }
                 if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                     for child in dataSnapshot {
                         if let userID = child.childSnapshot(forPath: "userID").value as? String {
-                            for (index,user) in users.enumerated() {
-                                if userID == user.userID {
-                                    users[index].isMember = true
-                                    if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool {
-                                        users[index].isPaid = isPaid
-                                    }
+                            for (index, user) in users.enumerated() where userID == user.userID {
+                                users[index].isMember = true
+                                if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool {
+                                    users[index].isPaid = isPaid
                                 }
                             }
                         }
                     }
                 }
-                messagesWithTags[index].taggedUsers = users.filter({$0.isMember ?? true })
+                messagesWithTags[index].taggedUsers = users.filter({ $0.isMember ?? true })
                 myGroup.leave()
             })
         }
@@ -212,12 +208,12 @@ final class GroupChatViewModel {
             self.delegate?.didFinishFetchWithTaggedUsers(messages: messagesWithTags)
         }
     }
-    
+
     internal func payMessage(messageID: String, groupID: String, isPaid: Bool) {
         delegate?.showActivityIndicator()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersMessagesRef = ref.child("users_messages")
-        usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value, with : { snapshot in
+        usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value, with: { snapshot in
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for child in dataSnapshot {
                     if let userID = child.childSnapshot(forPath: "userID").value as? String {
@@ -235,7 +231,7 @@ final class GroupChatViewModel {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
-    
+
     internal func checkMessageComplete(messageID: String, groupID: String) {
         let messagesRef = ref.child("messages")
         let usersMessagesRef = ref.child("users_messages")
@@ -255,9 +251,8 @@ final class GroupChatViewModel {
                 }
             }
         }
-        
     }
-    
+
     func returnUserID() -> String? {
         Auth.auth().currentUser?.uid
     }

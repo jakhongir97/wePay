@@ -8,12 +8,10 @@
 import UIKit
 
 final class GroupView: CustomView {
-    
     // MARK: - Outlets
-    @IBOutlet weak var collectionView: UICollectionView!{
+    @IBOutlet var collectionView: UICollectionView! {
         didSet {
             collectionView.register(UINib(nibName: GroupCollectionViewCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: GroupCollectionViewCell.defaultReuseIdentifier)
         }
     }
-    
 }

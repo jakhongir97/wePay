@@ -8,16 +8,15 @@
 import UIKit
 
 class TaggedUsersViewController: UIViewController, ViewSpecificController, AlertViewController {
-    
     // MARK: - Root View
     typealias RootView = TaggedUsersView
-    
+
     // MARK: - Services
     internal var customSpinnerView = CustomSpinnerView()
-    internal var isLoading: Bool = false
+    internal var isLoading = false
     internal var coordinator: GroupCoordinator?
     private let viewModel = TaggedUsersViewModel()
-    
+
     // MARK: - Data Providers
     private var taggedUsersDataProvider: TaggedUsersDataProvider?
 
@@ -27,7 +26,7 @@ class TaggedUsersViewController: UIViewController, ViewSpecificController, Alert
     internal var groupUsers: [User]?
     internal var updatedTaggedUsers = [User]()
     internal var taggedUsers: [User]?
-    
+
     // MARK: - Actions
     @objc func done() {
         guard let groupID = groupID else { return }
@@ -35,7 +34,7 @@ class TaggedUsersViewController: UIViewController, ViewSpecificController, Alert
         viewModel.tagUsers(messageID: messageID, groupID: groupID, users: updatedTaggedUsers)
         navigationController?.popViewController(animated: true)
     }
-    
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +47,7 @@ class TaggedUsersViewController: UIViewController, ViewSpecificController, Alert
 }
 
 // MARK: - Networking
-extension TaggedUsersViewController : TaggedUsersViewModelProtocol {
+extension TaggedUsersViewController: TaggedUsersViewModelProtocol {
     func didFinishFetch(taggedUsers: [User]) {
         self.taggedUsers = taggedUsers
         updatedTaggedUsers = taggedUsers
@@ -65,7 +64,7 @@ extension TaggedUsersViewController {
         let rightBarButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(done))
         navigationItem.rightBarButtonItem = rightBarButton
         viewModel.delegate = self
-        
+
         let taggedUsersDataProvider = TaggedUsersDataProvider(viewController: self)
         taggedUsersDataProvider.collectionView = view().collectionView
         self.taggedUsersDataProvider = taggedUsersDataProvider

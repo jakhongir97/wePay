@@ -64,14 +64,14 @@ extension UIView {
                        delay: 0,
                        options: .curveLinear,
                        animations: { [weak self] in
-                            self?.transform = CGAffineTransform.init(scaleX: 0.95, y: 0.95)
-        }) {  (done) in
+                            self?.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }) {  _ in
             UIView.animate(withDuration: 0.1,
                            delay: 0,
                            options: .curveLinear,
                            animations: { [weak self] in
-                                self?.transform = CGAffineTransform.init(scaleX: 1, y: 1)
-            }) { [weak self] (_) in
+                                self?.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }) { [weak self] _ in
                 self?.isUserInteractionEnabled = true
                 completionBlock()
             }
@@ -80,27 +80,24 @@ extension UIView {
 }
 
 extension UIView {
-
     fileprivate struct AssociatedObjectKeys {
         static var tapGestureRecognizer = "MediaViewerAssociatedObjectKey_mediaViewer"
     }
 
     fileprivate typealias Action = (() -> Void)?
 
-
     fileprivate var tapGestureRecognizerAction: Action? {
+        get {
+            let tapGestureRecognizerActionInstance = objc_getAssociatedObject(self, &AssociatedObjectKeys.tapGestureRecognizer) as? Action
+            return tapGestureRecognizerActionInstance
+        }
         set {
             if let newValue = newValue {
                 // Computed properties get stored as associated objects
                 objc_setAssociatedObject(self, &AssociatedObjectKeys.tapGestureRecognizer, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
             }
         }
-        get {
-            let tapGestureRecognizerActionInstance = objc_getAssociatedObject(self, &AssociatedObjectKeys.tapGestureRecognizer) as? Action
-            return tapGestureRecognizerActionInstance
-        }
     }
-
 
     public func addTapGestureRecognizer(action: (() -> Void)?) {
         self.isUserInteractionEnabled = true
@@ -109,7 +106,6 @@ extension UIView {
         self.addGestureRecognizer(tapGestureRecognizer)
     }
 
-
     @objc fileprivate func handleTapGesture(sender: UITapGestureRecognizer) {
         if let action = self.tapGestureRecognizerAction {
             action?()
@@ -117,5 +113,4 @@ extension UIView {
             print("no action")
         }
     }
-
 }

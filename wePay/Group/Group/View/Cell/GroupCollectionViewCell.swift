@@ -9,10 +9,9 @@ import UIKit
 
 class GroupCollectionViewCell: UICollectionViewCell {
     // MARK: - Attributes
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var summaryLabel: UILabel!
-    
-    
+    @IBOutlet var label: UILabel!
+    @IBOutlet var summaryLabel: UILabel!
+
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,5 +20,4 @@ class GroupCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 20
         layer.cornerCurve = .continuous
     }
-
 }

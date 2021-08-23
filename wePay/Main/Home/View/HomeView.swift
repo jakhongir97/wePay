@@ -8,7 +8,6 @@
 import UIKit
 
 final class HomeView: CustomView {
-    
     // MARK: - Outlets
-    
+
 }

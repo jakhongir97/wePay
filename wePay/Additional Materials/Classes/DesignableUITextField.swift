@@ -9,14 +9,13 @@ import UIKit
 
 @IBDesignable
 class DesignableUITextField: UITextField {
-
     // Provides left padding for images
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         var textRect = super.leftViewRect(forBounds: bounds)
         textRect.origin.x += leftPadding
         return textRect
     }
-    
+
     let padding = UIEdgeInsets(top: 0, left: 54, bottom: 0, right: 5)
 
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -30,7 +29,6 @@ class DesignableUITextField: UITextField {
     override open func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-    
 
     @IBInspectable var leftImage: UIImage? {
         didSet {
@@ -39,7 +37,6 @@ class DesignableUITextField: UITextField {
     }
 
     @IBInspectable var leftPadding: CGFloat = 0
-    
 
     @IBInspectable var color: UIColor = UIColor.lightGray {
         didSet {
@@ -62,6 +59,6 @@ class DesignableUITextField: UITextField {
         }
 
         // Placeholder text color
-        attributedPlaceholder = NSAttributedString(string: placeholder != nil ?  placeholder! : "", attributes:[NSAttributedString.Key.foregroundColor: color])
+        attributedPlaceholder = NSAttributedString(string: placeholder != nil ?  placeholder! : "", attributes: [NSAttributedString.Key.foregroundColor: color])
     }
 }

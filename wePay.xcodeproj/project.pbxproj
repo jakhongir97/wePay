@@ -885,6 +885,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7E43BDF26B29C44005DF810 /* Build configuration list for PBXNativeTarget "wePay" */;
 			buildPhases = (
+				A73BF10C26D3DA18000C6549 /* Run SwiftLint */,
 				A7E43BC726B29C42005DF810 /* Sources */,
 				A7E43BC826B29C42005DF810 /* Frameworks */,
 				A7E43BC926B29C42005DF810 /* Resources */,
@@ -978,6 +979,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A73BF10C26D3DA18000C6549 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint --fix && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A7E43BC726B29C42005DF810 /* Sources */ = {

@@ -5,26 +5,25 @@
 //  Created by Admin NBU on 29/07/21.
 //
 
-import UIKit
 import CloudKit
+import UIKit
 
 class HomeViewController: UIViewController, ViewSpecificController, AlertViewController {
-    
     // MARK: - Root View
     typealias RootView = HomeView
-    
+
     // MARK: - Services
     internal var customSpinnerView = CustomSpinnerView()
-    internal var isLoading: Bool = false
+    internal var isLoading = false
     internal var coordinator: MainCoordinator?
     private let viewModel = HomeViewModel()
-    
+
     // MARK: - Data Providers
 
     // MARK: - Attributes
-    
+
     // MARK: - Actions
-    
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +33,7 @@ class HomeViewController: UIViewController, ViewSpecificController, AlertViewCon
 }
 
 // MARK: - Networking
-extension HomeViewController : HomeViewModelProtocol {
+extension HomeViewController: HomeViewModelProtocol {
     func didFinishFetch(contacts: [User]) {
         for contact in contacts {
             if let telephone = contact.telephone, telephone.origin() == UserDefaults.standard.getPhone() {

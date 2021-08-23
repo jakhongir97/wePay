@@ -11,7 +11,7 @@ extension UIApplication {
     class func isFirstLaunch() -> Bool {
         return !UserDefaults.standard.bool(forKey: "hasBeenLaunchedBeforeFlag")
     }
-    
+
     class func saveFirstLaunch() {
         UserDefaults.standard.set(true, forKey: "hasBeenLaunchedBeforeFlag")
         UserDefaults.standard.synchronize()

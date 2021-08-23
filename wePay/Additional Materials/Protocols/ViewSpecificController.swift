@@ -12,6 +12,7 @@ protocol ViewSpecificController {
 }
 
 extension ViewSpecificController where Self: UIViewController {
+    // swiftlint:disable force_cast
     func view() -> RootView {
         return self.view as! RootView
     }

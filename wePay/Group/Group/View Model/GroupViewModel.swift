@@ -5,12 +5,12 @@
 //  Created by Admin NBU on 29/07/21.
 //
 
-import UIKit
-import FirebaseDatabase
 import FirebaseAuth
+import FirebaseDatabase
 import FirebaseDynamicLinks
+import UIKit
 
-struct Group : Decodable {
+struct Group: Decodable {
     let id: String?
     let name: String?
     let owner: String?
@@ -25,30 +25,29 @@ protocol GroupViewModelProtocol: ViewModelProtocol {
 }
 
 final class GroupViewModel {
-    
     // MARK: - Attributes
     weak var delegate: GroupViewModelProtocol?
-    
+
     let ref = Database.database().reference()
-    
+
     // MARK: - Network call
     internal func createGroup(name: String) {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         let groupIDRef = ref.child("groups").childByAutoId()
         groupIDRef.setValue(["name": name, "owner": userID ])
         let groupID = groupIDRef.key
-        ref.child("users_groups").childByAutoId().setValue(["userID": userID, "groupID": groupID]) { error, ref in
+        ref.child("users_groups").childByAutoId().setValue(["userID": userID, "groupID": groupID]) { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
             self.delegate?.didFinishFetch()
         }
     }
-    
+
     internal func deleteGroup(groupID: String) {
         let groupsIDRef = ref.child("groups")
         let usersGroupsRef = self.ref.child("users_groups")
-        groupsIDRef.child(groupID).removeValue() { error, ref in
+        groupsIDRef.child(groupID).removeValue { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
@@ -62,19 +61,19 @@ final class GroupViewModel {
             self.delegate?.didFinishFetch()
         }
     }
-    
-    internal func editGroup(groupID: String,newName: String) {
+
+    internal func editGroup(groupID: String, newName: String) {
         let groupsIDRef = ref.child("groups")
-        groupsIDRef.child("\(groupID)/name").setValue(newName) { error, ref in
+        groupsIDRef.child("\(groupID)/name").setValue(newName) { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
             self.delegate?.didFinishFetch()
         }
     }
-    
+
     internal func fetchGroups() {
-        //delegate?.showActivityIndicator()
+        // delegate?.showActivityIndicator()
         guard let userID = Auth.auth().currentUser?.uid else { return }
         ref.child("users_groups").queryOrdered(byChild: "userID").queryEqual(toValue: userID).observeSingleEvent(of: .value, with: { snapshot in
             var groups = [Group]()
@@ -102,18 +101,18 @@ final class GroupViewModel {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
-    
+
     internal func fetchWithSummary(groups: [Group]) {
-        //self.delegate?.showActivityIndicator()
+        // self.delegate?.showActivityIndicator()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersMessagesRef = ref.child("users_messages")
         let messagesRef = ref.child("messages")
         var groupsWithSummary = groups
         let myGroup = DispatchGroup()
-        for (index,group) in groups.enumerated() {
+        for (index, group) in groups.enumerated() {
             if let groupID = group.id {
                 myGroup.enter()
-                usersMessagesRef.child(groupID).queryOrdered(byChild: "userID").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value, with : { snapshot in
+                usersMessagesRef.child(groupID).queryOrdered(byChild: "userID").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value, with: { snapshot in
                     var summary: Double = 0
                     var ownerSummary: Double = 0
                     let myLitteGroup = DispatchGroup()
@@ -125,12 +124,11 @@ final class GroupViewModel {
                                     messagesRef.child(messageID).observeSingleEvent(of: .value) { snapshot in
                                         let value = snapshot.value as? NSDictionary
                                         if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let count = value?["tagCount"] as? Int, let messageInt = Int(message.digits), !isCompleted {
-                                            summary += Double(messageInt)/Double(count)
+                                            summary += Double(messageInt) / Double(count)
                                             myLitteGroup.leave()
                                         }
                                     }
                                 }
-                                
                             }
                         }
                     }
@@ -158,18 +156,18 @@ final class GroupViewModel {
             self.delegate?.didFinishFetch(groupsWithSummary: groupsWithSummary)
         }
     }
-    
+
     internal func addUser(groupID: String) {
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let usersGroupsRef = self.ref.child("users_groups")
-        usersGroupsRef.childByAutoId().setValue(["userID": currentUserID, "groupID": groupID]) { error, ref in
+        usersGroupsRef.childByAutoId().setValue(["userID": currentUserID, "groupID": groupID]) { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
             self.delegate?.didFinishFetch()
         }
     }
-    
+
     func generateContentLink(groupID: String) {
         var components = URLComponents()
         components.scheme = "https"
@@ -177,18 +175,18 @@ final class GroupViewModel {
         components.path = "/join"
         let queryItem = URLQueryItem(name: "groupID", value: groupID)
         components.queryItems = [queryItem]
-        
+
         guard let componentURL = components.url else { return }
         let domain = "https://jakhongir.page.link"
-        
+
         let shareLink = DynamicLinkComponents(link: componentURL, domainURIPrefix: domain)
         if let bundleIdentifier = Bundle.main.bundleIdentifier {
             shareLink?.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleIdentifier)
         }
         shareLink?.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
         shareLink?.socialMetaTagParameters?.title = "Join"
-        
-        shareLink?.shorten(completion: { url, warnings, error in
+
+        shareLink?.shorten(completion: { url, _, error in
             if let error = error {
                 print(error.localizedDescription )
                 return
@@ -197,7 +195,7 @@ final class GroupViewModel {
             self.delegate?.didFinishFetch(url: url)
         })
     }
-    
+
     func returnUserID() -> String? {
         Auth.auth().currentUser?.uid
     }

@@ -8,14 +8,13 @@
 import UIKit
 
 final class ErrorView: CustomView {
-	
 	// MARK: - Outlets
-    @IBOutlet weak var closeButton: UIButton!
-    @IBOutlet weak var emptyImageView: Image!
-    @IBOutlet weak var emptyInfoTitleLabel: Label!
-    @IBOutlet weak var emptyInfoDescriptionLabel: Label!
-    @IBOutlet weak var retryButton: UIButton!
-    
+    @IBOutlet var closeButton: UIButton!
+    @IBOutlet var emptyImageView: Image!
+    @IBOutlet var emptyInfoTitleLabel: Label!
+    @IBOutlet var emptyInfoDescriptionLabel: Label!
+    @IBOutlet var retryButton: UIButton!
+
     // MARK: - Attributes
 	internal var type: APIError? {
 		didSet {

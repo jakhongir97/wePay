@@ -14,7 +14,7 @@ class Label: UILabel {
         self.numberOfLines = lines
         self.textColor = color
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

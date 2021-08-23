@@ -8,23 +8,20 @@
 import UIKit
 
 final class GroupChatView: CustomView {
-    
     // MARK: - Outlets
-    @IBOutlet weak var collectionView: UICollectionView!{
+    @IBOutlet var collectionView: UICollectionView! {
         didSet {
             collectionView.register(UINib(nibName: GroupChatCollectionViewCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: GroupChatCollectionViewCell.defaultReuseIdentifier)
         }
     }
-    @IBOutlet weak var bottomView: UIView!{
+    @IBOutlet var bottomView: UIView! {
         didSet {
-            
         }
     }
-    @IBOutlet weak var textField: UITextField!{
+    @IBOutlet var textField: UITextField! {
         didSet {
             textField.setLeftPaddingPoints(16)
         }
     }
-    @IBOutlet weak var payButton: UIButton!
-    
+    @IBOutlet var payButton: UIButton!
 }

@@ -14,7 +14,7 @@ class Image: UIImageView {
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

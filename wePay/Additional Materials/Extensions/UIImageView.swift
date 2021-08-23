@@ -5,20 +5,20 @@
 //  Created by Jakhongir Nematov on 14/12/20.
 //
 
-import UIKit
 import SDWebImage
+import UIKit
 
 extension UIImageView {
     @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
         set {
             layer.cornerCurve = .continuous
             layer.cornerRadius = newValue
         }
-        get {
-            return layer.cornerRadius
-        }
     }
-    
+
     func setImage(with url: URL, placeholder: UIImage) {
         if url == URL(fileURLWithPath: "") {
             DispatchQueue.main.async {

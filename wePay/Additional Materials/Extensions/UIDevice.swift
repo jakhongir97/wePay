@@ -8,7 +8,6 @@
 import UIKit
 
 public extension UIDevice {
-
     static let modelName: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
@@ -93,5 +92,4 @@ public extension UIDevice {
 
         return mapToDevice(identifier: identifier)
     }()
-
 }

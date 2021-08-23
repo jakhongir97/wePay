@@ -12,6 +12,6 @@ struct JSONData<T: Decodable>: Decodable {
     let message: String
     let lang: String
     let isAuth: Bool
-    
+
     let data: T
 }

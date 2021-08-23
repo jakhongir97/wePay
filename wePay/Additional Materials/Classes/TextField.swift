@@ -16,7 +16,7 @@ class TextField: UITextField {
         self.keyboardType = keyboardType ?? .default
         self.keyboardAppearance = .dark
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

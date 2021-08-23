@@ -5,15 +5,14 @@
 //  Created by Admin NBU on 29/07/21.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 final class LaunchScreenView: CustomView {
-    
     // MARK: - Outlets
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
+
     weak var errorView: ErrorView! {
         didSet {
             errorView.closeButton.isHidden = true
@@ -25,7 +24,7 @@ final class LaunchScreenView: CustomView {
         let errorView = ErrorView.fromNib()
         errorView.type = errorType
         addSubview(errorView)
-        errorView.snp.makeConstraints { (make) in
+        errorView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         self.errorView = errorView

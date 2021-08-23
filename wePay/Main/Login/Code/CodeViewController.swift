@@ -8,28 +8,26 @@
 import UIKit
 
 class CodeViewController: UIViewController, ViewSpecificController, AlertViewController {
-    
     // MARK: - Root View
     typealias RootView = CodeView
-    
+
     // MARK: - Services
     internal var customSpinnerView = CustomSpinnerView()
-    internal var isLoading: Bool = false
+    internal var isLoading = false
     internal var coordinator: MainCoordinator?
     private let viewModel = CodeViewModel()
 
     // MARK: - Attributes
     internal var phone: String?
-    
+
     // MARK: - Actions
     @IBAction func continueButtonAction(_ sender: UIButton) {
         check()
     }
-    
+
     @IBAction func backButtonAction(_ sender: UIButton) {
         navigationController?.fadePop()
     }
-    
 
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -38,19 +36,19 @@ class CodeViewController: UIViewController, ViewSpecificController, AlertViewCon
         setupTextField()
         closeKeyboardOnOutsideTap()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.setHidesBackButton(true, animated: false)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 }
 
 // MARK: - Networking
-extension CodeViewController : CodeViewModelProtocol {
+extension CodeViewController: CodeViewModelProtocol {
     func didFinishFetch() {
         guard let phone = phone else { return }
         UserDefaults.standard.savePhone(verificationPhone: phone)
@@ -58,7 +56,7 @@ extension CodeViewController : CodeViewModelProtocol {
         UIApplication.saveFirstLaunch()
         viewModel.fetchContacts()
     }
-    
+
     func didFinishFetch(contacts: [User]) {
         showActivityIndicator()
         for contact in contacts {
@@ -84,14 +82,14 @@ extension CodeViewController {
         viewModel.delegate = self
         view().codeTextField.becomeFirstResponder()
     }
-    
+
     private func presentTabBarVC() {
         let tabBarVC = TabBarController()
         tabBarVC.modalPresentationStyle = .fullScreen
         tabBarVC.modalTransitionStyle = .crossDissolve
         navigationController?.present(tabBarVC, animated: true)
     }
-    
+
     private func check() {
         guard let verificationID = UserDefaults.standard.getID() else { return }
         guard let verificationCode = view().codeTextField.text, !(verificationCode.isEmpty) else {
@@ -103,12 +101,11 @@ extension CodeViewController {
 }
 
 // MARK: - UITextFieldDelegate
-extension CodeViewController : UITextFieldDelegate {
-    
+extension CodeViewController: UITextFieldDelegate {
     func setupTextField() {
         view().codeTextField.delegate = self
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = view().viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
@@ -118,9 +115,8 @@ extension CodeViewController : UITextFieldDelegate {
         }
         return false
     }
-    
+
     func afterKeyboardAction() {
         check()
     }
 }
-

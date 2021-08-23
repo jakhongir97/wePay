@@ -8,14 +8,12 @@
 import UIKit
 
 final class PhoneView: CustomView {
-    
     // MARK: - Outlets
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var phoneTextField: UITextField!{
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var phoneTextField: UITextField! {
         didSet {
             phoneTextField.setLeftPaddingPoints(16)
         }
     }
-    @IBOutlet weak var continueButton: UIButton!
-    
+    @IBOutlet var continueButton: UIButton!
 }

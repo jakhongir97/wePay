@@ -9,7 +9,7 @@ import UIKit
 
 class GroupChatCollectionViewCell: UICollectionViewCell {
     // MARK: - Attributes
-    @IBOutlet weak var messageLabel: LabelWithPadding! {
+    @IBOutlet var messageLabel: LabelWithPadding! {
         didSet {
             messageLabel.backgroundColor = UIColor.appColor(.blueOpacity)
             messageLabel.layer.cornerRadius = 20
@@ -17,22 +17,22 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
             messageLabel.clipsToBounds = true
         }
     }
-    @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var usersCollectionView: UICollectionView!{
+    @IBOutlet var profileImageView: UIImageView!
+    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var usersCollectionView: UICollectionView! {
         didSet {
             usersCollectionView.register(UINib(nibName: UserTagCollectionViewCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: UserTagCollectionViewCell.defaultReuseIdentifier)
         }
     }
-    @IBOutlet weak var checkImageView: UIImageView! {
+    @IBOutlet var checkImageView: UIImageView! {
         didSet {
             checkImageView.tintColor = UIColor.appColor(.blueOpacity)
         }
     }
-    
+
     internal var userTagsDataProvider: UserTagsDataProvider?
     internal var viewController: GroupChatViewController?
-    
+
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,5 +41,4 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
         userTagsDataProvider.collectionView = usersCollectionView
         self.userTagsDataProvider = userTagsDataProvider
     }
-
 }

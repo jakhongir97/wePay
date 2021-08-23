@@ -14,7 +14,11 @@ extension URLRequest {
             httpBody = nil
             return
         }
-        
-        httpBody = try! JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions(rawValue: 0))
+
+        do {
+            httpBody = try JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions(rawValue: 0))
+        } catch {
+            print(error)
+        }
     }
 }

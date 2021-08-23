@@ -8,25 +8,22 @@
 import UIKit
 
 class PhoneViewController: UIViewController, ViewSpecificController, AlertViewController {
-    
     // MARK: - Root View
     typealias RootView = PhoneView
-    
+
     // MARK: - Services
     internal var customSpinnerView = CustomSpinnerView()
-    internal var isLoading: Bool = false
+    internal var isLoading = false
     internal var coordinator: MainCoordinator?
     private let viewModel = PhoneViewModel()
-    
+
     // MARK: - Attributes
-    
+
     // MARK: - Actions
     @IBAction func continueButtonAction(_ sender: UIButton) {
         auth()
     }
-    
-    
-    
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,19 +31,19 @@ class PhoneViewController: UIViewController, ViewSpecificController, AlertViewCo
         setupTextField()
         closeKeyboardOnOutsideTap()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.setHidesBackButton(true, animated: false)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 }
 
 // MARK: - Networking
-extension PhoneViewController : PhoneViewModelProtocol {
+extension PhoneViewController: PhoneViewModelProtocol {
     func didFinishFetch(verificationID: String) {
         UserDefaults.standard.saveID(verificationID: verificationID)
         guard let phone = view().phoneTextField.text?.origin() else { return }
@@ -61,7 +58,7 @@ extension PhoneViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         viewModel.delegate = self
     }
-    
+
     private func auth() {
         guard let phone = view().phoneTextField.text?.origin(), !(phone.isEmpty) else {
             showAlert(title: "Fill in the field", message: "")
@@ -72,13 +69,12 @@ extension PhoneViewController {
 }
 
 // MARK: - UITextFieldDelegate
-extension PhoneViewController : UITextFieldDelegate {
-    
+extension PhoneViewController: UITextFieldDelegate {
     func setupTextField() {
         view().phoneTextField.delegate = self
         view().phoneTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = view().viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
@@ -88,14 +84,12 @@ extension PhoneViewController : UITextFieldDelegate {
         }
         return false
     }
-    
+
     @objc func textFieldDidChange(_ textField: UITextField) {
         textField.text = textField.text?.display()
-        
     }
-    
+
     func afterKeyboardAction() {
         auth()
     }
 }
-

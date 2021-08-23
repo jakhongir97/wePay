@@ -5,37 +5,35 @@
 //  Created by Admin NBU on 29/07/21.
 //
 
-import UIKit
 import Firebase
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
     var coordinator: MainCoordinator?
-
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
+
         let launchScreenVC = LaunchScreenViewController()
         let navController = UINavigationController(rootViewController: launchScreenVC)
         coordinator = MainCoordinator(navigationController: navController)
         launchScreenVC.coordinator = coordinator
-        
+
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         window?.backgroundColor = UIColor.appColor(.mainBackground)
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
     }
-    
+
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         if let incomingURL = userActivity.webpageURL {
             print("Incoming url is \(incomingURL)")
-            let _ = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLink, error in
+            _ = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLink, error in
                 guard error == nil else {
                     print("Found an error! \(error!.localizedDescription)")
                     return
@@ -46,22 +44,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     }
-    
+
     func handleIncomingDynamicLink(_ dynamicLink: DynamicLink) {
         guard let url = dynamicLink.url else {
             print("My dynamic link has no url")
             return
         }
         print("Incoming link parametr is \(url.absoluteString)")
-        
-        guard (dynamicLink.matchType == .unique || dynamicLink.matchType == .default ) else { return }
-        
+
+        guard dynamicLink.matchType == .unique || dynamicLink.matchType == .default  else { return }
+
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let queryItems = components.queryItems else { return }
-        
+
         if components.path == "/join" {
             if let queryItem = queryItems.first(where: { $0.name == "groupID" }) {
                 guard let groupID = queryItem.value else { return }
-                
+
                 let window = UIApplication.shared.windows[0] as UIWindow
                 let launchScreenVC = LaunchScreenViewController()
                 launchScreenVC.link = .join
@@ -69,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let navController = UINavigationController(rootViewController: launchScreenVC)
                 let mainCoordinator = MainCoordinator(navigationController: navController)
                 launchScreenVC.coordinator = mainCoordinator
-                
+
                 window.rootViewController = navController
             }
         }
@@ -102,7 +100,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-

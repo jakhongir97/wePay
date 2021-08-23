@@ -9,25 +9,24 @@ import UIKit
 
 class UsersCollectionViewCell: UICollectionViewCell {
     // MARK: - Attributes
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var label: UILabel!
-    
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var label: UILabel!
+
     // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
-    var isTicked: Bool = false {
+
+    var isTicked = false {
         didSet {
             imageView.image = isTicked ? UIImage(systemSymbol: .largecircleFillCircle) : UIImage(systemSymbol: .circle)
         }
     }
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         isTicked = false
         imageView.image = UIImage(systemSymbol: .circle)
     }
-
 }

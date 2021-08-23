@@ -15,11 +15,11 @@ extension UITabBar {
         barTintColor = .clear
         backgroundColor = .clear
         layer.backgroundColor = UIColor.clear.cgColor
-        //let tabBarHeight: CGFloat = frame.height 
+        // let tabBarHeight: CGFloat = frame.height 
         var blurFrame = bounds
         blurFrame.size.height += tabBarHeight
         blurFrame.origin.y -= tabBarHeight
-        let blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurView.isUserInteractionEnabled = false
         blurView.frame = blurFrame
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

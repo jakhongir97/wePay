@@ -17,7 +17,7 @@ class Button: UIButton {
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

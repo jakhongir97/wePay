@@ -5,10 +5,10 @@
 //  Created by Admin NBU on 04/08/21.
 //
 
-import UIKit
-import FirebaseDatabase
-import FirebaseAuth
 import Contacts
+import FirebaseAuth
+import FirebaseDatabase
+import UIKit
 
 protocol UsersViewModelProtocol: ViewModelProtocol {
     func didFinishFetch(contacts: [User])
@@ -18,12 +18,11 @@ protocol UsersViewModelProtocol: ViewModelProtocol {
 }
 
 final class UsersViewModel {
-    
     // MARK: - Attributes
     weak var delegate: UsersViewModelProtocol?
-    
+
     let ref = Database.database().reference()
-    
+
     // MARK: - Network call
     internal func fetchUsers(groupUsers: [User], contacts: [User]) {
         delegate?.showActivityIndicator()
@@ -37,10 +36,8 @@ final class UsersViewModel {
                     if let firstName = value?["firstName"] as? String, let lastName = value?["lastName"] as? String, let phone = value?["phone"] as? String {
                         if contacts.contains(where: { $0.telephone?.digits == phone.digits }) {
                             var user = User(userID: child.key, firstName: firstName, lastName: lastName, telephone: phone, isMember: false)
-                            for groupUser in groupUsers {
-                                if child.key == groupUser.userID {
-                                    user.isMember = true
-                                }
+                            for groupUser in groupUsers where child.key == groupUser.userID {
+                                user.isMember = true
                             }
                             if currentUserID != child.key {
                                 users.append(user)
@@ -56,10 +53,10 @@ final class UsersViewModel {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
-    
+
     internal func fetchGroupUsers(groupID: String) {
         delegate?.showActivityIndicator()
-        //guard let userID = Auth.auth().currentUser?.uid else { return }
+        // guard let userID = Auth.auth().currentUser?.uid else { return }
         let usersGroupsRef = self.ref.child("users_groups")
         usersGroupsRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
             var users = [User]()
@@ -87,12 +84,12 @@ final class UsersViewModel {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
     }
-    
+
     internal func updateUsers(group: Group, oldUsers: [User], newUsers: [User]) {
         addUsers(group: group, users: Array(Set(newUsers).subtracting(oldUsers)))
         removeUsers(group: group, users: Array(Set(oldUsers).subtracting(newUsers)))
     }
-    
+
     internal func addUsers(group: Group, users: [User]) {
         guard let groupID = group.id else { return }
         guard let groupName = group.name else { return }
@@ -104,7 +101,7 @@ final class UsersViewModel {
             }
         }
     }
-    
+
     internal func removeUsers(group: Group, users: [User]) {
         guard let groupID = group.id else { return }
         let usersGroupsRef = self.ref.child("users_groups")
@@ -120,7 +117,7 @@ final class UsersViewModel {
             }
         })
     }
-    
+
     internal func sendPushNotifications(groupID: String, groupName: String, userID: String) {
         self.ref.child("users").child(userID).observeSingleEvent(of: .value, with: { snapshot in
             let value = snapshot.value as? NSDictionary
@@ -129,7 +126,7 @@ final class UsersViewModel {
             }
         })
     }
-    
+
     internal func removeAllUsers(group: Group) {
         guard let groupID = group.id else { return }
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
@@ -141,7 +138,7 @@ final class UsersViewModel {
                     myGroup.enter()
                     if let userID = child.childSnapshot(forPath: "userID").value as? String {
                         if userID != currentUserID {
-                            usersGroupsRef.child(child.key).removeValue() { error, ref in
+                            usersGroupsRef.child(child.key).removeValue { _, _ in
                                 myGroup.leave()
                             }
                         } else {
@@ -150,19 +147,18 @@ final class UsersViewModel {
                     }
                 }
             }
-            
+
             myGroup.notify(queue: .main) {
                 self.delegate?.didFinishFetchRemoveUsers()
             }
         })
     }
-    
+
     internal func fetchContacts() {
-        
         var contacts = [User]()
         // 1.
         let store = CNContactStore()
-        store.requestAccess(for: .contacts) { (granted, error) in
+        store.requestAccess(for: .contacts) { granted, error in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
                 return
@@ -173,13 +169,13 @@ final class UsersViewModel {
                 let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
                 do {
                     // 3.
-                    try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
+                    try store.enumerateContacts(with: request, usingBlock: { contact, _ in
                         contacts.append(User(firstName: contact.givenName,
                                              lastName: contact.familyName,
                                              telephone: contact.phoneNumbers.first?.value.stringValue))
                     })
                     self.delegate?.didFinishFetch(contacts: contacts)
-                } catch let error {
+                } catch {
                     self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
                 }
             } else {

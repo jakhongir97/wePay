@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AppLanguage : String {
+enum AppLanguage: String {
     case ru
     case uz
     case en
@@ -20,35 +20,34 @@ enum UserDefaultsKeys: String {
 }
 
 extension UserDefaults {
-    
     func getLocalization() -> String {
         return string(forKey: UserDefaultsKeys.localization.rawValue) ?? AppLanguage.en.rawValue
     }
-    
+
     func saveLocalization(lang: String) {
         set(lang, forKey: UserDefaultsKeys.localization.rawValue)
     }
-    
+
     func getPhone() -> String? {
         return string(forKey: UserDefaultsKeys.verificationPhone.rawValue)
     }
-    
+
     func savePhone(verificationPhone: String) {
        set(verificationPhone, forKey: UserDefaultsKeys.verificationPhone.rawValue)
     }
-    
+
     func removePhone() {
         set(nil, forKey: UserDefaultsKeys.verificationPhone.rawValue)
     }
-    
+
     func isRegistered() -> Bool {
         return getPhone() != nil
     }
-    
+
     func getID() -> String? {
         return string(forKey: UserDefaultsKeys.verificationID.rawValue)
     }
-    
+
     func saveID(verificationID: String) {
        set(verificationID, forKey: UserDefaultsKeys.verificationID.rawValue)
     }

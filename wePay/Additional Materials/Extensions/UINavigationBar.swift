@@ -11,7 +11,7 @@ extension UINavigationBar {
     func installBlurEffect() {
         barStyle = .black
         shadowImage = UIImage()
-        titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         isTranslucent = true
         setBackgroundImage(UIImage(), for: .default)
         backIndicatorImage = UIImage(systemSymbol: .arrowBackward)
@@ -21,14 +21,14 @@ extension UINavigationBar {
         var blurFrame = bounds
         blurFrame.size.height += statusBarHeight
         blurFrame.origin.y -= statusBarHeight
-        let blurView  = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurView.isUserInteractionEnabled = false
         blurView.frame = blurFrame
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(blurView)
         blurView.layer.zPosition = -1
     }
-    
+
     func clearNavBar() {
         shadowImage = UIImage()
         barTintColor = UIColor.appColor(.mainBackground)

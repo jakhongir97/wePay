@@ -8,5 +8,5 @@
 import Foundation
 
 enum EndPoints: String {
-    case token = "token"
+    case token
 }

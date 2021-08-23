@@ -8,5 +8,5 @@
 import Foundation
 
 enum Parameters: String {
-    case token = "token"
+    case token
 }
