@@ -44,7 +44,7 @@ class GroupChatViewController: UIViewController, ViewSpecificController, AlertVi
     }
 
     func editMessage(messageID: String) {
-        showAlertWithTextField(title: "Edit mesage", message: "amount") { name in
+        showAlertWithTextField(title: "Edit mesage", message: "amount", keyboardType: .numberPad) { name in
             if let message = name, !(message.isEmpty) {
                 self.viewModel.changeValueMessage(messageID: messageID, newMessage: message)
             }

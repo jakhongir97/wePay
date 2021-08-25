@@ -107,7 +107,7 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
         }
 
         if let owner = items[indexPath.row].owner, owner == vc.viewModel.returnUserID() {
-            return UIMenu(title: "", children: [pay, format, tag, edit, delete])
+            return UIMenu(title: "", children: [format, tag, edit, delete])
         } else {
             return UIMenu(title: "", children: [pay])
         }

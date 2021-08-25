@@ -38,7 +38,7 @@ final class GroupChatViewModel {
         let timeStamp = Date().timeIntervalSince1970
         let currency = Curreny.uz.rawValue
         let messageRef = ref.child("messages").childByAutoId()
-        messageRef.setValue(["message": message, "owner": userID, "groupID": groupID, "timeStamp": timeStamp, "currency": currency, "tagCount": tags.count, "isCompleted": false]) { error, _ in
+        messageRef.setValue(["message": message, "owner": userID, "groupID": groupID, "timeStamp": timeStamp, "currency": currency, "tagCount": tags.count, "isCompleted": false, "isOwnerTagged": tags.contains(where: {$0.userID == userID})]) { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
             }
@@ -48,7 +48,7 @@ final class GroupChatViewModel {
                 let childRef = self.ref.child("users_messages").child(groupID).childByAutoId()
                 childRef.setValue(["userID": tag.userID, "messageID": messageRef.key]) { _, _ in
                     if let childKey = childRef.key {
-                        self.ref.child("users_messages").child(groupID).child("\(childKey)/isPaid").setValue(false)
+                        self.ref.child("users_messages").child(groupID).child("\(childKey)/isPaid").setValue(userID == tag.userID)
                     }
                     myGroup.leave()
                 }

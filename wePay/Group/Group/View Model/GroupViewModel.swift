@@ -57,8 +57,8 @@ final class GroupViewModel {
                         usersGroupsRef.child(child.key).removeValue()
                     }
                 }
+                self.delegate?.didFinishFetch()
             }
-            self.delegate?.didFinishFetch()
         }
     }
 
@@ -103,56 +103,34 @@ final class GroupViewModel {
     }
 
     internal func fetchWithSummary(groups: [Group]) {
-        // self.delegate?.showActivityIndicator()
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
-        let usersMessagesRef = ref.child("users_messages")
         let messagesRef = ref.child("messages")
         var groupsWithSummary = groups
         let myGroup = DispatchGroup()
         for (index, group) in groups.enumerated() {
             if let groupID = group.id {
                 myGroup.enter()
-                usersMessagesRef.child(groupID).queryOrdered(byChild: "userID").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value, with: { snapshot in
-                    var summary: Double = 0
-                    var ownerSummary: Double = 0
-                    let myLitteGroup = DispatchGroup()
+                messagesRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
                     if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                        var summary: Double = 0
                         for child in dataSnapshot {
-                            if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool, !isPaid {
-                                if let messageID = child.childSnapshot(forPath: "messageID").value as? String {
-                                    myLitteGroup.enter()
-                                    messagesRef.child(messageID).observeSingleEvent(of: .value) { snapshot in
-                                        let value = snapshot.value as? NSDictionary
-                                        if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let count = value?["tagCount"] as? Int, let messageInt = Int(message.digits), !isCompleted {
-                                            summary += Double(messageInt) / Double(count)
-                                            myLitteGroup.leave()
-                                        }
-                                    }
+                            let value = child.value as? NSDictionary
+                            if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let tagCount = value?["tagCount"] as? Int, let isOwnerTagged = value?["isOwnerTagged"] as? Bool {
+                                if let messageInt = Int(message.digits), !isCompleted {
+                                    var average = tagCount == 0 ? 0.0 : Double(messageInt) / Double(tagCount)
+                                    average = isOwnerTagged ? average : 0.0
+                                    let messageSummary = currentUserID == owner ? Double(messageInt) - average : -average
+                                    summary += messageSummary
                                 }
                             }
                         }
-                    }
-                    myLitteGroup.notify(queue: .main) {
-                        messagesRef.queryOrdered(byChild: "owner").queryEqual(toValue: currentUserID).observeSingleEvent(of: .value) { snapshot in
-                            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
-                                for child in dataSnapshot {
-                                    let value = child.value as? NSDictionary
-                                    if let message = value?["message"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let messageGroupID = value?["groupID"] as? String, let messageDouble = Double(message.digits) {
-                                        if !isCompleted && messageGroupID == groupID {
-                                            ownerSummary += messageDouble
-                                        }
-                                    }
-                                }
-                            }
-                            groupsWithSummary[index].summary = String(Int(ownerSummary - summary))
-                            myGroup.leave()
-                        }
+                        groupsWithSummary[index].summary = String(Int(summary))
+                        myGroup.leave()
                     }
                 })
             }
         }
         myGroup.notify(queue: .main) {
-            self.delegate?.hideActivityIndicator()
             self.delegate?.didFinishFetch(groupsWithSummary: groupsWithSummary)
         }
     }

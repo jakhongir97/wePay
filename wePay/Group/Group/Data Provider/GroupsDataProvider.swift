@@ -50,7 +50,7 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
             default:
                 break
             }
-            cell.summaryLabel.text = intSummary.formattedWithSeparator
+            cell.summaryLabel.text = abs(intSummary).formattedWithSeparator
         }
 
         return cell

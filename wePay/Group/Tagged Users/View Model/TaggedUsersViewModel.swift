@@ -44,6 +44,7 @@ final class TaggedUsersViewModel {
     }
 
     internal func tagUsers(messageID: String, groupID: String, users: [User]) {
+        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         var paidUserIDs = [String]()
         let usersMessagesRef = ref.child("users_messages").child(groupID)
         usersMessagesRef.queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value) { snapshot in
@@ -70,6 +71,7 @@ final class TaggedUsersViewModel {
                 }
                 let messageRef = self.ref.child("messages")
                 messageRef.child("\(messageID)/tagCount").setValue(users.filter { $0.isMember == true }.count)
+                messageRef.child("\(messageID)/isOwnerTagged").setValue(users.contains(where: {$0.userID == currentUserID}))
             }
         }
     }
