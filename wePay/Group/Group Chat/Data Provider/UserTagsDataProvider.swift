@@ -41,6 +41,10 @@ final class UserTagsDataProvider: NSObject, UICollectionViewDataSource, UICollec
         if let isPaid = items[indexPath.row].isPaid {
             cell.checkImageView.isHidden = !isPaid
         }
+
+        if let vc = viewController as? GroupChatViewController {
+            cell.imageView.tintColor = vc.viewModel.returnUserID() == items[indexPath.row].userID ? UIColor.appColor(.blueOpacity) : UIColor.appColor(.gray).withAlphaComponent(0.5)
+        }
         return cell
     }
 

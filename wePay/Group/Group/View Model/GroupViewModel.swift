@@ -46,7 +46,7 @@ final class GroupViewModel {
 
     internal func deleteGroup(groupID: String) {
         let groupsIDRef = ref.child("groups")
-        let usersGroupsRef = self.ref.child("users_groups")
+        let usersGroupsRef = ref.child("users_groups")
         groupsIDRef.child(groupID).removeValue { error, _ in
             if let error = error {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
@@ -57,9 +57,23 @@ final class GroupViewModel {
                         usersGroupsRef.child(child.key).removeValue()
                     }
                 }
+                self.deleteMessagesInGroup(groupID: groupID)
                 self.delegate?.didFinishFetch()
             }
         }
+    }
+
+    internal func deleteMessagesInGroup(groupID: String) {
+        let messagesRef = ref.child("messages")
+        let usersMessagesRef = ref.child("users_messages")
+        messagesRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value) { snapshot in
+            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for child in dataSnapshot {
+                    messagesRef.child(child.key).removeValue()
+                }
+            }
+        }
+        usersMessagesRef.child(groupID).removeValue()
     }
 
     internal func editGroup(groupID: String, newName: String) {
@@ -105,6 +119,7 @@ final class GroupViewModel {
     internal func fetchWithSummary(groups: [Group]) {
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
         let messagesRef = ref.child("messages")
+        let usersMessagesRef = ref.child("users_messages")
         var groupsWithSummary = groups
         let myGroup = DispatchGroup()
         for (index, group) in groups.enumerated() {
@@ -113,19 +128,42 @@ final class GroupViewModel {
                 messagesRef.queryOrdered(byChild: "groupID").queryEqual(toValue: groupID).observeSingleEvent(of: .value, with: { snapshot in
                     if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                         var summary: Double = 0
+                        let myLittleGroup = DispatchGroup()
                         for child in dataSnapshot {
                             let value = child.value as? NSDictionary
-                            if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let tagCount = value?["tagCount"] as? Int, let isOwnerTagged = value?["isOwnerTagged"] as? Bool {
+                            if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let tagCount = value?["tagCount"] as? Int, let paidCount = value?["paidCount"] as? Int, let isOwnerTagged = value?["isOwnerTagged"] as? Bool {
                                 if let messageInt = Int(message.digits), !isCompleted {
-                                    var average = tagCount == 0 ? 0.0 : Double(messageInt) / Double(tagCount)
-                                    average = isOwnerTagged ? average : 0.0
-                                    let messageSummary = currentUserID == owner ? Double(messageInt) - average : -average
-                                    summary += messageSummary
+                                    myLittleGroup.enter()
+                                    usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: child.key).observeSingleEvent(of: .value) { snapshot in
+                                        if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                                            var taggedUserIDS = [String]()
+                                            for child in dataSnapshot {
+                                                let value = child.value as? NSDictionary
+                                                if let userID = value?["userID"] as? String {
+                                                    taggedUserIDS.append(userID)
+                                                }
+                                            }
+                                            var average = tagCount == 0 ? 0.0 : Double(messageInt) / Double(tagCount)
+                                            if currentUserID == owner {
+                                                average = isOwnerTagged ? average : 0.0
+                                                let messageSummary = currentUserID == owner ? Double(messageInt) - average*Double(paidCount) : -average
+                                                summary += messageSummary
+                                            } else if taggedUserIDS.contains(currentUserID) {
+                                                let messageSummary = currentUserID == owner ? Double(messageInt) - average*Double(paidCount) : -average
+                                                summary += messageSummary
+                                            }
+                                            myLittleGroup.leave()
+                                        }
+
+                                    }
+
                                 }
                             }
                         }
-                        groupsWithSummary[index].summary = String(Int(summary))
-                        myGroup.leave()
+                        myLittleGroup.notify(queue: .main) {
+                            groupsWithSummary[index].summary = String(Int(round(summary)))
+                            myGroup.leave()
+                        }
                     }
                 })
             }

@@ -43,9 +43,9 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupChatCollectionViewCell.defaultReuseIdentifier, for: indexPath) as? GroupChatCollectionViewCell else { return UICollectionViewCell() }
-        if let vc = self.viewController as? GroupChatViewController {
+        cell.prepareForReuse()
+        guard let vc = self.viewController as? GroupChatViewController else { return UICollectionViewCell() }
             cell.viewController = vc
-        }
 
         if let message = items[indexPath.row].message, let currency = items[indexPath.row].currency {
             cell.messageLabel.text = message.withCurreny(currency: currency)
@@ -58,8 +58,26 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
             cell.userTagsDataProvider?.items = users
         }
 
-        if let isCompleted = items[indexPath.row].isCompleted {
-            cell.checkImageView.isHidden = !isCompleted
+        if let isPaid = items[indexPath.row].isPaid, let isCompleted = items[indexPath.row].isCompleted {
+            if let owner = items[indexPath.row].owner, owner == vc.viewModel.returnUserID() {
+                cell.checkImageView.image = UIImage()
+                cell.profileImageView.tintColor = UIColor.appColor(.blueOpacity)
+            } else {
+                cell.profileImageView.tintColor = UIColor.appColor(.gray).withAlphaComponent(0.5)
+                cell.checkImageView.tintColor = isPaid ? UIColor.appColor(.green) : UIColor.appColor(.red)
+                cell.checkImageView.image = isPaid ? UIImage(systemSymbol: .checkmarkCircleFill) : UIImage(systemSymbol: .exclamationmarkCircleFill)
+            }
+
+            if isCompleted {
+                cell.checkImageView.image = UIImage(systemSymbol: .checkmarkCircleFill)
+                cell.checkImageView.tintColor = UIColor.appColor(.blueOpacity)
+            }
+        }
+
+        if items[indexPath.row].isPaid == nil, let owner = items[indexPath.row].owner, owner != vc.viewModel.returnUserID() {
+            cell.profileImageView.tintColor = UIColor.appColor(.gray).withAlphaComponent(0.5)
+            cell.messageLabel.backgroundColor = UIColor.appColor(.gray).withAlphaComponent(0.5)
+            cell.checkImageView.image = UIImage()
         }
 
         return cell
@@ -85,8 +103,22 @@ final class GroupChatDataProvider: NSObject, UICollectionViewDataSource, UIColle
         guard let messageID = self.items[indexPath.row].id else { return UIMenu() }
         guard let groupID = vc.group?.id else { return UIMenu() }
 
-        let pay = UIAction(title: "Pay", image: UIImage(systemSymbol: .creditcardFill)) { _ in
-            vc.viewModel.payMessage(messageID: messageID, groupID: groupID, isPaid: true)
+        var payTitle = "Pay"
+        var payImage = UIImage(systemSymbol: .creditcardFill)
+        if let isPaid = items[indexPath.row].isPaid {
+            payTitle = isPaid ? "You've already paid!" : "Pay   \(items[indexPath.row].average?.withCurreny(currency: items[indexPath.row].currency ?? "") ?? "")"
+            payImage = isPaid ? UIImage(systemSymbol: .checkmarkCircleFill) : UIImage(systemSymbol: .creditcardFill)
+        } else {
+            payTitle = "You're not tagged!"
+            payImage = UIImage(systemSymbol: .exclamationmarkCircleFill)
+        }
+
+        let pay = UIAction(title: payTitle, image: payImage) { _ in
+            if let isPaid = self.items[indexPath.row].isPaid {
+                if !isPaid {
+                    vc.viewModel.payMessage(messageID: messageID, groupID: groupID, isPaid: true)
+                }
+            }
         }
 
         let format = UIAction(title: "Format", image: UIImage(systemSymbol: .dollarsignCircle)) { _ in

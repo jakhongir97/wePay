@@ -12,7 +12,7 @@ class UserTagCollectionViewCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView! {
         didSet {
             imageView.image = UIImage(systemSymbol: .personCropCircleFill)
-            imageView.tintColor = UIColor.appColor(.gray)
+            imageView.tintColor = UIColor.appColor(.gray).withAlphaComponent(0.5)
         }
     }
     @IBOutlet var checkImageView: UIImageView! {

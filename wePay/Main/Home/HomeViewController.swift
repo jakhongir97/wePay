@@ -28,7 +28,7 @@ class HomeViewController: UIViewController, ViewSpecificController, AlertViewCon
     override func viewDidLoad() {
         super.viewDidLoad()
         appearanceSettings()
-        viewModel.fetchContacts()
+        // viewModel.fetchContacts()
     }
 }
 

@@ -17,6 +17,9 @@ struct Message: Decodable {
     let currency: String?
     var taggedUsers: [User]?
     let isCompleted: Bool?
+    var isPaid: Bool?
+    var average: String?
+    var isOwnerTagged: Bool?
 }
 
 protocol GroupChatViewModelProtocol: ViewModelProtocol {
@@ -46,11 +49,14 @@ final class GroupChatViewModel {
             for tag in tags {
                 myGroup.enter()
                 let childRef = self.ref.child("users_messages").child(groupID).childByAutoId()
-                childRef.setValue(["userID": tag.userID, "messageID": messageRef.key]) { _, _ in
-                    if let childKey = childRef.key {
-                        self.ref.child("users_messages").child(groupID).child("\(childKey)/isPaid").setValue(userID == tag.userID)
+                if let messageID = messageRef.key {
+                    childRef.setValue(["userID": tag.userID, "messageID": messageID]) { _, _ in
+                        if let childKey = childRef.key {
+                            self.ref.child("users_messages").child(groupID).child("\(childKey)/isPaid").setValue(userID == tag.userID)
+                            self.checkMessageComplete(messageID: messageID, groupID: groupID)
+                        }
+                        myGroup.leave()
                     }
-                    myGroup.leave()
                 }
             }
             myGroup.notify(queue: .main) {
@@ -91,9 +97,12 @@ final class GroupChatViewModel {
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for child in dataSnapshot {
                     let value = child.value as? NSDictionary
-                    if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let timeStamp = value?["timeStamp"] as? Double, let currency = value?["currency"] as? String, let isCompleted = value?["isCompleted"] as? Bool {
-                        let message = Message(id: child.key, message: message, owner: owner, timeStamp: timeStamp, currency: currency, isCompleted: isCompleted)
-                        messages.append(message)
+                    if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let timeStamp = value?["timeStamp"] as? Double, let currency = value?["currency"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let tagCount = value?["tagCount"] as? Int, let isOwnerTagged = value?["isOwnerTagged"] as? Bool {
+                        if let messageInt = Int(message.digits) {
+                            let average = tagCount == 0 ? 0.0 : Double(messageInt) / Double(tagCount)
+                            let message = Message(id: child.key, message: message, owner: owner, timeStamp: timeStamp, currency: currency, isCompleted: isCompleted, average: String(Int(average)), isOwnerTagged: isOwnerTagged)
+                            messages.append(message)
+                        }
                     }
                 }
             }
@@ -182,7 +191,7 @@ final class GroupChatViewModel {
         let usersMessagesRef = ref.child("users_messages")
         var messagesWithTags = messages
         let myGroup = DispatchGroup()
-        for (index, message) in messages.enumerated() {
+        for (indexMessage, message) in messages.enumerated() {
             myGroup.enter()
             usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: message.id).observeSingleEvent(of: .value, with: { snapshot in
                 var users = groupUsers
@@ -190,16 +199,19 @@ final class GroupChatViewModel {
                 if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                     for child in dataSnapshot {
                         if let userID = child.childSnapshot(forPath: "userID").value as? String {
-                            for (index, user) in users.enumerated() where userID == user.userID {
-                                users[index].isMember = true
+                            for (indexUser, user) in users.enumerated() where userID == user.userID {
+                                users[indexUser].isMember = true
                                 if let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool {
-                                    users[index].isPaid = isPaid
+                                    users[indexUser].isPaid = isPaid
+                                    if userID == self.returnUserID() {
+                                        messagesWithTags[indexMessage].isPaid = isPaid
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                messagesWithTags[index].taggedUsers = users.filter({ $0.isMember ?? true })
+                messagesWithTags[indexMessage].taggedUsers = users.filter({ $0.isMember ?? true })
                 myGroup.leave()
             })
         }
@@ -247,6 +259,7 @@ final class GroupChatViewModel {
                             }
                         }
                         messagesRef.child("\(messageID)/isCompleted").setValue(tagCount == count)
+                        messagesRef.child("\(messageID)/paidCount").setValue(count)
                     }
                 }
             }

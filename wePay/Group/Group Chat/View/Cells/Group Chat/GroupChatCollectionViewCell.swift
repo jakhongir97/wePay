@@ -31,7 +31,11 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
     }
 
     internal var userTagsDataProvider: UserTagsDataProvider?
-    internal var viewController: GroupChatViewController?
+    internal var viewController: GroupChatViewController? {
+        didSet {
+            userTagsDataProvider?.viewController = viewController
+        }
+    }
 
     // MARK: - Life cycle
     override func awakeFromNib() {
@@ -40,5 +44,11 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
         let userTagsDataProvider = UserTagsDataProvider(viewController: viewController)
         userTagsDataProvider.collectionView = usersCollectionView
         self.userTagsDataProvider = userTagsDataProvider
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.tintColor = UIColor.appColor(.blueOpacity)
+        messageLabel.backgroundColor = UIColor.appColor(.blueOpacity)
     }
 }
