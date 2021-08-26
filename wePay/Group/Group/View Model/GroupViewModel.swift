@@ -147,14 +147,10 @@ final class GroupViewModel {
                                             if currentUserID == owner {
                                                 let messageSummary = Double(messageInt) - average*Double(paidCount)
                                                 summary += messageSummary
-                                                print(message)
-                                                print(messageSummary)
                                             } else if taggedUsers.contains(where: { $0.userID == currentUserID }) {
                                                 let isPaid = taggedUsers.first(where: {$0.userID == currentUserID})?.isPaid
                                                 let messageSummary = isPaid ?? false ? 0.0 : -average
                                                 summary += messageSummary
-                                                print(message)
-                                                print(messageSummary)
                                             }
                                             myLittleGroup.leave()
                                         }
