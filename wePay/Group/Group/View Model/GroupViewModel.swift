@@ -131,26 +131,30 @@ final class GroupViewModel {
                         let myLittleGroup = DispatchGroup()
                         for child in dataSnapshot {
                             let value = child.value as? NSDictionary
-                            if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let tagCount = value?["tagCount"] as? Int, let paidCount = value?["paidCount"] as? Int, let isOwnerTagged = value?["isOwnerTagged"] as? Bool {
+                            if let message = value?["message"] as? String, let owner = value?["owner"] as? String, let isCompleted = value?["isCompleted"] as? Bool, let tagCount = value?["tagCount"] as? Int, let paidCount = value?["paidCount"] as? Int {
                                 if let messageInt = Int(message.digits), !isCompleted {
                                     myLittleGroup.enter()
                                     usersMessagesRef.child(groupID).queryOrdered(byChild: "messageID").queryEqual(toValue: child.key).observeSingleEvent(of: .value) { snapshot in
                                         if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
-                                            var taggedUserIDS = [String]()
+                                            var taggedUsers = [User]()
                                             for child in dataSnapshot {
                                                 let value = child.value as? NSDictionary
-                                                if let userID = value?["userID"] as? String {
-                                                    taggedUserIDS.append(userID)
+                                                if let userID = value?["userID"] as? String, let isPaid = value?["isPaid"] as? Bool {
+                                                    taggedUsers.append(User(userID: userID, isPaid: isPaid))
                                                 }
                                             }
-                                            var average = tagCount == 0 ? 0.0 : Double(messageInt) / Double(tagCount)
+                                            let average = tagCount == 0 ? 0.0 : Double(messageInt) / Double(tagCount)
                                             if currentUserID == owner {
-                                                average = isOwnerTagged ? average : 0.0
-                                                let messageSummary = currentUserID == owner ? Double(messageInt) - average*Double(paidCount) : -average
+                                                let messageSummary = Double(messageInt) - average*Double(paidCount)
                                                 summary += messageSummary
-                                            } else if taggedUserIDS.contains(currentUserID) {
-                                                let messageSummary = currentUserID == owner ? Double(messageInt) - average*Double(paidCount) : -average
+                                                print(message)
+                                                print(messageSummary)
+                                            } else if taggedUsers.contains(where: { $0.userID == currentUserID }) {
+                                                let isPaid = taggedUsers.first(where: {$0.userID == currentUserID})?.isPaid
+                                                let messageSummary = isPaid ?? false ? 0.0 : -average
                                                 summary += messageSummary
+                                                print(message)
+                                                print(messageSummary)
                                             }
                                             myLittleGroup.leave()
                                         }

@@ -28,9 +28,10 @@ final class TaggedUsersViewModel {
             users.indices.forEach { users[$0].isMember = false }
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for child in dataSnapshot {
-                    if let userID = child.childSnapshot(forPath: "userID").value as? String {
+                    if let userID = child.childSnapshot(forPath: "userID").value as? String, let isPaid = child.childSnapshot(forPath: "isPaid").value as? Bool {
                         for (index, user) in users.enumerated() where userID == user.userID {
                             users[index].isMember = true
+                            users[index].isPaid = isPaid
                         }
                     }
                 }
@@ -45,6 +46,7 @@ final class TaggedUsersViewModel {
 
     internal func tagUsers(messageID: String, groupID: String, users: [User]) {
         guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        var users = users
         var paidUserIDs = [String]()
         let usersMessagesRef = ref.child("users_messages").child(groupID)
         usersMessagesRef.queryOrdered(byChild: "messageID").queryEqual(toValue: messageID).observeSingleEvent(of: .value) { snapshot in
@@ -64,14 +66,17 @@ final class TaggedUsersViewModel {
             }
 
             myGroup.notify(queue: .main) {
-                for user in users {
+                for (index, user) in users.enumerated() {
                     if let userID = user.userID, user.isMember == true {
-                        usersMessagesRef.childByAutoId().setValue(["messageID": messageID, "userID": userID, "isPaid": paidUserIDs.contains(userID)])
+                        let isPaid = paidUserIDs.contains(userID) || currentUserID == userID
+                        users[index].isPaid = isPaid
+                        usersMessagesRef.childByAutoId().setValue(["messageID": messageID, "userID": userID, "isPaid": isPaid])
                     }
                 }
                 let messageRef = self.ref.child("messages")
                 messageRef.child("\(messageID)/tagCount").setValue(users.filter { $0.isMember == true }.count)
                 messageRef.child("\(messageID)/isOwnerTagged").setValue(users.contains(where: {$0.userID == currentUserID}))
+                messageRef.child("\(messageID)/paidCount").setValue(users.filter { $0.isPaid == true }.count)
             }
         }
     }

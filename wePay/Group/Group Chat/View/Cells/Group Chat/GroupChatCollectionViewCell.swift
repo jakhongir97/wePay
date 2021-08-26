@@ -50,5 +50,6 @@ class GroupChatCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         profileImageView.tintColor = UIColor.appColor(.blueOpacity)
         messageLabel.backgroundColor = UIColor.appColor(.blueOpacity)
+        checkImageView.image = UIImage()
     }
 }

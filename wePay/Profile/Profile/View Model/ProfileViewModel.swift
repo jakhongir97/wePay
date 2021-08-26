@@ -25,8 +25,10 @@ final class ProfileViewModel {
 
     // MARK: - Network call
     internal func signOut() {
+        guard let user = Auth.auth().currentUser else { return }
         do {
             try Auth.auth().signOut()
+            self.ref.child("users/\(user.uid)/fcmToken").removeValue()
         } catch let error as NSError {
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
