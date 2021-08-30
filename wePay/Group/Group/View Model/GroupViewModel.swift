@@ -15,6 +15,7 @@ struct Group: Decodable {
     let name: String?
     let owner: String?
     var summary: String?
+    var index: Int?
 }
 
 protocol GroupViewModelProtocol: ViewModelProtocol {
@@ -93,13 +94,16 @@ final class GroupViewModel {
             var groups = [Group]()
             let myGroup = DispatchGroup()
             if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                var counter = 0
                 for child in dataSnapshot {
                     myGroup.enter()
                     if let groupID = child.childSnapshot(forPath: "groupID").value as? String {
+                        let index = child.childSnapshot(forPath: "index").value as? Int
                         self.ref.child("groups").child(groupID).observeSingleEvent(of: .value, with: { snapshot in
                             let value = snapshot.value as? NSDictionary
                             if let name = value?["name"] as? String, let owner = value?["owner"] as? String {
-                                groups.append(Group(id: groupID, name: name, owner: owner))
+                                groups.append(Group(id: groupID, name: name, owner: owner, index: index ?? counter))
+                                counter += 1
                                 myGroup.leave()
                             }
                         })
@@ -108,12 +112,31 @@ final class GroupViewModel {
             }
             myGroup.notify(queue: .main) {
                 self.delegate?.hideActivityIndicator()
-                self.delegate?.didFinishFetch(groups: groups)
+                let sortedGroups = groups.sorted { $0.index ?? 0 < $1.index ?? 0}
+                self.delegate?.didFinishFetch(groups: sortedGroups)
             }
         }) { error in
             self.delegate?.hideActivityIndicator()
             self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
         }
+    }
+
+    func indexGroups(groups: [Group]) {
+        var groups = groups
+        for index in groups.indices {
+            groups[index].index = index
+        }
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        ref.child("users_groups").queryOrdered(byChild: "userID").queryEqual(toValue: userID).observeSingleEvent(of: .value, with: { snapshot in
+            if let dataSnapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for child in dataSnapshot {
+                    if let groupID = child.childSnapshot(forPath: "groupID").value as? String {
+                        let index = groups.first(where: { $0.id == groupID })?.index
+                        self.ref.child("users_groups/\(child.key)/index").setValue(index)
+                    }
+                }
+            }
+        })
     }
 
     internal func fetchWithSummary(groups: [Group]) {

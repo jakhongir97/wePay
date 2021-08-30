@@ -8,11 +8,15 @@
 import UIKit
 
 final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+
     // MARK: - Outlets
     weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = self
             collectionView.delegate = self
+            collectionView.dragInteractionEnabled = true
+            collectionView.dragDelegate = self
+            collectionView.dropDelegate = self
         }
     }
 
@@ -65,51 +69,104 @@ final class GroupsDataProvider: NSObject, UICollectionViewDataSource, UICollecti
         guard let vc = viewController as? GroupViewController else { return }
         vc.coordinator?.pushGroupChatVC(group: items[indexPath.row])
     }
+}
 
-    // MARK: - Context Menu
-    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
-            return self.makeContextMenu(indexPath: indexPath)
+// MARK: - Context Menu
+extension GroupsDataProvider {
+
+        func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+            return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { _ in
+                return self.makeContextMenu(indexPath: indexPath)
+            }
         }
+
+        func makeContextMenu(indexPath: IndexPath) -> UIMenu {
+            guard let vc = self.viewController as? GroupViewController else { return UIMenu() }
+            guard let groupID = self.items[indexPath.row].id else { return  UIMenu() }
+
+            let share = UIAction(title: "Share", image: UIImage(systemSymbol: .squareAndArrowUp)) { _ in
+                vc.viewModel.generateContentLink(groupID: groupID)
+            }
+
+            let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { _ in
+                vc.editName(groupID: groupID)
+            }
+
+            let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill), attributes: [.destructive]) { _ in
+                vc.viewModel.deleteGroup(groupID: groupID)
+            }
+
+            if let owner = items[indexPath.row].owner, owner == vc.viewModel.returnUserID() {
+                return UIMenu(title: "", children: [share, edit, delete])
+            } else {
+                return UIMenu(title: "", children: [share])
+            }
+        }
+
+        func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+            return makeTargetedPreview(for: configuration)
+        }
+
+        func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+            return makeTargetedPreview(for: configuration)
+        }
+
+        private func makeTargetedPreview(for configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+            guard let indexPath = configuration.identifier as? IndexPath else { return nil }
+            guard let cell = collectionView.cellForItem(at: indexPath) as? GroupCollectionViewCell else { return nil }
+            let parameters = UIPreviewParameters()
+            parameters.backgroundColor = .clear
+            // parameters.visiblePath = UIBezierPath(ovalIn: cell.messageLabel.bounds)
+            return UITargetedPreview(view: cell, parameters: parameters)
+        }
+}
+
+// MARK: - Drag Drop Delegate
+extension GroupsDataProvider: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let item = items[indexPath.row]
+        let itemProvider = NSItemProvider(object: item.id! as NSItemProviderWriting)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        dragItem.localObject = item
+        return [dragItem]
     }
 
-    func makeContextMenu(indexPath: IndexPath) -> UIMenu {
-        guard let vc = self.viewController as? GroupViewController else { return UIMenu() }
-        guard let groupID = self.items[indexPath.row].id else { return  UIMenu() }
-
-        let share = UIAction(title: "Share", image: UIImage(systemSymbol: .squareAndArrowUp)) { _ in
-            vc.viewModel.generateContentLink(groupID: groupID)
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        if collectionView.hasActiveDrag {
+            return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
         }
+        return UICollectionViewDropProposal(operation: .forbidden)
+    }
 
-        let edit = UIAction(title: "Edit", image: UIImage(systemSymbol: .pencil)) { _ in
-            vc.editName(groupID: groupID)
-        }
-
-        let delete = UIAction(title: "Delete", image: UIImage(systemSymbol: .trashFill), attributes: [.destructive]) { _ in
-            vc.viewModel.deleteGroup(groupID: groupID)
-        }
-
-        if let owner = items[indexPath.row].owner, owner == vc.viewModel.returnUserID() {
-            return UIMenu(title: "", children: [share, edit, delete])
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        var destinationIndexPath: IndexPath
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
         } else {
-            return UIMenu(title: "", children: [share])
+            let row = collectionView.numberOfItems(inSection: 0)
+            destinationIndexPath = IndexPath(item: row - 1, section: 0)
+        }
+
+        if coordinator.proposal.operation == .move {
+            reorderItems(coordinator: coordinator, destinationIndexPath: destinationIndexPath, collectionView: collectionView)
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        return makeTargetedPreview(for: configuration)
+    func reorderItems(coordinator: UICollectionViewDropCoordinator, destinationIndexPath: IndexPath, collectionView: UICollectionView) {
+        if let item = coordinator.items.first, let sourceIndexPath = item.sourceIndexPath {
+            collectionView.performBatchUpdates({
+                let temp = items.remove(at: sourceIndexPath.item)
+                items.insert(temp, at: destinationIndexPath.item)
+                collectionView.deleteItems(at: [sourceIndexPath])
+                collectionView.insertItems(at: [destinationIndexPath])
+
+            }, completion: { _ in
+                guard let vc = self.viewController as? GroupViewController else { return }
+                vc.viewModel.indexGroups(groups: self.items)
+            })
+            coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+        }
     }
 
-    func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        return makeTargetedPreview(for: configuration)
-    }
-
-    private func makeTargetedPreview(for configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        guard let indexPath = configuration.identifier as? IndexPath else { return nil }
-        guard let cell = collectionView.cellForItem(at: indexPath) as? GroupCollectionViewCell else { return nil }
-        let parameters = UIPreviewParameters()
-        parameters.backgroundColor = .clear
-        // parameters.visiblePath = UIBezierPath(ovalIn: cell.messageLabel.bounds)
-        return UITargetedPreview(view: cell, parameters: parameters)
-    }
 }
