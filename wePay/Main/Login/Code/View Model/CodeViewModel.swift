@@ -85,16 +85,18 @@ final class CodeViewModel {
                 // 2.
                 let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
                 let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
-                do {
-                    // 3.
-                    try store.enumerateContacts(with: request, usingBlock: { contact, _ in
-                        contacts.append(User(userID: nil, firstName: contact.givenName,
-                                                lastName: contact.familyName,
-                                                telephone: contact.phoneNumbers.first?.value.stringValue))
-                    })
-                    self.delegate?.didFinishFetch(contacts: contacts)
-                } catch {
-                    self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+                DispatchQueue.main.async {
+                    do {
+                        // 3.
+                        try store.enumerateContacts(with: request, usingBlock: { contact, _ in
+                            contacts.append(User(userID: nil, firstName: contact.givenName,
+                                                    lastName: contact.familyName,
+                                                    telephone: contact.phoneNumbers.first?.value.stringValue))
+                        })
+                        self.delegate?.didFinishFetch(contacts: contacts)
+                    } catch {
+                        self.delegate?.showAlertClosure(error: (APIError.fromMessage, error.localizedDescription))
+                    }
                 }
             } else {
                 self.delegate?.showAlertClosure(error: (APIError.fromMessage, "access denied"))
