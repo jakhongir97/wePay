@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		328E88D22989C11E001442EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 328E88D12989C11E001442EA /* GoogleService-Info.plist */; };
 		A703C2DC26C2C85100BBAAD6 /* KeyboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703C2DB26C2C85100BBAAD6 /* KeyboardHelper.swift */; };
 		A703C2DE26C2C97900BBAAD6 /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703C2DD26C2C97900BBAAD6 /* UICollectionView.swift */; };
 		A703C2E026C53CC800BBAAD6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A703C2DF26C53CC800BBAAD6 /* ImagePicker.swift */; };
@@ -43,7 +44,6 @@
 		A71D64ED26B40335009C6EE4 /* CodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A71D64EC26B40335009C6EE4 /* CodeView.xib */; };
 		A71D64EF26B40342009C6EE4 /* CodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64EE26B40342009C6EE4 /* CodeViewModel.swift */; };
 		A71D64F126B41390009C6EE4 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D64F026B41390009C6EE4 /* UINavigationController.swift */; };
-		A71D64F326B42DA4009C6EE4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A71D64F226B42DA4009C6EE4 /* GoogleService-Info.plist */; };
 		A764D10D26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D10C26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift */; };
 		A764D10F26BBFCE900DF9796 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */; };
 		A764D11126BC0D4300DF9796 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A764D11026BC0D4300DF9796 /* DateFormatter.swift */; };
@@ -151,6 +151,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		328E88D12989C11E001442EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A703C2DB26C2C85100BBAAD6 /* KeyboardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHelper.swift; sourceTree = "<group>"; };
 		A703C2DD26C2C97900BBAAD6 /* UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		A703C2DF26C53CC800BBAAD6 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -179,7 +180,6 @@
 		A71D64EC26B40335009C6EE4 /* CodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeView.xib; sourceTree = "<group>"; };
 		A71D64EE26B40342009C6EE4 /* CodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeViewModel.swift; sourceTree = "<group>"; };
 		A71D64F026B41390009C6EE4 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
-		A71D64F226B42DA4009C6EE4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A71D64FF26B4315C009C6EE4 /* wePay.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wePay.entitlements; sourceTree = "<group>"; };
 		A764D10C26BBEAE000DF9796 /* KeyboardLayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutConstraint.swift; sourceTree = "<group>"; };
 		A764D10E26BBFCE900DF9796 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
@@ -836,7 +836,7 @@
 				A7E43BD726B29C44005DF810 /* Assets.xcassets */,
 				A7E43BD926B29C44005DF810 /* LaunchScreen.storyboard */,
 				A7E43BDC26B29C44005DF810 /* Info.plist */,
-				A71D64F226B42DA4009C6EE4 /* GoogleService-Info.plist */,
+				328E88D12989C11E001442EA /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -968,10 +968,10 @@
 				A7E43C5826B2A155005DF810 /* HomeView.xib in Resources */,
 				A776B20126BA8B6600692302 /* GroupChatCollectionViewCell.xib in Resources */,
 				A764D12C26C14BC100DF9796 /* UserTagCollectionViewCell.xib in Resources */,
+				328E88D22989C11E001442EA /* GoogleService-Info.plist in Resources */,
 				A7E43BDB26B29C44005DF810 /* LaunchScreen.storyboard in Resources */,
 				A7E43BD826B29C44005DF810 /* Assets.xcassets in Resources */,
 				A764D12526C1122300DF9796 /* TaggedUsersView.xib in Resources */,
-				A71D64F326B42DA4009C6EE4 /* GoogleService-Info.plist in Resources */,
 				A71D64ED26B40335009C6EE4 /* CodeView.xib in Resources */,
 				A776B1FC26BA89AB00692302 /* GroupChatView.xib in Resources */,
 				A71D64D626B2DC0A009C6EE4 /* GroupView.xib in Resources */,
@@ -1244,7 +1244,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = wePay/wePay.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7A9V4SQ8LR;
 				INFOPLIST_FILE = wePay/resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1265,7 +1265,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = wePay/wePay.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7A9V4SQ8LR;
 				INFOPLIST_FILE = wePay/resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

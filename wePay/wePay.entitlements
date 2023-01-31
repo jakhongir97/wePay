@@ -10,7 +10,7 @@
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
-		<string>iCloud.uz.jakhongir.wePay</string>
+		<string>iCloud.uz.jakhongir.willPay</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>

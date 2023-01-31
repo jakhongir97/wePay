@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.130237181216-rslcab13c8atik0i1seubu32c43jjltd</string>
+				<string>com.googleusercontent.apps.130237181216-hkgc6hle57anlbp5b5qumsg254ra618a</string>
 			</array>
 		</dict>
 		<dict>
@@ -35,7 +35,7 @@
 			<string>jakhongir.page.link</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.jakhongir.wePay</string>
+				<string>uz.jakhongir.willPay</string>
 			</array>
 		</dict>
 	</array>

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>130237181216-rslcab13c8atik0i1seubu32c43jjltd.apps.googleusercontent.com</string>
+	<string>130237181216-hkgc6hle57anlbp5b5qumsg254ra618a.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.130237181216-rslcab13c8atik0i1seubu32c43jjltd</string>
+	<string>com.googleusercontent.apps.130237181216-hkgc6hle57anlbp5b5qumsg254ra618a</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDz4Ugys41y9gz4hLPWgt3EBR1ujIaaNSk</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.jakhongir.wePay</string>
+	<string>uz.jakhongir.willPay</string>
 	<key>PROJECT_ID</key>
 	<string>wepay-21d4f</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:130237181216:ios:169481bf0feb5dc1947b45</string>
+	<string>1:130237181216:ios:d5ade2c3ad221734947b45</string>
+	<key>DATABASE_URL</key>
+	<string>https://wepay-21d4f-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>
